@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的 Gemini 聊天室（自動存 Google 資料庫）</title>
+  <script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: "Microsoft JhengHei", sans-serif; margin:0; padding:20px; background:#f0f2f5; }
+    #chat { height:70vh; overflow-y:auto; border:1px solid #ddd; padding:15px; background:white; border-radius:10px; }
+    .message { margin:10px 0; padding:12px; border-radius:10px; max-width:80%; }
+    .user { background:#dcf8c6; align-self:flex-end; margin-left:auto; }
+    .gemini { background:#e5e5ea; }
+    input { width:80%; padding:15px; font-size:16px; }
+    button { padding:15px 25px; font-size:16px; }
+  </style>
+</head>
+<body>
+  <h1>🚀 我的 Gemini 聊天室（自動存 Google 資料庫）</h1>
+  <div id="chat"></div>
+  <input id="input" placeholder="輸入訊息並按送出...">
+  <button onclick="sendMessage()">送出給 Gemini</button>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwt8LwdYDcrYPsFRvaapLjRII1cTsQZP4",
+      authDomain: "chat-record-fe700.firebaseapp.com",
+      projectId: "chat-record-fe700",
+      storageBucket: "chat-record-fe700.firebasestorage.app",
+      messagingSenderId: "157324518018",
+      appId: "1:157324518018:web:b735b8f9bd551fd5b64a9b",
+      measurementId: "G-EP4G9HP58D"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const API_KEY = 'AIzaSyDzKLLf55z_p-UfhxGSis72a5qTOEL3hrQ';  // ←←← 這裡改成你的 Gemini API Key！
+    const MODEL = 'gemini-1.5-flash';
+
+    // 即時顯示聊天記錄
+    const chatDiv = document.getElementById('chat');
+    db.collection('gemini_chats').orderBy('timestamp').onSnapshot(snapshot => {
+      chatDiv.innerHTML = '';
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const div = document.createElement('div');
+        div.className = `message ${msg.role}`;
+        div.innerHTML = `<strong>${msg.role === 'user' ? '你' : 'Gemini'}：</strong> ${msg.text}`;
+        chatDiv.appendChild(div);
+      });
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    });
+
+    async function sendMessage() {
+      const input = document.getElementById('input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      // 存你的訊息
+      await db.collection('gemini_chats').add({
+        role: 'user',
+        text: text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      input.value = '';
+
+      // 呼叫 Gemini（自動帶最近歷史）
+      const history = await db.collection('gemini_chats').orderBy('timestamp', 'desc').limit(20).get();
+      let contents = [];
+      history.forEach(doc => {
+        const d = doc.data();
+        contents.unshift({ role: d.role, parts: [{ text: d.text }] });
+      });
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: contents })
+      });
+      const json = await res.json();
+      const aiText = json.candidates[0].content.parts[0].text;
+
+      // 存 Gemini 回應（自動存檔完成！）
+      await db.collection('gemini_chats').add({
+        role: 'gemini',
+        text: aiText,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+  </script>
+</body>
+</html>
