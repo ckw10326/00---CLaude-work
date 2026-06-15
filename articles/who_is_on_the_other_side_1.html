@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>誰在另一邊？理解市場（不）效率的框架</title>
+<style>
+  :root{
+    --ink:#1c2733;
+    --ink-soft:#44515f;
+    --paper:#f4f1ea;
+    --card:#ffffff;
+    --rule:#d9d3c7;
+    --accent:#2f5d7c;
+    --accent-soft:#e7eef3;
+    --serif:"Noto Serif TC","Songti TC","Source Han Serif TC",Georgia,serif;
+    --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.85;font-size:17px;
+  }
+  /* 進度條 */
+  #progress{
+    position:fixed;top:0;left:0;height:4px;width:0%;
+    background:linear-gradient(90deg,var(--accent),#5b8bad);
+    z-index:1000;transition:width .12s ease-out;
+  }
+  /* 版面 */
+  .wrap{display:flex;max-width:1280px;margin:0 auto;}
+  nav.toc{
+    position:sticky;top:0;align-self:flex-start;
+    width:268px;min-width:268px;height:100vh;overflow-y:auto;
+    padding:34px 20px 60px;border-right:1px solid var(--rule);
+    font-size:14px;background:rgba(255,255,255,.35);
+  }
+  nav.toc h2{
+    font-family:var(--serif);font-size:15px;letter-spacing:.08em;
+    color:var(--accent);margin:0 0 14px;font-weight:700;
+  }
+  nav.toc a{
+    display:block;color:var(--ink-soft);text-decoration:none;
+    padding:5px 10px;border-radius:6px;border-left:2px solid transparent;
+    transition:all .15s;line-height:1.5;
+  }
+  nav.toc a:hover{background:var(--accent-soft);color:var(--accent);}
+  nav.toc a.sub{padding-left:22px;font-size:13px;color:#7a8696;}
+  nav.toc a.active{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+  main{flex:1;min-width:0;padding:48px 7vw 120px;max-width:860px;}
+  /* 標題 */
+  .cover{border-bottom:2px solid var(--ink);padding-bottom:28px;margin-bottom:46px;}
+  .cover .kicker{font-family:var(--sans);font-size:13px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;}
+  .cover h1{font-family:var(--serif);font-size:38px;line-height:1.25;margin:0 0 10px;font-weight:700;letter-spacing:.01em;}
+  .cover .sub{font-family:var(--serif);font-size:21px;color:var(--ink-soft);margin:0 0 22px;font-weight:400;}
+  .cover .meta{font-size:14px;color:#7a8696;line-height:1.9;}
+  h2.sec{font-family:var(--serif);font-size:28px;margin:64px 0 8px;padding-top:14px;font-weight:700;color:var(--ink);border-top:1px solid var(--rule);padding-top:34px;}
+  h3.sub{font-family:var(--serif);font-size:21px;margin:38px 0 6px;font-weight:700;color:var(--accent);}
+  p{margin:14px 0;}
+  .lead{font-size:18px;color:var(--ink-soft);}
+  blockquote{
+    margin:22px 0;padding:16px 22px;background:var(--card);
+    border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+    font-family:var(--serif);font-size:16.5px;color:var(--ink-soft);line-height:1.8;
+  }
+  blockquote .by{display:block;margin-top:8px;font-size:13px;color:#8a95a3;font-family:var(--sans);}
+  .term{color:var(--accent);font-weight:600;}
+  em.en{font-style:normal;color:#6b7785;font-size:.92em;}
+  /* 圖佔位框 */
+  figure.fig{
+    margin:30px 0;background:var(--card);border:1px solid var(--rule);
+    border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  figure.fig .frame.hassvg{background:#fff !important;padding:14px 16px;min-height:auto;display:block;}
+  figure.fig .frame{
+    background:repeating-linear-gradient(45deg,#eef1f4,#eef1f4 12px,#e6eaef 12px,#e6eaef 24px);
+    min-height:120px;display:flex;align-items:center;justify-content:center;
+    color:#6b7785;font-size:13px;letter-spacing:.05em;padding:30px 20px;text-align:center;
+    border-bottom:1px solid var(--rule);
+  }
+  figure.fig .frame .ftag{
+    background:rgba(255,255,255,.9);border:1px dashed #9aa6b4;border-radius:6px;
+    padding:10px 18px;font-family:var(--sans);color:var(--ink-soft);
+  }
+  figure.fig figcaption{padding:16px 20px;font-size:14.5px;line-height:1.75;color:var(--ink-soft);}
+  figure.fig figcaption .cap-t{font-weight:700;color:var(--ink);font-family:var(--serif);font-size:15.5px;display:block;margin-bottom:6px;}
+  figure.fig figcaption .axis{display:block;margin-top:8px;padding-top:8px;border-top:1px dotted var(--rule);font-size:13.5px;color:#6b7785;}
+  figure.fig figcaption .src{display:block;margin-top:6px;font-size:12.5px;color:#9aa6b4;}
+  /* 表格 */
+  table{width:100%;border-collapse:collapse;margin:26px 0;font-size:14.5px;background:var(--card);border-radius:8px;overflow:hidden;}
+  caption{font-family:var(--serif);font-weight:700;font-size:15.5px;text-align:left;padding:0 0 10px;color:var(--ink);}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--rule);}
+  thead th{background:var(--accent);color:#fff;font-weight:600;font-size:13.5px;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.total td{font-weight:700;background:var(--accent-soft);}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .tsrc{font-size:12.5px;color:#9aa6b4;margin:-14px 0 26px;}
+  /* checklist */
+  ul.check{list-style:none;padding:0;margin:20px 0;}
+  ul.check li{padding:11px 14px 11px 42px;position:relative;background:var(--card);border:1px solid var(--rule);border-radius:8px;margin-bottom:9px;font-size:15.5px;}
+  ul.check li:before{content:"☐";position:absolute;left:15px;top:9px;font-size:18px;color:var(--accent);}
+  .note{background:var(--accent-soft);border-radius:8px;padding:14px 18px;font-size:14px;color:var(--ink-soft);margin:24px 0;border:1px solid #cddae4;}
+  footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--rule);font-size:13px;color:#9aa6b4;line-height:1.8;}
+  @media(max-width:880px){
+    nav.toc{display:none;}
+    main{padding:32px 6vw 90px;}
+    .cover h1{font-size:29px;}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+<nav class="toc">
+  <h2>章節導航</h2>
+  <a href="#intro">導論：效率的定義</a>
+  <a href="#paths" class="sub">通往市場效率的路徑</a>
+  <a href="#assess" class="sub">價格正確 vs. 沒有免費午餐</a>
+  <a href="#game1">我們在玩什麼遊戲？(一)</a>
+  <a href="#game2">我們在玩什麼遊戲？(二)</a>
+  <a href="#private">私募股權中的市場效率</a>
+  <a href="#other">誰在另一邊？</a>
+  <a href="#behavioral">行為性無效率</a>
+  <a href="#bubbles" class="sub">泡沫</a>
+  <a href="#crowds" class="sub">群眾的智慧與瘋狂</a>
+  <a href="#beliefs" class="sub">信念如何擴散</a>
+  <a href="#analytical">分析性無效率</a>
+  <a href="#timearb" class="sub">時間套利</a>
+  <a href="#narrative" class="sub">敘事的力量</a>
+  <a href="#informational">資訊性無效率</a>
+  <a href="#technical">技術性無效率</a>
+  <a href="#conclusion">結論</a>
+  <a href="#checklist">檢查清單</a>
+</nav>
+<main>
+<div class="cover">
+  <div class="kicker">Counterpoint Global Insights · Morgan Stanley Investment Management</div>
+  <h1>誰在另一邊？</h1>
+  <p class="sub">理解市場（不）效率的框架<br><em class="en">Who Is On the Other Side? A Framework for Understanding Market (In)Efficiency</em></p>
+  <p class="meta">作者：Michael J. Mauboussin、Dan Callahan, CFA｜CONSILIENT OBSERVER｜2026 年 1 月 21 日<br>中文電子書版（正文 + 檢查清單）</p>
+</div>
+
+<!-- ===================== 導論 ===================== -->
+<h2 class="sec" id="intro">導論：效率的定義</h2>
+<p class="lead">市場效率對企業與投資人都極為重要。運作良好的資本市場，是企業資源有效配置的關鍵基礎。投資人尋找無效率之處，以賺取<span class="term">超額報酬（excess returns）</span>——也就是經風險調整後高於預期的報酬。</p>
+<p>要理解效率，必須檢視眾多面向，包括「關於基本價值的資訊市場」、投資人的認知與行為，以及縮小價格與價值落差時所無可避免的成本。本報告的目標，是釐清決定市場效率的因素，並建立一套無效率來源的分類體系（taxonomy），為主動型投資人提供一個穩健的框架，用以辨識並捕捉超額報酬。</p>
+
+<p>「效率」一詞源自物理學，衡量能量投入與有用功輸出之間的關係。例如人體把每攝取的 100 卡熱量，轉換成約 20–25 卡的機械功（如跑步），效率與一般內燃機相近。由於熱力學第二定律——總有部分能量逸散而無法用於做功——無論人體或機器，都無法把 100% 能量轉為有用功。</p>
+<p>市場不是機器，但效率的概念依然適用。對市場而言，<strong>投入是資訊，產出則是一個能無偏反映公允價值的資產價格</strong>。而公允價值，是預期未來現金流以適當折現率折現後的現值。</p>
+<p>諾貝爾經濟學獎得主、芝加哥大學布斯商學院財務學教授 Eugene Fama 對此的總結是：「一個價格永遠『充分反映』可得資訊的市場，就稱為『效率市場』。」正如完美效率的機器不可能存在，完美效率的市場也不可能存在。</p>
+
+<p>Fama 依資訊來源區分出三種效率形式：<strong>弱式（weak form）</strong>主張無法用過去的價格變動預測未來價格變動；<strong>半強式（semi-strong form）</strong>主張價格已充分納入所有公開資訊，沒有賺取風險調整超額報酬的空間；<strong>強式（strong form）</strong>主張連少數人（如內部人）持有的資訊也已反映在價格中。弱式與半強式在某種程度上成立，但研究發現了違背它們的異常現象（anomalies）；強式則不被證據支持。</p>
+
+<p>在談無效率所帶來的機會之前，先檢視決定效率的三大核心考量：</p>
+
+<h3 class="sub">一、基本價值：關於資產的資訊市場</h3>
+<p>這指的是關於預期現金流與折現率的資訊，也就是資產基本價值的根基。Sanford Grossman 與諾貝爾獎得主 Joseph Stiglitz 在 1980 年寫了一篇名為〈論資訊效率市場的不可能性〉（On the Impossibility of Informationally Efficient Markets）的論文。他們主張，市場不可能達到完美效率，因為蒐集資訊並將其反映到價格中是有成本的，這意味著必須存在相對應的好處——即超額報酬——來誘使投資人去捕捉。</p>
+<p>主動型投資人需要有可被利用的<span class="term">錯誤定價（mispricing）</span>作為參與誘因，因為他們得回收蒐集資訊的成本。你可以說好處應大致等於成本，但好處必須存在。</p>
+<p>這就是 <strong>Grossman-Stiglitz 悖論</strong>：若市場完美效率，投資人便沒有誘因去蒐集資訊；但沒有知情交易者，價格又不可能有效率。財務學教授 Lasse Pedersen 巧妙地把它概括為——市場必然是「有效率地無效率」（efficiently inefficient）。在這個市場裡，投資人試圖「買進」資訊、再以獲利「賣出」。</p>
+
+<h3 class="sub">二、投資人：認知與行為</h3>
+<p>有些投資人依資訊交易，有些依與價值無關的數據或因子交易，還有些則搭便車。研究顯示，投資人會落入特定的行為模式：過度外推（overextrapolating）近期結果、情緒（sentiment）的擺盪、創造並依循敘事、注意力有限，以及對同一資訊有不同解讀。這些行為都可能造成價格與價值的背離。</p>
+<p>投資人有時被迫基於與基本價值無關的理由買賣資產，例如：為反映指數再平衡（rebalancing）而買賣、追繳保證金（margin call）引發的賣壓，以及資產落到投資授權範圍之外而被迫賣出。</p>
+
+<h3 class="sub">三、套利成本：資產市場</h3>
+<p><span class="term">套利（arbitrage）</span>是同時買進被低估資產、賣出被高估資產（兩者現金流相同或高度相關），藉以創造幾乎無風險的利潤；它是促使價格與價值收斂的機制。</p>
+<p>但套利有成本：辨識與驗證錯誤定價、執行交易、稅務影響、以及融資與借券成本。這些「套利成本」在學術研究中常被低估。事實上，Fama 在更新其經典論文時提出，一個更「合理」的效率市場版本，是價格反映資訊直到「依資訊行動的邊際效益（可賺得的利潤）不再超過邊際成本」的程度。</p>
+<p>許多此類成本隨時間下降，使多數市場更有效率。例如 2000 年實施的「公平揭露規則」（Regulation Fair Disclosure，Reg FD）減少了企業選擇性揭露資訊的情況。交易成本也因法規鬆綁與科技進步而大幅下降：在 1975 年 5 月 1 日佣金鬆綁之前，散戶買進 100 股、每股 25 美元的股票須付買價的 2.5% 佣金；如今同樣的交易幾乎零佣金。</p>
+
+<figure class="fig" id="ex1">
+  <div class="frame hassvg"><svg viewBox='0 0 640 260' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><defs><marker id='ar' markerWidth='8' markerHeight='8' refX='4' refY='4' orient='auto'><path d='M0,0 L8,4 L0,8 Z' fill='#5b8bad'/></marker></defs><polyline points='30,176 57,166 84,157 111,147 138,138 165,128 192,118 219,109 246,99 273,90 300,80' fill='none' stroke='#1c2733' stroke-width='2.2'/><polyline points='30,176 34,171 39,166 44,161 48,157 52,152 57,149 62,145 66,142 70,140 75,138 80,137 84,136 88,136 93,136 98,136 102,137 106,139 111,140 116,142 120,144 124,146 129,148 134,149 138,151 142,152 147,152 152,152 156,152 160,151 165,150 170,148 174,146 178,143 183,139 188,136 192,131 196,127 201,122 206,117 210,112 214,107 219,102 224,97 228,93 232,88 237,85 242,81 246,78 250,76 255,74 260,73 264,72 268,72 273,72 278,72 282,73 286,75 291,76 296,78 300,80' fill='none' stroke='#5b8bad' stroke-width='2' stroke-dasharray='5 4'/><text x='298' y='46' font-size='11' fill='#5b8bad' text-anchor='end' font-weight='700'>價格</text><text x='298' y='82.0' font-size='11' fill='#1c2733' text-anchor='end' font-weight='700'>價值</text><text x='165.0' y='234' font-size='11.5' fill='#44515f' text-anchor='middle' font-weight='400'>需要找出價格與價值的落差…</text><polyline points='335,176 362,166 389,157 416,147 443,138 470,128 497,118 524,109 551,99 578,90 605,80' fill='none' stroke='#1c2733' stroke-width='2.2'/><polyline points='335,176 340,171 344,166 348,161 353,157 358,152 362,149 366,145 371,142 376,140 380,138 384,137 389,136 394,136 398,136 402,136 407,137 412,139 416,140 420,142 425,144 430,146 434,148 438,149 443,151 448,152 452,152 456,152 461,152 466,151 470,150 474,148 479,146 484,143 488,139 492,136 497,131 502,127 506,122 510,117 515,112 520,107 524,102 528,97 533,93 538,88 542,85 546,81 551,78 556,76 560,74 564,73 569,72 574,72 578,72 582,72 587,73 592,75 596,76 600,78 605,80' fill='none' stroke='#5b8bad' stroke-width='2' stroke-dasharray='5 4'/><text x='603' y='46' font-size='11' fill='#5b8bad' text-anchor='end' font-weight='700'>價格</text><text x='603' y='82.0' font-size='11' fill='#1c2733' text-anchor='end' font-weight='700'>價值</text><line x1='416.0' y1='85' x2='416.0' y2='132' stroke='#5b8bad' stroke-width='2' marker-end='url(#ar)'/><line x1='459.2' y1='175' x2='459.2' y2='128' stroke='#5b8bad' stroke-width='2' marker-end='url(#ar)'/><text x='470.0' y='234' font-size='11.5' fill='#44515f' text-anchor='middle' font-weight='400'>…並考量讓價格回歸價值的成本</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 1：價格反映基本面、投資人行為與套利成本</span>
+    兩張並排折線圖。<strong>左圖</strong>：一條向右上平穩上升的實線代表「價值（Value）」，一條圍繞它上下波動的虛線代表「價格（Price）」——說明價格會在價值上下偏離（「需要找出價格與價值之間的落差」）。<strong>右圖</strong>：同樣兩條線，但加上向上、向下的箭頭，標示把價格拉回價值所需的成本（「並考量讓價格回歸價值的成本」）。
+    <span class="axis">座標軸：橫軸為時間，縱軸為水準值。實線＝Value（價值）；虛線＝Price（價格）。</span>
+    <span class="src">資料來源：Counterpoint Global。</span>
+  </figcaption>
+</figure>
+
+<p>以指數型共同基金與交易所交易基金（ETF）為主的「規則化投資」（rules-based investing），已掌控美國公開股市至少三分之一的資產，並占美國國內股票型共同基金逾 60%。許多這類策略並不花資源去蒐集基本價值資訊，而是搭市場價格的便車。</p>
+<p>主動型經理人在市場中扮演關鍵角色，因為他們貢獻了<span class="term">價格發現（price discovery）</span>並提供流動性。換言之，價格與價值透過他們的努力趨於收斂，他們也讓現金與股票得以相互轉換。這些功能是寶貴的公共財；可以推斷，若市場完全由指數基金組成，將無法有效運作。</p>
+
+<!-- ============ 通往效率的路徑 ============ -->
+<h3 class="sub" id="paths">通往市場效率的路徑</h3>
+<p>讓我們檢視三種理論上能讓市場變得有效率的途徑。</p>
+<p><strong>第一，假設所有投資人都理性</strong>：他們正確處理資訊、形成無偏的預期、並追求預期效用最大化。這接近 Fama 在 1965 年提出「效率市場」一詞時的構想。沒有人真的相信這一點，過去也沒人相信，但它仍是效率的試金石。</p>
+<p><strong>第二，假設只有部分投資人理性</strong>：這些人是尋找錯誤定價、低買高賣的套利者，確保價格與價值收斂。他們正是 Grossman-Stiglitz 模型中那些承擔成本去尋找無效率、並在消除無效率時賺取超額報酬的投資人。市場上每天都有規模龐大、技術高超且獲利的公司扮演此角色。後文會談到，挑戰在於套利者有時會「缺席」，而這往往發生在市場錯位（dislocation）、套利機會最豐厚的時期。</p>
+<p><strong>第三，群眾的智慧（wisdom of crowds）</strong>：彙整許多獨立個體的資訊，可產生準確的結果。但群眾唯有在特定條件下才有智慧：觀點多元、有彙整觀點的機制、以及適當的誘因。市場擅長綜合分散資訊以發現準確價格，這正是 Friedrich Hayek（1974）與 Vernon Smith（2002）獲頒諾貝爾經濟學獎的核心原因。</p>
+<p>密西根大學社會科學家、聖塔菲研究院外部教員 Scott Page 推廣了「多樣性預測定理」（diversity prediction theorem）來解釋其運作：群體的集體誤差（即群眾的智慧）＝個體平均誤差 − 預測多樣性。由此可知，集體永遠比群體中的平均個人更準確，而群眾智慧同等仰賴「聰明」（個體平均誤差）與「多樣性」。</p>
+<p>誘因同樣重要。在市場中，誘因體現為「對了賺錢、錯了賠錢」，這會磨利預測，並確保偏離共識且正確的觀點能得到可觀回報。</p>
+<p>當上述任一條件被破壞時，群眾就會從智慧轉為瘋狂。<strong>多樣性是最脆弱的一環</strong>。當投資人不再持有多元觀點、彼此意見變得相關（無論是因為觀點同步，或異議者退場），群眾便失去了作為準確性根基的多樣性。</p>
+
+<p>衡量市場效率本質上很困難，因為存在「聯合假說問題」（joint hypothesis problem）。第一個假說是：存在一個能可靠預測資產報酬的模型，例如常用的資本資產定價模型（CAPM）。第二個假說是：市場是有效率的。問題在於，只有當你擁有準確的預期報酬模型時，才能斷定某報酬是「異常」的。因此，異常報酬可能源自模型錯誤、市場無效率，或兩者皆是。除非你確信模型準確，否則很難斷言某資產被錯誤定價。</p>
+
+<!-- ============ 評估效率 ============ -->
+<h3 class="sub" id="assess">評估效率：價格正確，以及沒有免費午餐</h3>
+<p>2013 年與 Fama 共享諾貝爾獎的耶魯大學經濟學教授 Robert Shiller，建立了一個以<span class="term">雜訊交易者（noise trader）</span>為核心的模型。這些投資人「把雜訊當作資訊來交易」，且「從客觀角度看，他們不交易反而更好」。該模型顯示，資產價格由其基本價值與套利成本共同決定。</p>
+<p>當雜訊交易者把價格推離基本價值時，若套利成本夠低，知情投資人可藉由反向交易獲利；在這些條件下，套利者賺取超額利潤，並在過程中使市場變得有效率。當套利成本高時，錯誤定價會持續存在，因為修正它的成本超過潛在好處。市場效率（價格等於價值）落在一條從「極度無效率」到「極度有效率」的連續譜上，跨資產類別、甚至同一資產類別內皆然，落點取決於投資人行為的變幻與修正價格的成本。</p>
+<p>1970 年諾貝爾獎得主、極具影響力的經濟學家 Paul Samuelson 提出了後人所稱的「Samuelson 二分法」（Samuelson Dictum）：股市呈現「微觀效率」（micro efficiency）與「宏觀無效率」（macro inefficiency）。微觀效率指個別股票彼此相對而言定價準確；宏觀無效率指整體市場價格可能大幅偏離基本價值。實證研究支持此區分。</p>
+<p>另一位財務理論巨擘 Fischer Black 把「效率市場」定義為「價格落在價值的兩倍範圍內，即價格高於價值的一半、低於價值的兩倍」。這是一條相當寬的帶狀區間。確實有證據顯示，投資人在缺乏對「合理價格應為何」的明確看法下就形成報酬預期，學界稱之為「價格不可知的需求」（price agnostic demand）。</p>
+<p>效率市場假說（EMH）的嚴格解讀主張：「在任何時點，證券的實際價格都是其內在價值的良好估計。」若我們接受 Black 那條寬帶，就很難太認真看待這說法。</p>
+<p>另一方面，EMH 做出一個具體預測：整體而言，主動型投資經理人在考量風險後，很難持續創造超越市場的報酬。數據支持這一點。</p>
+<p>由此可區分「<strong>價格正確</strong>」（prices are right）與「<strong>沒有免費午餐</strong>」（no free lunch）兩個概念。「價格正確」指價格是價值的無偏估計、平均而言正確；「沒有免費午餐」指沒有任何投資策略能可靠地產生超額報酬。若價格正確，則理應沒有免費午餐。但反之未必成立：<strong>即使價格錯誤，只要修正錯誤定價的成本與風險夠高，仍可能沒有免費午餐</strong>。辨識並利用這些無效率的口袋，應是主動型經理人的主要焦點。</p>
+
+<!-- ===================== 我們在玩什麼遊戲 (1) ===================== -->
+<h2 class="sec" id="game1">我們在玩什麼遊戲？（第一部分）</h2>
+<p>短期而言，基本面、投資人行為與套利成本三者，都是股票報酬的重要貢獻因素。長期而言，基本面往往是股票報酬的主導決定因素。</p>
+
+<h3 class="sub">長期財富創造的高度偏態</h3>
+<p>亞利桑那州立大學財務學教授 Hendrik Bessembinder 研究了 1926 至 2024 年間在美國掛牌的 28,600 家上市公司，把「財富創造」定義為報酬高於一個月期國庫券（常被視為「無風險」利率）。他發現，過去一個世紀曾交易的股票中，有 <strong>59% 摧毀了財富</strong>。美國以外的股票分析也得到類似結果。</p>
+<p>更進一步，在勝過國庫券的股票中，僅 2% 就創造了 79.3 兆美元總財富中的 72.6 兆美元，超過總額的 90%。光是前 5 大個股就貢獻了總財富創造的 20%。長期來看，少數大贏家決定了整體股市的結果。主動管理的股票型共同基金也具備同樣的特性。</p>
+<p>若假設未來結果模式與過去相似，參與市場有兩種主要方式。<strong>第一是買指數基金</strong>：你保證會持有多數無法創造財富的股票，但也會持有那些巨大的贏家。<strong>第二是建構較集中的投資組合</strong>，使其有合理機率納入那些偉大的財富創造者。Bessembinder 檢視這些極端贏家後發現，它們基本面成長良好、不只是科技公司，且在某個時點都曾經歷大幅回檔（drawdown，自高點到低點的價格下跌）。</p>
+<p>多數機構資金經理人有投資組合分散與風險管理的準則。持有一檔持續複利成長的股票，實務上的挑戰是：它可能變成投資組合中過大的部位，違反分散、市值或風險的參數限制。</p>
+
+<h3 class="sub">終身盈餘對股價比（RLTEP）</h3>
+<p>下一個議題是股價報酬與公司基本面（含盈餘與現金流成長）之間的連結。三位會計學教授 Sanjeev Bhojraj、Ashish Ochani 與 Shiva Rajgopal 檢視了 1975 至 2019 年間開始交易的 13,800 家美國上市公司（排除金融業）。他們計算未來盈餘的現值（公允價值的基礎），並與公司首次掛牌的股價相比，稱此比率為「剩餘終身盈餘對股價比」（remaining lifetime earnings to price，RLTEP）。</p>
+<p>剩餘終身盈餘難以衡量，因為樣本中存活下來的不到 20%：逾 40% 的公司被併購，將近 40% 下市。教授們把每股折現終身盈餘，計算為剩餘存續期內每年實際每股盈餘的折現值總和，再加上終值（terminal value）。終值對存活公司用估計、對被併公司用每股收購價、對下市公司用每股下市價。</p>
+
+<table>
+  <caption>Exhibit 2：終身盈餘對股價比，1975–2019</caption>
+  <thead>
+    <tr><th>類別</th><th class="num">家數</th><th class="num">比率（平均數）</th><th class="num">比率（中位數）</th><th class="num">終身盈餘無法支撐股價的公司比例</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>存活（Surviving）</td><td class="num">2,463</td><td class="num">1.1</td><td class="num">0.1</td><td class="num">71.8%</td></tr>
+    <tr><td>被併購（Merged）</td><td class="num">5,896</td><td class="num">1.7</td><td class="num">1.0</td><td class="num">48.6%</td></tr>
+    <tr><td>下市（非併購）</td><td class="num">5,425</td><td class="num">0.0</td><td class="num">-0.1</td><td class="num">94.7%</td></tr>
+    <tr class="total"><td>總計</td><td class="num">13,784</td><td class="num">0.9</td><td class="num">0.2</td><td class="num">70.9%</td></tr>
+  </tbody>
+</table>
+<p class="tsrc">資料來源：Counterpoint Global 與 Bhojraj、Ochani、Rajgopal，〈Firms' Stock Prices, Stock Returns, and Remaining Lifetime Earnings〉，《Management Science》，即將刊出。</p>
+
+<p>這份結果「人人有獎」。<strong>效率市場的信徒</strong>可看第三欄底列：全樣本的平均比率為 0.9，意味著對所有這段期間開始交易的股票而言，價值落在股價的 10% 以內。<strong>無效率市場的信徒</strong>則可看第四欄底列：中位數比率為 0.2，意味著有一半股票的價值不到初始股價的 20%。平均數明顯高於中位數，告訴我們少數股票對總額有不成比例的影響——這與 Bessembinder 的發現完全一致。</p>
+<p>最右欄顯示，總體有 71% 的公司無法產生足夠盈餘來支撐其股價；在併購的公司中不到一半如此，但在下市的公司中高達 95%。被併公司的平均比率為 1.7、存活公司 1.1、下市公司為零。價值與價格的問題不會因一家公司併購另一家而消失，它只是被轉嫁給買方。</p>
+<p>兩項研究——一項看報酬、一項看基本面——呈現相同模式：少數公司長期創造了幾乎全部的財富。這是長期複利的自然效應。對於不長期持有的投資人（這在投資生態中是日益增長的一群）而言，這些結果就沒那麼重要。</p>
+
+<!-- ===================== 我們在玩什麼遊戲 (2) ===================== -->
+<h2 class="sec" id="game2">我們在玩什麼遊戲？（第二部分）</h2>
+<p>倫敦帝國學院財務與經濟學教授 Franklin Allen，在 2001 年美國財務學會主席演說中，點出當時一個令人費解的矛盾：機構的角色在公司財務研究中居核心地位，在資產定價研究中卻幾乎缺席。</p>
+<p>學界長期研究企業所有者（委託人 principal）與代其行事的經理人（代理人 agent）之間的潛在衝突。<span class="term">代理理論（agency theory）</span>聚焦於代理人為自身利益、犧牲委託人利益時所造成的成本，這些成本創造無效率並削減股東價值。</p>
+<p>在現代財務理論奠基時，「誰在買賣股票」這個問題鮮少受到關注。部分原因是古典財務理論的關鍵假設——無摩擦市場與同質預期——共同隱含股票需求曲線是水平的：投資人可任意買賣任何數量而不影響現價，且與新資訊無關的交易不應影響價格。</p>
+<p>但近數十年大量研究顯示，<strong>股市的需求曲線是向下傾斜的</strong>。這意味著當許多投資人同時想買進一檔股票，價格會上漲；賣出則對稱。觀察需求曲線是否向下傾斜的一種方法，是衡量股票被納入或剔除指數時的反應：被納入指數時並無新基本面資訊，但指數基金與部分規則化投資人必須買進，推升價格。這效應雖仍存在，但已減弱。</p>
+<p>證據現在顯示：<strong>誰在買賣，確實有影響</strong>。我們聚焦三大趨勢：（一）資金大舉流出主動管理基金、流入指數型共同基金與 ETF；（二）在主動管理的部分中，從長期投資期限的基金移轉到短期期限的基金；（三）散戶（retail）交易的興起，尤其自 2020 年 COVID-19 疫情以來。</p>
+
+<h3 class="sub">從主動到被動</h3>
+<p>2006 至 2025 年間，指數型共同基金與指數 ETF 的淨流入為 3.2 兆美元，其中近 90% 流向 ETF。主動型基金的淨流出同為 3.2 兆美元——主動共同基金流出 3.4 兆美元，被主動 ETF 約 3,000 億美元的流入部分抵銷。</p>
+
+<figure class="fig" id="ex3">
+  <div class="frame hassvg"><svg viewBox='0 0 640 330' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='70' y1='30' x2='70' y2='260' stroke='#44515f' stroke-width='1.2'/><line x1='70' y1='260' x2='590' y2='260' stroke='#44515f' stroke-width='1.2'/><line x1='70' y1='243.57142857142858' x2='590' y2='243.57142857142858' stroke='#e0dccf' stroke-width='1'/><text x='62' y='247.57142857142858' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-3000</text><line x1='70' y1='210.71428571428572' x2='590' y2='210.71428571428572' stroke='#e0dccf' stroke-width='1'/><text x='62' y='214.71428571428572' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-2000</text><line x1='70' y1='177.85714285714286' x2='590' y2='177.85714285714286' stroke='#e0dccf' stroke-width='1'/><text x='62' y='181.85714285714286' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-1000</text><line x1='70' y1='145.0' x2='590' y2='145.0' stroke='#e0dccf' stroke-width='1'/><text x='62' y='149.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='70' y1='112.14285714285714' x2='590' y2='112.14285714285714' stroke='#e0dccf' stroke-width='1'/><text x='62' y='116.14285714285714' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>1000</text><line x1='70' y1='79.28571428571428' x2='590' y2='79.28571428571428' stroke='#e0dccf' stroke-width='1'/><text x='62' y='83.28571428571428' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>2000</text><line x1='70' y1='46.428571428571416' x2='590' y2='46.428571428571416' stroke='#e0dccf' stroke-width='1'/><text x='62' y='50.428571428571416' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>3000</text><text x='70.0' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2006</text><text x='124.73684210526315' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2008</text><text x='179.4736842105263' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2010</text><text x='234.21052631578945' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2012</text><text x='288.9473684210526' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2014</text><text x='343.6842105263158' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2016</text><text x='398.4210526315789' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2018</text><text x='453.1578947368421' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='507.89473684210526' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2022</text><text x='562.6315789473683' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2024</text><text x='590.0' y='276' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2025</text><polygon points='70,145 97,144 125,143 152,140 179,135 207,130 234,124 262,115 289,107 316,99 344,91 371,83 398,74 426,66 453,58 481,56 508,55 535,51 563,48 590,46 590,145 563,145 535,145 508,145 481,145 453,145 426,145 398,145 371,145 344,145 316,145 289,145 262,145 234,145 207,145 179,145 152,145 125,145 97,145 70,145' fill='#27506b' fill-opacity='0.9'/><polygon points='70,145 97,144 125,142 152,138 179,131 207,125 234,116 262,106 289,95 316,86 344,77 371,68 398,59 426,51 453,43 481,43 508,43 535,41 563,38 590,37 590,46 563,48 535,51 508,55 481,56 453,58 426,66 398,74 371,83 344,91 316,99 289,107 262,115 234,124 207,130 179,135 152,140 125,143 97,144 70,145' fill='#b4503f' fill-opacity='0.9'/><polygon points='70,145 97,144 125,142 152,138 179,130 207,123 234,114 262,103 289,91 316,81 344,71 371,62 398,52 426,42 453,34 481,34 508,33 535,31 563,29 590,27 590,37 563,38 535,41 508,43 481,43 453,43 426,51 398,59 371,68 344,77 316,86 289,95 262,106 234,116 207,125 179,131 152,138 125,142 97,144 70,145' fill='#5b9e8f' fill-opacity='0.9'/><polygon points='70,145 97,146 125,148 152,152 179,158 207,166 234,175 262,184 289,194 316,204 344,212 371,221 398,229 426,235 453,242 481,245 508,248 535,252 563,255 590,257 590,145 563,145 535,145 508,145 481,145 453,145 426,145 398,145 371,145 344,145 316,145 289,145 262,145 234,145 207,145 179,145 152,145 125,145 97,145 70,145' fill='#5b8bad' fill-opacity='0.9'/><text x='356.0' y='95.71428571428572' font-size='12' fill='#fff' text-anchor='middle' font-weight='700'>指數 ETF</text><text x='330.0' y='67.78571428571428' font-size='10.5' fill='#fff' text-anchor='middle' font-weight='700'>指數共同基金</text><text x='392.4' y='43.08571428571429' font-size='10' fill='#5b9e8f' text-anchor='middle' font-weight='700'>主動管理 ETF</text><text x='304.0' y='200.85714285714286' font-size='11' fill='#fff' text-anchor='middle' font-weight='700'>主動管理共同基金</text><text x='24' y='145.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>累計淨流量（十億美元）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 3：美國共同基金與 ETF 累計淨流量，2006–2025</span>
+    堆疊面積圖。零軸以上由下而上依序為「指數 ETF（Index ETFs）」（占最大、約 +3,000 區間）、「指數共同基金（Index mutual funds）」、「主動管理 ETF（Actively managed ETFs）」皆呈正流入並逐年攀升；零軸以下為「主動管理共同基金（Actively managed mutual funds）」，呈持續擴大的淨流出，2025 年逼近 −3,400。
+    <span class="axis">座標軸：橫軸＝年份 2006–2025；縱軸＝累計淨流量（十億美元），範圍約 −3,500 至 +3,500。資料為月資料 2006/1/31–2025/11/30，美國境內、投資美股之基金。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Morningstar Direct。</span>
+  </figcaption>
+</figure>
+
+<p>指數基金適合滿足於市場報酬的投資人。但指數基金仰賴主動經理人來維持價格與價值的一致並提供流動性。此外，指數基金雖對價格發現毫無貢獻，卻仍須交易以因應資金流、反映指數的納入與剔除、以及成分股的發行與買回，這些交易為基金帶來成本。</p>
+<p>一個重大問題是：資金從主動流向被動的模式，是否影響價格發現與流動性？儘管有實務界人士大膽宣稱指數化讓市場效率變差，也有指數化的支持者主張它未影響效率，學術研究在此議題上其實是模稜兩可的；許多（甚至多數）研究給的是帶條件的評估。</p>
+<p>主動管理透過貢獻價格發現與流動性來創造價值，且其成果常被描繪得比實際更糟。事實上，研究顯示主動經理人在選股上是有技巧的，只是收取的費用大致抵銷了這份能力。此外，當費用相當時，同一投資類別內的主動與指數基金產生相似的報酬。</p>
+
+<figure class="fig" id="ex4">
+  <div class="frame hassvg"><svg viewBox='0 0 640 300' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='240' x2='600' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='240.0' x2='600' y2='240.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='244.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='210.0' x2='600' y2='210.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='214.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>2</text><line x1='60' y1='180.0' x2='600' y2='180.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='184.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>4</text><line x1='60' y1='150.0' x2='600' y2='150.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='154.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>6</text><line x1='60' y1='120.0' x2='600' y2='120.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='124.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>8</text><line x1='60' y1='90.0' x2='600' y2='90.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='94.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>10</text><line x1='60' y1='60.0' x2='600' y2='60.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='64.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>12</text><line x1='60' y1='30.0' x2='600' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>14</text><text x='60.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'><-20</text><text x='101.53846153846155' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-16</text><text x='143.0769230769231' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-12</text><text x='184.61538461538464' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-8</text><text x='226.15384615384616' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-4</text><text x='267.69230769230774' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>0</text><text x='309.2307692307693' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>4</text><text x='350.7692307692308' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>8</text><text x='392.3076923076923' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>12</text><text x='433.8461538461538' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>16</text><text x='475.3846153846154' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>20</text><text x='516.9230769230769' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24</text><text x='558.4615384615386' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>28</text><text x='600.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>>30</text><polyline points='60,206 81,226 102,225 122,220 143,216 164,208 185,201 205,189 226,171 247,126 268,50 288,68 309,117 330,141 351,162 372,177 392,192 413,201 434,210 455,216 475,220 496,225 517,228 538,231 558,232 579,231 600,224' fill='none' stroke='#5b8bad' stroke-width='2.4'/><text x='330.0' y='272' font-size='11' fill='#44515f' text-anchor='middle' font-weight='700'>毛 Alpha（%）</text><text x='16' y='135.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>次數（%）</text><text x='273.69230769230774' y='43.5' font-size='10' fill='#2f5d7c' text-anchor='start' font-weight='600'>峰值≈12.7%（0–2%區間）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 4：年度毛 Alpha 分布，美國共同基金業，1976–2024</span>
+    單峰折線（次數分布）圖，峰值落在 0–2% 區間（約 12.7%），整體右偏、右尾延伸至 &gt;30%。平均毛 alpha 為 67 個基點、中位數 35 個基點，逾一半基金為正。然而基金收取的費用大致等於毛 alpha。
+    <span class="axis">座標軸：橫軸＝毛 alpha（%），自 &lt;(20) 至 &gt;30 分組；縱軸＝次數（%），0 至 14。毛 alpha＝基金費前報酬 −（依其 beta 與基準指數推得的）預期報酬。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Morningstar Direct。</span>
+  </figcaption>
+</figure>
+
+<p>指數化的支持者與批評者都同意：市場要良好運作，需要一些主動管理。若指數化製造了無效率，Grossman-Stiglitz 框架便指出，超額報酬的潛在好處將超過取得資訊的成本，從而鼓勵主動經理人參與並獲利。</p>
+<p>這引出一個重點：<strong>主動投資人必須同時相信無效率與效率</strong>。你需要無效率，才能買賣價格不等於價值的資產；你也需要效率，才能確保價格與價值最終收斂。若市場完美效率，就沒有理由透過主動管理去跑贏——這是「價格正確」論的基礎。但若你認為市場永遠無效率，也同樣沒有理由去跑贏：因為即使你聰明到能用五毛錢買到一塊錢的價值，也沒有依據相信價格與價值的落差會收斂。</p>
+<p>若指數化興起製造了更多可利用的無效率，你會預期主動經理人成果更好。基金的「毛附加價值」（gross value added）＝毛 alpha × 管理資產規模。</p>
+
+<figure class="fig" id="ex5">
+  <div class="frame hassvg"><svg viewBox='0 0 640 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230' x2='600' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='214.6153846153846' x2='600' y2='214.6153846153846' stroke='#e0dccf' stroke-width='1'/><text x='52' y='218.6153846153846' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-2</text><line x1='60' y1='183.84615384615384' x2='600' y2='183.84615384615384' stroke='#e0dccf' stroke-width='1'/><text x='52' y='187.84615384615384' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-1</text><line x1='60' y1='153.07692307692307' x2='600' y2='153.07692307692307' stroke='#e0dccf' stroke-width='1'/><text x='52' y='157.07692307692307' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='122.3076923076923' x2='600' y2='122.3076923076923' stroke='#e0dccf' stroke-width='1'/><text x='52' y='126.3076923076923' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>1</text><line x1='60' y1='91.53846153846155' x2='600' y2='91.53846153846155' stroke='#e0dccf' stroke-width='1'/><text x='52' y='95.53846153846155' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>2</text><line x1='60' y1='60.769230769230774' x2='600' y2='60.769230769230774' stroke='#e0dccf' stroke-width='1'/><text x='52' y='64.76923076923077' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>3</text><line x1='60' y1='30.0' x2='600' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>4</text><text x='60.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1980</text><text x='109.0909090909091' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1984</text><text x='158.1818181818182' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1988</text><text x='207.27272727272725' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1992</text><text x='256.3636363636364' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1996</text><text x='305.45454545454544' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2000</text><text x='354.5454545454545' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2004</text><text x='403.6363636363636' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2008</text><text x='452.72727272727275' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2012</text><text x='501.81818181818187' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2016</text><text x='550.9090909090909' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='600.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2024</text><line x1='60' y1='153.07692307692307' x2='600' y2='153.07692307692307' stroke='#44515f' stroke-width='1.2'/><polyline points='60,64 72,56 85,48 97,83 109,118 121,153 134,164 146,175 158,164 170,154 183,144 195,117 207,91 220,64 232,95 244,125 256,156 269,187 281,218 293,162 305,107 318,95 330,82 342,70 355,96 367,121 379,147 391,133 404,118 416,104 428,102 440,101 453,120 465,140 477,159 490,151 502,143 514,135 526,129 539,124 551,119 563,132 575,144 588,156 600,168' fill='none' stroke='#5b8bad' stroke-width='2'/><text x='14' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>收益率（過去5年, %）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 5：毛附加價值收益率（五年滾動），美國共同基金，1980–2024</span>
+    波動折線圖。整段期間數值在零上下擺盪（高點曾近 +3.5%、低點 1998 年附近一度跌破 −2%）；全期淨值接近零，但自大衰退（2007–2009）以來趨勢大致向下，與資金加速流入指數基金同步。
+    <span class="axis">座標軸：橫軸＝年份 1980–2024；縱軸＝毛附加價值收益率（過去五年，%），約 −2.5 至 +4.0。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Morningstar Direct。</span>
+  </figcaption>
+</figure>
+
+<p>另一個讓主動經理人為難的因素，是美國股市集中度（concentration）上升。前 10 大個股的市值占美國股市比重，從 2015 年底的 15%，到 2025 年底翻倍以上、約達 35%。由於多數基準指數按市值加權，且多數基金的平均市值低於其基準，集中度上升（亦即大型股表現好）時，基金便難以追上或超越基準。</p>
+<p>有些學者與實務者主張指數化造成了集中度上升。但這個疑慮被以下事實緩和：在指數化存在之前，我們就有過類似的集中度水準；最大型股之間的報酬離散度很大（2025 年 Alphabet 的總股東報酬比 Amazon 高出 60 個百分點）；且這些企業的基本面可說支撐了它們的權重。</p>
+<p>「經濟利潤」（economic profit）之於企業，就如毛附加價值之於共同基金，等於（投入資本報酬率 ROIC − 資金成本）× 投入資本。前半段（ROIC − 資金成本）顯示企業是否創造價值；後半段（投入資本）顯示企業以該利差部署了多少資本。我們估計全體美國上市公司 2024 年的總經濟利潤為 6,330 億美元。</p>
+
+<figure class="fig" id="ex6">
+  <div class="frame hassvg"><svg viewBox='0 0 640 320' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='250' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='250' x2='600' y2='250' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='250.0' x2='600' y2='250.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='254.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='206.0' x2='600' y2='206.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='210.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>200</text><line x1='60' y1='162.0' x2='600' y2='162.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='166.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>400</text><line x1='60' y1='118.0' x2='600' y2='118.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='122.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>600</text><line x1='60' y1='74.0' x2='600' y2='74.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='78.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>800</text><line x1='60' y1='30.0' x2='600' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>1000</text><text x='60.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2015</text><text x='120.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2016</text><text x='180.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2017</text><text x='240.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2018</text><text x='300.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2019</text><text x='360.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='420.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2021</text><text x='480.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2022</text><text x='540.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2023</text><text x='600.0' y='266' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2024</text><rect x='43' y='207' width='33' height='33' fill='#1c2733' fill-opacity='0.82'/><rect x='43' y='240' width='33' height='10' fill='#5b8bad'/><text x='60.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>24%</text><rect x='103' y='204' width='33' height='36' fill='#1c2733' fill-opacity='0.82'/><rect x='103' y='239' width='33' height='11' fill='#5b8bad'/><text x='120.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>23%</text><rect x='163' y='172' width='33' height='52' fill='#1c2733' fill-opacity='0.82'/><rect x='163' y='223' width='33' height='27' fill='#5b8bad'/><text x='180.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>34%</text><rect x='223' y='153' width='33' height='63' fill='#1c2733' fill-opacity='0.82'/><rect x='223' y='216' width='33' height='34' fill='#5b8bad'/><text x='240.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>35%</text><rect x='283' y='148' width='33' height='66' fill='#1c2733' fill-opacity='0.82'/><rect x='283' y='214' width='33' height='36' fill='#5b8bad'/><text x='300.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>35%</text><rect x='343' y='160' width='33' height='42' fill='#1c2733' fill-opacity='0.82'/><rect x='343' y='202' width='33' height='48' fill='#5b8bad'/><text x='360.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>53%</text><rect x='403' y='41' width='33' height='138' fill='#1c2733' fill-opacity='0.82'/><rect x='403' y='179' width='33' height='71' fill='#5b8bad'/><text x='420.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>34%</text><rect x='463' y='133' width='33' height='64' fill='#1c2733' fill-opacity='0.82'/><rect x='463' y='198' width='33' height='52' fill='#5b8bad'/><text x='480.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>45%</text><rect x='523' y='125' width='33' height='56' fill='#1c2733' fill-opacity='0.82'/><rect x='523' y='181' width='33' height='69' fill='#5b8bad'/><text x='540.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>55%</text><rect x='583' y='111' width='33' height='47' fill='#1c2733' fill-opacity='0.82'/><rect x='583' y='158' width='33' height='92' fill='#5b8bad'/><text x='600.0' y='242' font-size='10' fill='#fff' text-anchor='middle' font-weight='700'>66%</text><rect x='150' y='36' width='12' height='12' fill='#1c2733' fill-opacity='0.82'/><text x='168' y='46' font-size='10.5' fill='#1c2733' text-anchor='start' font-weight='400'>其餘公司</text><rect x='250' y='36' width='12' height='12' fill='#5b8bad'/><text x='268' y='46' font-size='10.5' fill='#1c2733' text-anchor='start' font-weight='400'>前10大（按市值）</text><text x='14' y='140.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>經濟利潤（十億美元）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 6：前 10 大（按市值）公司的經濟利潤占比，2015–2024</span>
+    堆疊長條圖。每年長條分為「前 10 大（Top 10 by Market Cap）」與「其餘（Rest of Universe）」。前 10 大占經濟利潤的比重逐年攀升：2015 年 24%、2016 年 23%、2017 年 34%、2018–2019 年 35%、2020 年 53%、2021 年 34%、2022 年 45%、2023 年 55%、2024 年 66%。2024 年前 10 大約占總市值三分之一，卻占經濟利潤三分之二。
+    <span class="axis">座標軸：橫軸＝年份 2015–2024；縱軸＝經濟利潤（十億美元），0 至 1,000。長條內白字百分比＝前 10 大占當年經濟利潤之比例。</span>
+    <span class="src">資料來源：Counterpoint Global 與 FactSet。</span>
+  </figcaption>
+</figure>
+
+<h3 class="sub">主動管理：投資期限縮短</h3>
+<p>2010 至 2025 年間，「基本面型基金」（fundamental funds）占美國股票交易量的比重，從 23.4% 萎縮到 14.8%。其中（未顯示於圖）純多頭（long-only）基金從 11.3% 降到 6.2%，避險基金從 12.1% 降到 8.6%。注意：純多頭基金的管理資產規模遠大於避險基金。</p>
+
+<figure class="fig" id="ex7">
+  <div class="frame hassvg"><svg viewBox='0 0 640 300' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='240' x2='580' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='240.0' x2='580' y2='240.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='244.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='201.8181818181818' x2='580' y2='201.8181818181818' stroke='#e0dccf' stroke-width='1'/><text x='52' y='205.8181818181818' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>10</text><line x1='60' y1='163.63636363636363' x2='580' y2='163.63636363636363' stroke='#e0dccf' stroke-width='1'/><text x='52' y='167.63636363636363' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='60' y1='125.45454545454547' x2='580' y2='125.45454545454547' stroke='#e0dccf' stroke-width='1'/><text x='52' y='129.45454545454547' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>30</text><line x1='60' y1='87.27272727272728' x2='580' y2='87.27272727272728' stroke='#e0dccf' stroke-width='1'/><text x='52' y='91.27272727272728' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>40</text><line x1='60' y1='49.09090909090909' x2='580' y2='49.09090909090909' stroke='#e0dccf' stroke-width='1'/><text x='52' y='53.09090909090909' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>50</text><text x='60.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2010</text><text x='129.33333333333331' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2012</text><text x='198.66666666666666' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2014</text><text x='268.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2016</text><text x='337.3333333333333' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2018</text><text x='406.66666666666663' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='476.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2022</text><text x='545.3333333333333' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2024</text><text x='580.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2025</text><polyline points='60,49 95,61 129,68 164,95 199,80 233,83 268,72 303,91 337,87 372,72 407,80 441,83 476,80 511,76 545,76 580,75' fill='none' stroke='#5b8bad' stroke-width='2'/><text x='584' y='78.67272727272729' font-size='9.5' fill='#5b8bad' text-anchor='start' font-weight='700'>-6.7</text><polyline points='60,151 95,148 129,146 164,133 199,127 233,133 268,137 303,145 337,152 372,171 407,183 441,179 476,164 511,175 545,181 580,183' fill='none' stroke='#b4503f' stroke-width='2'/><text x='584' y='187.4909090909091' font-size='9.5' fill='#b4503f' text-anchor='start' font-weight='700'>-8.6</text><polyline points='60,211 95,209 129,206 164,202 199,200 233,190 268,187 303,173 337,183 372,181 407,190 441,183 476,181 511,180 545,181 580,180' fill='none' stroke='#5b9e8f' stroke-width='2'/><text x='584' y='184.05454545454546' font-size='9.5' fill='#5b9e8f' text-anchor='start' font-weight='700'>+8.2</text><polyline points='60,208 95,206 129,204 164,202 199,213 233,221 268,227 303,234 337,229 372,217 407,216 441,217 476,219 511,220 545,220 580,220' fill='none' stroke='#27506b' stroke-width='2'/><text x='584' y='224.14545454545456' font-size='9.5' fill='#27506b' text-anchor='start' font-weight='700'>-3.3</text><text x='242.0' y='64.36363636363637' font-size='10' fill='#5b8bad' text-anchor='middle' font-weight='700'>非銀行造市商／HFT</text><text x='294.0' y='121.63636363636364' font-size='10' fill='#b4503f' text-anchor='middle' font-weight='700'>基本面型基金</text><text x='346.0' y='171.27272727272725' font-size='10' fill='#5b9e8f' text-anchor='middle' font-weight='700'>量化型基金</text><text x='242.0' y='207.54545454545456' font-size='10' fill='#27506b' text-anchor='middle' font-weight='700'>銀行</text><text x='580' y='26' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>2010–25 變動（ppts）</text><text x='16' y='135.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>占總交易量（%）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 7：美國股票交易量依機構參與者分類，2010–2025</span>
+    多線折線圖，四類參與者。「非銀行造市商／高頻交易（Non-Bank Market Makers/HFT）」維持最高（約 40–50%，2010–2025 變動 −6.7 個百分點）；「基本面型基金（Fundamental Funds）」由約 23% 一度升至近 30%（2014）後回落（−8.6 個百分點）；「量化型基金（Quant Funds）」穩步上升（+8.2 個百分點）；「銀行（Bank）」維持低檔（−3.3 個百分點）。
+    <span class="axis">座標軸：橫軸＝年份 2010–2025（2025 為前三季）；縱軸＝占總交易量比重（%），0 至 55。右側標註 2010–2025 變動值。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Bloomberg。</span>
+  </figcaption>
+</figure>
+
+<p>圖中也顯示量化基金的交易占比從 7.5% 增至 15.7%。其中（未顯示）低頻基金從 6.0% 降到 4.1%，高頻基金則從 1.5% 暴增到 11.6%。整體圖像是：<strong>從基本面投資轉向量化投資</strong>。</p>
+<p>特別值得注意的是近年「多經理人避險基金」（multi-manager hedge funds，俗稱「pod shops」）的興起。這類基金把資本配置給眾多投資組合經理人，並主動跨平台管理風險，許多還設有「中央帳簿」（center books）來彙整部位、管理整體公司層級風險。它們的總市場曝險常達投入資本的四到五倍。</p>
+<p>近年這類基金以波動度調整風險來評估時，為持有人帶來強勁報酬，因此蓬勃發展。一項估計指出，這類基金的總員工數從 2017 年的 5,100 人躍升至 2025 年的 24,000 人。流入避險基金的資金有高比例進入這類策略，其管理資產規模（現約 4,250 億美元）的成長遠超業界其餘部分。由於大量運用槓桿，它們占避險基金交易量的 37%，卻僅占業界管理資產約 10%。</p>
+<p>關鍵在於：這類基金中許多經理人聚焦於創造短期報酬，花大量時間預測季度財報結果及隨後的股價變動。避險基金通常使市場更有效率，但也引入風險，例如<span class="term">擁擠（crowding）</span>——多檔基金持有相似部位，一旦對資產的看法轉變，便可能造成劇烈價格波動。</p>
+<p>對「聰明錢」（smart money）要有正超額報酬，「笨錢」（dumb money）就必須有等量的負超額報酬（先撇開投資人透過增資與減資直接與公司交易的影響）。歷史上散戶被視為笨錢，但目前情況更為複雜。</p>
+
+<h3 class="sub">散戶的崛起</h3>
+<p>散戶占股票交易量的市場份額從 2010 到 2025 年翻倍，從約 10 個百分點升到 20 個百分點，其中近一半的增幅發生在 2019 到 2020 年之間。商業媒體曾形容散戶從「邊緣玩家」變成「主導市場的力量」。</p>
+
+<figure class="fig" id="ex8">
+  <div class="frame hassvg"><svg viewBox='0 0 600 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230' x2='550' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230.0' x2='550' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='190.0' x2='550' y2='190.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='194.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='60' y1='150.0' x2='550' y2='150.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='154.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>40</text><line x1='60' y1='110.0' x2='550' y2='110.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='114.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>60</text><line x1='60' y1='70.0' x2='550' y2='70.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='74.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>80</text><line x1='60' y1='30.0' x2='550' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>100</text><text x='60.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2010</text><text x='125.33333333333333' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2012</text><text x='190.66666666666666' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2014</text><text x='256.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2016</text><text x='321.3333333333333' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2018</text><text x='386.66666666666663' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='452.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2022</text><text x='517.3333333333333' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2024</text><text x='550.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2025</text><polyline points='60,50 93,52 125,56 158,58 191,60 223,60 256,60 289,60 321,60 354,60 387,70 419,70 452,66 485,66 517,68 550,70' fill='none' stroke='#27506b' stroke-width='2.4'/><text x='554' y='64.0' font-size='9.5' fill='#27506b' text-anchor='start' font-weight='700'>機構：−10.4 ppts</text><polyline points='60,210 93,208 125,204 158,202 191,200 223,200 256,200 289,200 321,200 354,200 387,190 419,190 452,194 485,194 517,192 550,190' fill='none' stroke='#5b8bad' stroke-width='2.4'/><text x='554' y='184.0' font-size='9.5' fill='#5b8bad' text-anchor='start' font-weight='700'>散戶：+10.4 ppts</text><text x='16' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>占總交易量（%）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 8：美國股票交易量——機構 vs. 散戶，2010–2025</span>
+    雙線折線圖。「機構（Institutional）」自約 90% 緩降至約 80%（−10.4 個百分點）；「散戶（Retail）」自約 10% 升至約 20%（+10.4 個百分點），其中 2019→2020 跳升最明顯。
+    <span class="axis">座標軸：橫軸＝年份 2010–2025（2025 為前三季）；縱軸＝占總交易量比重（%），0 至 100。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Bloomberg。</span>
+  </figcaption>
+</figure>
+
+<figure class="fig" id="ex9">
+  <div class="frame hassvg"><svg viewBox='0 0 600 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230' x2='560' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230.0' x2='560' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='180.0' x2='560' y2='180.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='184.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='60' y1='130.0' x2='560' y2='130.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='134.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>40</text><line x1='60' y1='80.0' x2='560' y2='80.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='84.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>60</text><line x1='60' y1='30.0' x2='560' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>80</text><text x='60.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1970</text><text x='105.45454545454545' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1975</text><text x='150.9090909090909' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1980</text><text x='196.36363636363635' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1985</text><text x='241.8181818181818' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1990</text><text x='287.27272727272725' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1995</text><text x='332.7272727272727' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2000</text><text x='378.1818181818182' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2005</text><text x='423.6363636363636' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2010</text><text x='469.0909090909091' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2015</text><text x='514.5454545454545' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2020</text><text x='560.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2025</text><polyline points='60,42 105,68 151,80 196,105 242,110 287,118 333,130 378,135 424,138 469,135 515,130 560,128' fill='none' stroke='#5b8bad' stroke-width='2.4'/><polyline points='60,190 105,180 151,165 196,155 242,148 287,142 333,138 378,140 424,140 469,140 515,142 560,150' fill='none' stroke='#27506b' stroke-width='2.4'/><text x='150.0' y='72.5' font-size='11' fill='#5b8bad' text-anchor='middle' font-weight='700'>個人</text><text x='185.0' y='170.0' font-size='11' fill='#27506b' text-anchor='middle' font-weight='700'>機構</text><text x='16' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>公司股權持有（%）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 9：美國股票持有結構——個人與機構，1970–2025</span>
+    雙線折線圖。「個人（Individuals）」自 1970 年約 75% 在 2000 年代初前持續下滑，之後穩定約十年再回升，近年約 40%；「機構（Institutions）」自約 16% 上升、近年約 32–35%。散戶持有比重上次處於目前水準是在 1999 年底。
+    <span class="axis">座標軸：橫軸＝年份 1970–2025（季資料至 2025 第二季）；縱軸＝公司股權持有比重（%），0 至 80。機構含保險公司、私人退休基金、共同基金與封閉型基金、ETF；個人含家庭與非營利組織。</span>
+    <span class="src">資料來源：美國聯準會（Federal Reserve）。</span>
+  </figcaption>
+</figure>
+
+<p>近期散戶活動上升有三大成因。<strong>第一是免佣金交易</strong>。Robinhood 在 2014 年率先推出零佣金，但要到 2019 年秋 Charles Schwab 等業界龍頭跟進零佣金，這才成為常態。券商之所以能提供免費交易，是因為靠「訂單流付費」（Payment for Order Flow）把訂單賣給批發造市商賺錢；這些批發商能付費買單流，是因為他們賺取買賣價差的一部分、並能在自家平台撮合，加上散戶交易相對不知情、單筆規模小，站錯邊的風險也較小。免費交易降低了參與門檻，為更多散戶交易鋪路。</p>
+<p><strong>第二是 COVID-19 疫情</strong>。疫情期間散戶交易大爆發：交易免費、許多人收到紓困支票、職業運動停擺使人無法賭運動賽事、市場又劇烈波動。美國 2020 年 4 月至 2021 年 3 月發出三輪紓困支票，與散戶交易帳戶與偏好標的活動的成長相關；有估計指出個人把 10–15% 的紓困款投入股市。Bloomberg 專欄作家 Matt Levine 提出「無聊市場假說」（boredom market hypothesis）：「基本理論是，一般人會更常交易——(1) 若交易很有娛樂性，(2) 若其他事情比較無聊；他們越無聊，就越會交易股票。」換言之，股市成了「一間碰巧還開著的賭場」。</p>
+<p><strong>第三是投資的遊戲化（gamification）</strong>——更準確說是投機的遊戲化。遊戲化用計分、即時回饋、獎勵等遊戲概念來鼓勵活動。實驗顯示遊戲化會增加冒險，尤其在金融素養較低者身上。如今大量散戶活動（尤其在股票選擇權市場）是披著外衣的賭博。學術研究指出散戶並未完全理解其選擇權策略的風險，三天內的平均虧損百分比落在十幾趴的水準。此外，散戶最易成為「拉高出貨」（pump and dump）騙局的受害者。</p>
+<p>不過有個出人意料的點：以某種衡量方式而言，散戶在 2014 至 2025 年年中竟跑贏共同基金。獨立研究機構 Vanda Research 分析散戶券商帳戶中美國單一個股的活動，估算其平均投組報酬（不含共同基金、ETF、或透過顧問與退休帳戶的交易）。這種狹義定義下，散戶在此期間每年比 S&P 500 高出約 200 個基點。原因包括散戶普遍超配「七巨頭」（Magnificent Seven，七家受惠於集中度上升的最大型科技公司），以及偏好逢低買進。</p>
+<p>儘管如此，仍須指出：有一部分散戶在股票與選擇權市場都極為活躍，長期下來傾向虧損。近年散戶也透過組織化行動製造騷動，常透過社群平台 Reddit 上的 r/wallstreetbets 論壇協調，策略是買進被機構大量放空的股票。<strong>GameStop</strong> 是著名例子：高峰時其公開流通股的 140% 被放空，意味著放空者最終必須買回股票來平倉。當股價上漲，放空者被迫買進以止損，估計光是 2021 年 1 月，放空者就有 200 億美元的按市值計價損失——而該公司 2020 年底的股權市值僅 12 億美元。</p>
+
+<!-- ===================== 私募股權 ===================== -->
+<h2 class="sec" id="private">私募股權中的市場效率</h2>
+<p>私募股權（private equity，含併購基金與創投）近數十年顯著成長。在美國，私募股權占「私募加公開股權」的比重，從 2000 年的 1% 升到 2025 年的 8%。儘管成長，公開股權市場仍遠大於私募股權。</p>
+<p>推動私募股權崛起的主要是成熟機構。例如美國州與地方退休基金 2024 年約 15% 資產配置於私募股權（1990 年幾乎為零）；大型校務基金 2024 年近 29% 投組投入私募股權，至少是 1990 年的四倍。</p>
+<p>公開與私募股權在價格發現、修正機制與流動性方面有不同樣貌。整體而言，私募市場的價格發現與流動性都不如公開市場。</p>
+<p>美國公開股權的價格由「雙向拍賣市場」（double-auction market）決定：買方出願付的價、賣方同時報願收的價，當買價達到或超過賣價時成交，交易連續且買賣報價透明。想押注股價下跌者，通常可在公開市場放空。也有機制能修正過於便宜的公司股價：手握約 1 兆美元「乾火藥」（dry powder，已承諾但尚未投入的資本）的併購公司隨時在找好標的；行動派投資人（activist investors）也在尋找可透過治理與營運改善的被低估公司。</p>
+<p>私募市場沒有雙向拍賣市場，看空者也難以表達觀點。併購中，賣方基於經濟利益與責任會取最高可行報價；創投中，賣方（通常是創辦人）也會尋求最高可行出價；後續融資輪的整體價格，一般依最近一筆股權出售的估值修訂。私募市場的價格發現有限。</p>
+<p>公開股權的機構投資人（如共同基金經理人）每日依市價評價投組；投資私人公司的基金一般是「估計」其持有物的價值。由於私募股權基金通常有期限（一般 10 年），最終賣出投資的價格才決定基金報酬；但在過渡期間，他們對部位的「標價」（mark）有很大裁量空間。</p>
+<p>併購基金一般尋找能產生不錯現金流的公司，公開市場可比公司的估值可引導價格發現。但標價的波動度，相對於公開市場所暗示的被低估，這使併購基金的風險調整後報酬看起來比實際更好。創投通常涉及前景更不確定的年輕公司，常因難找合適的公開市場可比公司，而以近期交易決定標價。</p>
+<p>檢視併購與創投投組估值是否合理的一種方法是次級市場（secondary market）交易：基金（普通合夥人 GP）或投資人（有限合夥人 LP）想賣出部位。在截至 2024 年的約六年間，相對於標價的折價，併購約為 8–10%、創投約為 25–27%。</p>
+<p>流動性也相關。流動性衡量資產變現金、或現金變資產的能力：高流動性成本小、低流動性成本高。因此投資人對持有缺乏流動性的資產要求更高報酬（即更低價格），即「<span class="term">流動性溢酬（illiquidity premium）</span>」。金融經濟學家已實證記錄此溢酬。次級市場所見的折價，部分即反映此流動性溢酬。</p>
+<p>以 Grossman-Stiglitz 框架看，私募股權的資訊成本高於公開市場，因此費用也較高。但整體而言，私募股權的價格發現與流動性都不如公開股權。</p>
+
+<!-- ===================== 誰在另一邊 ===================== -->
+<h2 class="sec" id="other">誰在另一邊？</h2>
+<p>贏得一場遊戲的第一步，是理解你正在玩的遊戲。誰參與其中、表現出什麼行為，對於看清機會何在至關重要。財務學教授 Nicolae Gârleanu 與 Lasse Pedersen 合作建立了一個模型，刻劃市場與經理人、投資人、配置者、交易者之間的互動。市場參與者既能把自己放入此架構，也能藉此思考自己的對手方。</p>
+
+<figure class="fig" id="ex10">
+  <div class="frame hassvg"><svg viewBox='0 0 640 360' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><defs><marker id='a2' markerWidth='9' markerHeight='9' refX='5' refY='4.5' orient='auto'><path d='M0,0 L9,4.5 L0,9 Z' fill='#5b8bad'/></marker></defs><rect x='40' y='30' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='105.0' y='50.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>搜尋型投資人</text><text x='105.0' y='66.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'>被動</text><rect x='185' y='30' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='250.0' y='50.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>搜尋型投資人</text><text x='250.0' y='66.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'>主動</text><rect x='330' y='30' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='395.0' y='50.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>雜訊配置者</text><text x='395.0' y='66.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'></text><rect x='475' y='30' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='540.0' y='50.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>雜訊交易者</text><text x='540.0' y='66.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'></text><rect x='175' y='150' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='240.0' y='170.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>主動資產經理人</text><text x='240.0' y='186.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'>知情</text><rect x='320' y='150' width='130' height='46' rx='6' fill='#fff' stroke='#2f5d7c' stroke-width='1.4'/><text x='385.0' y='170.0' font-size='11' fill='#1c2733' text-anchor='middle' font-weight='600'>主動資產經理人</text><text x='385.0' y='186.0' font-size='10.5' fill='#2f5d7c' text-anchor='middle' font-weight='700' font-style='italic'>不知情</text><rect x='40' y='280' width='565' height='44' rx='6' fill='#2f5d7c'/><text x='322' y='307' font-size='13' fill='#fff' text-anchor='middle' font-weight='700'>證券市場</text><line x1='240' y1='76' x2='240' y2='148' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='240' y='118' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>搜尋知情經理人</text><line x1='380' y1='76' x2='380' y2='148' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='430' y='118' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>隨機配置</text><line x1='105' y1='76' x2='105' y2='278' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='105' y='250' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>不知情交易</text><line x1='240' y1='196' x2='240' y2='278' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='240' y='250' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>知情交易</text><line x1='385' y1='196' x2='385' y2='278' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='385' y='250' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>不知情交易</text><line x1='540' y1='76' x2='540' y2='278' stroke='#5b8bad' stroke-width='1.6' marker-end='url(#a2)'/><text x='540' y='250' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>隨機交易</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 10：市場如何與投資人、配置者、雜訊交易者互動</span>
+    流程示意圖。上排四個方塊：「搜尋型投資人：被動（Searching investors: passive）」「搜尋型投資人：主動（active）」「雜訊配置者（Noise allocators）」「雜訊交易者（Noise traders）」。中排兩個方塊：「主動資產經理人：知情（informed）」與「主動資產經理人：不知情（uninformed）」。主動搜尋型投資人「搜尋知情經理人」並導向知情經理人；雜訊配置者做「隨機配置」導向不知情經理人。底部為「證券市場（Security market）」，由四條箭頭匯入：被動投資人＝不知情交易、知情經理人＝知情交易、不知情經理人＝不知情交易、雜訊交易者＝隨機交易。
+    <span class="axis">圖例對照：Informed＝知情；Uninformed＝不知情；Noise＝雜訊；Random allocations/trading＝隨機配置／交易。</span>
+    <span class="src">資料來源：Counterpoint Global，依據 Gârleanu 與 Pedersen，〈Efficiently Inefficient Markets for Assets and Asset Management〉，《Journal of Finance》第 73 卷第 4 期，2018 年 8 月，1663–1712。</span>
+  </figcaption>
+</figure>
+
+<p>從圖的中央看起：知情的主動資產經理人付出必要成本以取得關於資產的訊號，因而能長期創造超額報酬；不知情的主動資產經理人不付費取得優勢，因此實際上是不知情的交易者。在此模型中，直接與市場往來的，是指數投資人或雜訊交易者（皆不知情）。有些主動投資人能辨識出有技巧的經理人並配置資本給他們，而雜訊配置者則在有技巧與無技巧的經理人之間隨機配置。</p>
+<p>我們在「我們在玩什麼遊戲（第二部分）」指出：指數投資人與雜訊交易者（散戶）的活動增加，而主動管理內部則轉向把大量資源投入創造短期報酬的公司。</p>
+<p>公開與私募市場歷來大致是相互獨立的資產類別，但界線正在模糊。例如指數供應商 MSCI 推出「MSCI 全球公開＋私募股權指數」，結合其「全球可投資股權指數」與新的「全球私募股權指數」：前者涵蓋全球 99% 的掛牌股票，後者涵蓋全球 10,000 檔私募股權基金的績效。此外，美國也推動讓 401(k)（雇主資助的退休儲蓄帳戶）投資人能接觸另類資產。401(k) 在 2025 年年中持有 9.3 兆美元資產。一個懸而未解的問題是：相對不老練的 401(k) 投資人，在報酬離散度高的私募股權中會表現如何？換言之，有些基金遠優於、有些遠劣於該資產類別的中位數報酬，而接觸最佳基金的管道往往受限。找到知情的資產經理人既關鍵又困難。</p>
+<p>回到投資個別證券。每當你預期透過買賣賺取超額報酬時，都應問：「<strong>誰在另一邊？</strong>」目標是理解對手方行動的動機，並評估你是否有<span class="term">優勢（edge）</span>。數學家暨績效卓越的避險基金經理人 Ed Thorp 主張，唯有當你「能以難以反駁的邏輯解釋為何能產生經風險調整的超額報酬」時，你才有優勢——換言之，你能說清楚某個無效率為何存在、又將如何被消除。</p>
+<p>取得優勢很難。例如學術研究發現的異常現象，在實務中提供的報酬往往不如理論。原因之一是統計偏誤：在海量數據與海量關係中，總有些因子會偶然地與漂亮報酬相關卻無預測力，因此有研究者建議學術期刊應提高「何謂正當因子」的門檻。聰明投資人也會利用那些確實能預測超額報酬的因子，從而把機會競爭殆盡，尤其當這些因子能以合理成本被辨識與捕捉時。</p>
+<p>接下來，我們將依<strong>行為（Behavioral）、分析（Analytical）、資訊（Informational）、技術（Technical）</strong>四種來源（縮寫 BAIT），建立一套結構性無效率的分類體系。多數無效率其實是多重來源共同造成，但我們會盡量把機會歸入最合理的類別。記錄你對某錯誤定價的「認知成因」，並評估該錯誤定價是否因正確的理由而消散，是評估投資流程的有效方法。</p>
+
+<!-- ===================== 行為性無效率 ===================== -->
+<h2 class="sec" id="behavioral">行為性無效率</h2>
+<p>當某位或某群投資人的行為導致價格與價值背離時，便出現<strong>行為性無效率</strong>。它或許同時是最持久的機會來源，也是最難捕捉的。持久，源自人性的恆常。價值投資之父 Ben Graham 這麼說：</p>
+<blockquote>儘管商業環境會變、企業與證券會變、金融機構與法規也會變，但人性始終如一。因此，健全投資中那個既重要又困難的部分——取決於投資人自身的性情與態度——並不太受歲月流轉的影響。</blockquote>
+<p>難以捕捉，則源於人類是社會性動物，而投資本質上是一種社會活動。人性與社會性的結合，解釋了為何行為性無效率難以利用。行為性無效率的核心決定因素是<span class="term">相關信念（correlated beliefs）</span>，這使得利用機會變得困難。我們多數人渴望成為群體一份子、厭惡與群體分離，而從眾的心理拉力在恐懼與貪婪的極端時最強。</p>
+<p>Ben Graham 創造了「市場先生」（Mr. Market）的寓言來說明價格與價值如何背離，以及為何理解資產價值如此重要。故事裡，你持有一家私人公司的股份，當初花了 1 萬美元。你的合夥人「市場先生」每天告訴你他願以多少價買你的股份、又願以多少價賣你更多股份。市場先生捕捉了投資人的集體行動。</p>
+<p>市場先生有「無可救藥的情緒問題」。Graham 最知名的學生、波克夏董事長 Warren Buffett 闡述道：「有時他興高采烈，只看到有利結果，於是報出極高的買賣價；有時他沮喪消沉，只看到負面結果，於是報出極低的買賣價。市場先生是來服務你的，不是來指導你的。你會發現有用的是他的錢包，而非他的智慧。」重點是：市場通常給出合理價格，但我們見過、也將繼續見到極端樂觀與悲觀的發作。</p>
+<p>有幾個理由要考量行為對資產價格的影響。首先，短期股價變動中，通常不到一半能直接連結到基本面變化（如盈餘或利率預期的修正）。基本面長期極為重要，但短期可能被投資人行為蓋過。其次，有研究檢視 1940 年代以來最大的股市波動，及媒體是否提供因果解釋，發現不少案例並無明確的基本面決定因素。其中一項涵蓋 1988 至 2012 年的研究結論是：「過去 25 年 50 次最大波動中，只有少數能連結到可能對現金流預測或折現率產生顯著影響的基本經濟資訊。」</p>
+
+<table>
+  <caption>Exhibit 11：S&P 500 指數最大單日波動，1988–2025</caption>
+  <thead>
+    <tr><th class="num">排名</th><th>日期</th><th class="num">當日報酬</th><th>新聞</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="num">1</td><td>2020/3/16</td><td class="num">−12.0%</td><td>聯準會意外將利率降至零，市場對新冠疫情的憂慮升高。</td></tr>
+    <tr><td class="num">2</td><td>2008/10/13</td><td class="num">11.6%</td><td>全球各國政府宣布支援陷困銀行的措施。</td></tr>
+    <tr><td class="num">3</td><td>2008/10/28</td><td class="num">10.8%</td><td>華爾街尾盤大漲，股市反彈無視最新經濟消息。</td></tr>
+    <tr><td class="num">4</td><td>2025/4/9</td><td class="num">9.5%</td><td>川普暫停關稅後，S&P 500 創二戰以來第三佳單日。</td></tr>
+    <tr><td class="num">5</td><td>2020/3/12</td><td class="num">−9.5%</td><td>新冠可能大流行的恐懼籠罩市場，聯準會注入數兆仍無法止跌。</td></tr>
+    <tr><td class="num">6</td><td>2020/3/24</td><td class="num">9.4%</td><td>市場預期立法者將通過刺激法案以抵銷疫情與封鎖的衝擊，股市反彈。</td></tr>
+    <tr><td class="num">7</td><td>2020/3/13</td><td class="num">9.3%</td><td>對更大規模財政刺激的希望下，股市反彈收復部分新冠跌幅。</td></tr>
+    <tr><td class="num">8</td><td>2008/10/15</td><td class="num">−9.0%</td><td>零售銷售下滑、批發物價上揚加劇衰退憂慮，抹去週一的紀錄漲幅。</td></tr>
+    <tr><td class="num">9</td><td>2008/12/1</td><td class="num">−8.9%</td><td>歐巴馬公布國安團隊；NBER 宣布美國於 2007 年 12 月進入衰退；柏南克警告經濟疲弱。</td></tr>
+    <tr><td class="num">10</td><td>2008/9/29</td><td class="num">−8.8%</td><td>7,000 億美元 TARP 法案遭眾議院否決，布希總統表示失望。</td></tr>
+  </tbody>
+</table>
+<p class="tsrc">資料來源：Counterpoint Global 與 FactSet。</p>
+
+<p>行為影響不僅關乎美股，而是近乎所有市場。泡沫與崩盤跨越地域與資產類別發生。甚至有證據顯示，我們與其他靈長類共有某些行為傾向：實驗顯示捲尾猴（capuchin monkeys）也展現損失趨避（loss aversion）——對損失的痛苦大於同等收益的快樂。</p>
+
+<h3 class="sub">行為經濟學的天真套用</h3>
+<p>行為經濟學顯示心理因素如何使個人或組織做出偏離經濟理論的決策，也顯示啟發法（heuristics，經驗法則）如何導致影響選擇的偏誤。這套研究對任何想做出知情、無偏決策的人都極有用。</p>
+<p>但重點是要認清：個人錯誤無論多普遍，在決定市場效率上往往無關緊要。資訊或理性都很有限的投資人彼此互動，仍可能產生出奇有效率的價格。關鍵條件包括投資人擁有異質的觀點與決策規則，以及一個能彙整資訊的有效機制。一篇開創性論文的作者如此總結其發現：</p>
+<blockquote>雙向拍賣的配置效率，主要源自其結構本身，與交易者的動機、智力或學習無關。Adam Smith 那隻看不見的手，可能比某些人想的更強大：它不僅能從個體理性、也能從個體非理性中，生成總體理性。</blockquote>
+<p>啟示是：有缺陷的個人未必導致無效率市場，因為他們的錯誤可以互相抵銷而產生準確價格。若你是過度自信的買方、我是過度自信的賣方，淨結果可能就是正確的價格。考慮市場無效率時，關鍵在於判斷群眾智慧何時翻轉為群眾瘋狂——當一個或多個「明智群眾」的核心條件被破壞時。</p>
+<p>理解行為性無效率的關鍵，是辨識投資人信念何時彼此相關、把價格推離價值。包括 Gene Fama 在內的效率市場堅定信徒主張，行為解釋只是研究者為配合事實而編造的故事集；有時這些故事還彼此矛盾（有的解釋反應不足、有的解釋反應過度）。耶魯管理學院財務學教授 Nicholas Barberis 則認為，行為財務的許多核心概念是基於信念形成與決策的心理學，並主張這些會影響資產價格。</p>
+
+<h3 class="sub">過度外推</h3>
+<p>對近期經驗的過度投射，是解釋信念形成心理學最重要的概念之一。例如金融經濟學家已證明，投資人對未來一年股票報酬的預期，與過去一年的報酬高度相關：實現高報酬後就預期高報酬，實現低報酬後就預期低報酬。</p>
+<p>由於股價比企業盈餘更波動，估值通常在大漲後偏高、在大跌後偏低。實證上，高初始估值對應未來數年的低預期報酬，低初始估值對應高預期報酬——這與過度外推的預期相牴觸。此估值與報酬的關係也適用於股票以外的資產類別，包括債券、房地產與主權債。</p>
+<p>避免並最終受益於這類過度外推的能力，仰賴「無視群眾的恐懼或狂熱、專注於少數簡單基本面」的能力。Baupost 集團創辦人、執行長暨投組經理人 Seth Klarman 如此概括：「價值投資的核心，是逆向性格與計算機的結合。」「逆向」促使你檢視熱門觀點的另一面；「計算機」確保估值極端到足以產生高預期超額報酬。</p>
+<p>過度外推也連結到<span class="term">動能因子（momentum factor）</span>：過去 3 到 12 個月（通常排除最近一個月）的報酬，可預測未來 3 到 12 個月的報酬。例如近半年表現好的股票，未來六個月平均傾向續強，再於更長期反轉。有紀律的動能策略比單純追漲更嚴謹，仰賴一套排序與買賣股票的規則。</p>
+<p><span class="term">追逐績效（performance chasing）</span>是過度外推的另一種表現。散戶與機構都傾向買進表現好的基金、賣出表現差的。例如一項對退休金計畫主辦者的研究發現：在決定解雇或聘任的前兩年，被解雇者落後、被聘任者超越其基準；但在決定後兩年，被解雇的經理人卻產生比被聘任者更高的報酬。相關研究的經濟學家結論道：「顯然，若主辦者只是按兵不動，就能省下數千億美元的資產。」</p>
+
+<h3 class="sub">情緒</h3>
+<p>信念也形塑情緒——投資人對市場的普遍態度。情緒可導致超出基本面所能合理化的買賣決策。解釋情緒的因素包括交易量、估值指標，以及首次公開發行（IPO）的數量與報酬。</p>
+<p>金融經濟學家建立了情緒指數，捕捉情緒何時顯得過度看多或看空。情緒對<strong>投機型公司</strong>的股票影響最大：這些通常是快速成長、小市值的年輕公司，前景比老公司更不明朗，套利成本也較高。對投機型公司的高漲情緒，與低超額報酬相關。</p>
+<p>一個著名的情緒指數由財務學教授 Malcolm Baker 與 Jeff Wurgler 開發。</p>
+
+<figure class="fig" id="ex12">
+  <div class="frame hassvg"><svg viewBox='0 0 600 300' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='55' y1='30' x2='55' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230' x2='565' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230.0' x2='565' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-4</text><line x1='55' y1='205.0' x2='565' y2='205.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='209.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-3</text><line x1='55' y1='180.0' x2='565' y2='180.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='184.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-2</text><line x1='55' y1='155.0' x2='565' y2='155.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='159.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-1</text><line x1='55' y1='130.0' x2='565' y2='130.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='134.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='55' y1='105.0' x2='565' y2='105.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='109.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>1</text><line x1='55' y1='80.0' x2='565' y2='80.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='84.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>2</text><line x1='55' y1='55.0' x2='565' y2='55.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='59.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>3</text><line x1='55' y1='30.0' x2='565' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>4</text><text x='55.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1965</text><text x='90.17241379310344' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1969</text><text x='125.34482758620689' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1973</text><text x='160.51724137931035' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1977</text><text x='195.68965517241378' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1981</text><text x='230.86206896551727' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1985</text><text x='266.0344827586207' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1989</text><text x='301.2068965517242' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1993</text><text x='336.37931034482756' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1997</text><text x='371.55172413793105' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2001</text><text x='406.72413793103453' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2005</text><text x='441.8965517241379' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2009</text><text x='477.0689655172414' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2013</text><text x='512.2413793103449' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2017</text><text x='547.4137931034484' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2021</text><text x='565.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2023</text><line x1='55' y1='130.0' x2='565' y2='130.0' stroke='#44515f' stroke-width='1.2'/><polyline points='55,175 64,136 73,97 81,58 90,113 99,168 108,172 117,176 125,180 134,184 143,188 152,181 161,174 169,168 178,162 187,155 196,127 204,98 213,70 222,82 231,94 240,106 248,118 257,128 266,139 275,150 284,144 292,139 301,134 310,128 319,122 328,110 336,96 345,84 354,70 363,58 372,86 380,114 389,142 398,134 407,126 416,118 424,110 433,128 442,145 451,141 459,137 468,133 477,129 486,125 495,124 503,122 512,121 521,120 530,104 539,88 547,72 556,106 565,140' fill='none' stroke='#5b8bad' stroke-width='1.8'/><text x='310.0' y='50' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>↑ 高情緒：大型/年老/低成長/獲利股 次年較佳</text><text x='310.0' y='220' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>↓ 低情緒：小型/年輕/高成長/不獲利股 次年較佳</text><text x='13' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>情緒指數</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 12：投資人情緒與依公司特性的未來報酬</span>
+    單線時間序列圖，數值在零軸上下擺盪（高峰約 1969、1983、2000、2021；低谷約 1975、1990、2009）。<strong>讀數高於零（高情緒）</strong>：未來一年表現較好的是「大型、年老、低成長、有獲利、穩定」的公司股票。<strong>讀數低於零（低情緒）</strong>：未來一年表現較好的是「小型、年輕、高成長、不獲利、高波動」的公司股票。
+    <span class="axis">座標軸：橫軸＝年份 1965–2023（月資料）；縱軸＝情緒指數，約 −4 至 +4。</span>
+    <span class="src">資料來源：Counterpoint Global；Baker 與 Wurgler，〈Investor Sentiment and the Cross-Section of Stock Returns〉，《Journal of Finance》第 61 卷第 4 期，2006 年 8 月，1645–1680。</span>
+  </figcaption>
+</figure>
+
+<p>情緒也可能使人低估「<span class="term">均值回歸（regression toward the mean）</span>」的力量——遠離平均的結果之後，會跟著一個期望值更接近平均的結果。公司登上知名商業雜誌封面就是一例：平均而言，正面封面故事跟在強勁股價表現之後、負面故事跟在疲弱表現之後。一項研究結論是：「正面故事通常標誌著優異表現的結束，負面新聞通常標誌著糟糕表現的結束。」</p>
+
+<!-- ===================== 泡沫 ===================== -->
+<h3 class="sub" id="bubbles">泡沫</h3>
+<p>只要有市場，就有泡沫與崩盤。我們把股市泡沫定義為：證券價格持續上漲、推升到超過任何合理基本價值估計的程度。泡沫的興起，通常更由「對未來價格上漲的信念」決定，而非基本面。一個關鍵點是：有些泡沫終將破裂。</p>
+<p>受經濟學家 Hyman Minsky 啟發，經濟史學家 Charles Kindleberger 發展出一個五階段的泡沫模型：</p>
+<ul class="check" style="list-style:none">
+  <li style="padding-left:14px"><strong>1. 位移（Displacement）：</strong>泡沫幾乎總是始於某種位移，可能來自新技術或政策改變。資產價格開始上漲，多數早期投資人被視為聰明錢。</li>
+  <li style="padding-left:14px"><strong>2. 繁榮（Boom）：</strong>價格持續上漲帶來對資產的信心上升，並常出現解釋現況的故事。例如 2005–2007 年美國房市繁榮中，盛行「房價總體永不下跌」的觀念。外推在此也很重要——投資人預期過去的高報酬會延續。機構投資人開始注意並普遍進場。</li>
+  <li style="padding-left:14px"><strong>3. 狂熱（Mania）：</strong>資產價格遠超傳統估值所能合理化的水準，有些投資人發明新的價值衡量來合理化持有。散戶被吸引進場，信用擴張常隨之而來、風險增加。一個明確的訊號是：公司在此階段發行股票。</li>
+  <li style="padding-left:14px"><strong>4. 困頓（Distress）：</strong>價格不會立刻下跌，但漲不上去了。買家供給耗盡，聰明錢（含公司）持續賣出。壞消息引發劇烈價格下挫，對撐起價格的故事開始產生懷疑。</li>
+  <li style="padding-left:14px"><strong>5. 恐慌（Panic）：</strong>泡沫破裂，「人們爭相在門關上前擠出去」。可能有觸發事件（如 2007–2009 大衰退中雷曼兄弟倒閉），但也可能沒有。用債務買資產者會面臨追繳保證金與保證金要求提高，加速賣出。資產價格不只下跌，還可能跌到基本面所能支撐的水準之下。</li>
+</ul>
+<p>我們想聚焦兩個面向：一是大漲之後資產價格會如何，二是金融資本與技術革命之間的互動。</p>
+<p>Gene Fama 對泡沫表達了合理的懷疑：</p>
+<blockquote>我認為多數泡沫都是事後諸葛。事後你總能找到那些事前說價格太高的人。人們總在說價格太高。當他們碰巧說對了，我們就把他們捧上神壇；說錯了，我們就忽視他們。他們對與錯的機率，通常各約一半。</blockquote>
+<p>Fama 說「唱衰者有一半時間說對」這個命題是可被研究檢驗的，而研究者確實做了。三位金融經濟學家 Robin Greenwood、Andrei Shleifer 與 Yang You 想看產業在價格大漲或泡沫後的股價報酬。他們把「大漲」（run-up）定義為：某產業內市值加權投組在過去兩年的累計報酬達 100% 以上（絕對與相對市場皆然），且該產業前五年絕對報酬須上漲 50% 以上。他們在美國 1926–2014 年間找到 40 次這類大漲，在國際各部門 1985–2014 年間找到 107 次。他們的核心發現（讓他們把論文命名為〈Bubbles for Fama〉）是：Fama 是對的——平均而言，大漲並不預示異常低的未來報酬。</p>
+
+<figure class="fig" id="ex13">
+  <div class="frame hassvg"><svg viewBox='0 0 620 300' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='55' y1='30' x2='55' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230' x2='585' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230.0' x2='585' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='55' y1='180.0' x2='585' y2='180.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='184.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>1</text><line x1='55' y1='130.0' x2='585' y2='130.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='134.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>2</text><line x1='55' y1='80.0' x2='585' y2='80.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='84.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>3</text><line x1='55' y1='30.0' x2='585' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>4</text><text x='55.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-24</text><text x='99.16666666666666' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-18</text><text x='143.33333333333331' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-12</text><text x='187.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>-6</text><text x='231.66666666666666' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>0</text><text x='275.83333333333337' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>6</text><text x='320.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>12</text><text x='364.1666666666667' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>18</text><text x='408.3333333333333' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24</text><text x='452.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>30</text><text x='496.6666666666667' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>36</text><text x='540.8333333333333' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>42</text><text x='585.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>48</text><line x1='231.66666666666666' y1='30' x2='231.66666666666666' y2='230' stroke='#e0dccf' stroke-width='1' stroke-dasharray='3 3'/><polyline points='55,180 77,169 99,159 121,148 143,138 165,127 188,116 210,106 232,95 254,88 276,80 298,73 320,67 342,61 364,57 386,53 408,50 430,48 452,48 475,48 497,50 519,53 541,57 563,61 585,67' fill='none' stroke='#b4503f' stroke-width='2' stroke-dasharray='6 3'/><polyline points='55,180 77,169 99,159 121,148 143,138 165,127 188,116 210,106 232,95 254,95 276,96 298,96 320,97 342,97 364,98 386,98 408,99 430,99 452,100 475,100 497,101 519,101 541,102 563,102 585,103' fill='none' stroke='#2f5d7c' stroke-width='2'/><polyline points='55,180 77,169 99,159 121,148 143,138 165,127 188,116 210,106 232,95 254,93 276,94 298,95 320,96 342,98 364,100 386,104 408,108 430,112 452,118 475,124 497,131 519,138 541,146 563,154 585,160' fill='none' stroke='#5b9e8f' stroke-width='2' stroke-dasharray='2 3'/><polyline points='55,180 77,179 99,178 121,177 143,176 165,175 188,174 210,173 232,172 254,171 276,170 298,169 320,168 342,166 364,165 386,164 408,163 430,162 452,161 475,160 497,159 519,158 541,157 563,156 585,155' fill='none' stroke='#5b8bad' stroke-width='2' stroke-dasharray='5 4'/><text x='585' y='47.5' font-size='10' fill='#b4503f' text-anchor='end' font-weight='700'>未崩盤</text><text x='585' y='100.50000000000001' font-size='10' fill='#2f5d7c' text-anchor='end' font-weight='700'>大漲平均</text><text x='585' y='152.5' font-size='10' fill='#5b9e8f' text-anchor='end' font-weight='700'>崩盤</text><text x='585' y='172.0' font-size='10' fill='#5b8bad' text-anchor='end' font-weight='700'>市場報酬</text><text x='320.0' y='262' font-size='11' fill='#44515f' text-anchor='middle' font-weight='700'>距首次達標月之月數</text><text x='13' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>標準化報酬指數</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 13：大漲之後的報酬平均而言與市場相近</span>
+    多線折線圖，以「首次達標月」為原點（橫軸 0）。原點左側為前 24 個月、右側為其後 48 個月。四條線：「大漲平均（Run-Up Average）」在大漲後大致走平、略高於市場；「未崩盤（Non-Crashes）」持續走高、明顯超越市場；「崩盤（Crashes）」在達標後一度上衝隨即重挫；「市場報酬指數（Market Return Index）」平穩緩升。逾半數大漲在其後兩年發生「崩盤」（自任一價格回檔 40%）。
+    <span class="axis">座標軸：橫軸＝距首次達標月之月數（−24 至 +48）；縱軸＝標準化報酬指數（起點＝1），0 至 4。</span>
+    <span class="src">資料來源：Counterpoint Global，依據 Greenwood、Shleifer、You，〈Bubbles for Fama〉，《Journal of Financial Economics》第 131 卷第 1 期，2019 年 1 月，24。</span>
+  </figcaption>
+</figure>
+
+<p>但經濟學家也發現，大漲顯著提高了崩盤機率，且大漲過程中的訊號（波動度、周轉率、股票發行）有助於預測崩盤。另一篇論文發現，崩盤常跟在投入資本（投資強度的衡量）急增之後。經濟學家也證明，旨在使價格與價值一致的套利者，可能無法協調彼此行動，使泡沫得以在價格與價值落差擴大時持續存在。</p>
+<p>泡沫的第二個面向，是由技術創新驅動的「位移階段」與金融資本之間的互動。經濟學家 Carlota Perez 寫了這方面的開創性著作《技術革命與金融資本》（Technological Revolutions and Financial Capital）。核心洞見是：有兩個過程同時進行——其一是新技術（如鐵路、電力、網際網路、人工智慧）將如何影響經濟活動；其二是投資人如何布局以從這些技術中獲利。</p>
+<p>我們喜歡用兒童神經發育來類比這個過程。神經元的數量在人的一生中變化不大，但突觸連結的數目在幼年急速上升、隨後驟降，形成一個倒「U」形。大腦會強化個體常用的突觸、修剪不用的。這就像新技術出現時：大量公司冒出來想利用新事物，但市場無情地淘汰那些無法滿足需求的企業。大腦約占體重 2%、卻消耗 20% 能量；建立大量連結卻又丟棄，看似浪費，但這是大自然用來認識環境的解方。同樣地，創造大量公司又讓許多倒閉看似無效率，但這過程讓「新技術所能提供的」與「市場所需的」達成契合。</p>
+<p>另一種思考方式是：投資人買進的公司股份，最好被視為<span class="term">選擇權（option）</span>——有權利但無義務做某事。若企業起飛，選擇權變得極有價值；若失敗，持有者可一走了之。技術革命鼓勵投資人投入一籃子選擇權，但我們事先就知道多數選擇權最終價值微乎其微。許多選擇權看似昂貴，營收與獲利等傳統指標無法支撐其價格。最終，這過程孕育出能良好服務市場、提供新商業方式的公司。</p>
+<p>這類投資也資助了對社會有益的基礎建設。例如網路泡沫期間對光纖的大量投資（網路、電信與數據服務的骨幹）：泡沫破裂後，極高比例的產能閒置、眾多電信公司破產；但那些基礎建設對網際網路其後的快速成長至關重要。泡沫是市場的恆久特徵。雖然每個泡沫都獨特，卻往往遵循相似模式。許多時候，有價值的公司會從一片虧損之海中誕生，而對新技術的投入也為經濟成長鋪設了舞台。</p>
+
+<!-- ===================== 群眾的智慧與瘋狂 ===================== -->
+<h3 class="sub" id="crowds">群眾的智慧與瘋狂</h3>
+<p>群眾常是明智的，這意味著市場常是有效率的。但我們也知道這份智慧能轉為瘋狂、使市場無效率。<strong>這種從智慧到瘋狂的切換，或許是最重要的、反覆出現的行為性機會。</strong></p>
+<p>群眾要明智，成員必須持有異質觀點。當投資人失去多樣性，市場就失去效率。多樣性崩解的代理指標包括：情緒指標、賣權／買權比（put/call ratio，看空賣權與看多買權的交易量比）、擁擠度衡量（機構持股相對於股票流動性偏高），以及絕對估值。</p>
+<p>處理多樣性崩解的一大挑戰是其效應呈<strong>非線性</strong>。你可能持續失去多樣性一段時間，價格卻毫無反應；接著邊際上一個小變化，就引發價格的大變動。這稱為「相變」（phase transition），在物理與社會系統中都很常見。</p>
+<p>直接觀察多樣性的流失很困難。但我們可用<span class="term">基於主體的模型（agent-based models）</span>來檢視資產價格與多樣性的互動：在電腦中創造投資人（「主體」），賦予他們決策規則與目標，讓他們彼此互動，並具備學習與適應的能力。布蘭戴斯大學經濟學教授 Blake LeBaron 建了這樣一個人工股市，模型有 1,000 名投資人、明確的投組配置目標、一項無風險資產、一項按二戰後美國實證紀錄校準股利率的資產，以及 250 條主動決策規則。</p>
+<p>投資人彼此交易、賺賠互現。LeBaron 設定財富最低者被淘汰，並讓決策規則演化（移除沒人用的、補進新的）。模型之美在於我們能觀察多樣性與資產價格的互動。他的人工市場複製了真實市場的許多實證特徵，包括波動度聚集、交易量多變、肥尾。關鍵觀察是：<strong>資產價格的大漲之前，會先出現交易者所用規則數目的減少</strong>——這正是多樣性流失的定義。LeBaron 解釋：</p>
+<blockquote>在通往崩盤的大漲過程中，群體多樣性下降。主體開始使用非常相似的交易策略，因為其共同的良好績效開始自我強化。這讓群體變得極為脆弱：股票需求的微小減少，就可能對市場產生強烈的破壞性衝擊。其經濟機制很清楚：在下跌的市場中，交易者很難找到買家，因為其他人都在採用非常相似的策略。在此處所用的 Walras 架構下，這迫使價格必須大幅下挫才能出清市場。群體的同質化，轉化為市場流動性的減少。</blockquote>
+<p>多樣性下降、投資人收斂到相同規則，把資產價格推進泡沫領域。崩盤之前，資產價格上漲，但市場的脆弱性也同步上升。</p>
+<p>LeBaron 的人工股市強化了關於行為性無效率的幾個重要教訓。其一：投資人在短期內因彼此模仿而致富。極成功的投資人 George Soros 名言：「當我看到泡沫正在形成，我會衝進去買，火上加油。」——其未明說的前提是，他精明到能在破裂前賣出。這正是為何「做空泡沫」如此困難：相關行動產生正回饋、把價格推離價值，在大漲過程中創造大量獲利。短期做錯會造成<span class="term">職涯風險（career risk）</span>——即使最終被證明正確，投組經理人也可能因短期表現差而丟工作。</p>
+<p>其二：短期內上漲的資產價格，掩蓋了「脆弱性上升、多樣性下降」的事實。投資人基礎可能逼近臨界點卻又退回，未顯露任何不良後果；但一旦市場達到臨界點，多樣性的微幅下降就會引發價格大跌。<strong>擁擠交易（crowded trades）會一直奏效，直到不再奏效為止。</strong>擁擠不僅造成錯誤定價，也導致流動性枯竭。用群眾智慧解釋股市之所以有用，是因為這些條件揭示了市場何時明智、何時瘋狂：該框架既預測投資人難以跑贏市場，也預測市場會週期性地失控——兩項預測都被結果證實。</p>
+
+<!-- ===================== 信念如何擴散 ===================== -->
+<h3 class="sub" id="beliefs">信念如何擴散</h3>
+<p>觀念或資訊如何在網路中傳播，類比於流行病學家描述疾病擴散的模型，包含傳染性、互動程度與康復程度。結論很直觀：傳染性與互動程度越高，疾病或信念擴散的可能性就越高。</p>
+<p>關於市場中的信念傳播，有幾點值得注意。首先，實驗與經驗告訴我們，本質上很難預測哪些觀念或產品會走紅。例如若兩首品質相當的歌，早期粉絲僅因運氣而稍偏好其一，「累積優勢」（cumulative advantage）的過程便會接管，使第一首遠比第二首成功。這正是影視與音樂公司難以預測賣座作品的原因，也是編劇 William Goldman 宣稱「沒人懂任何事」（Nobody knows anything）的由來。</p>
+<p>其次，人類本質上是社會性的，多數人渴望順從群體的信念。神經科學家甚至已掌握從眾的神經生物學基礎。「<span class="term">資訊瀑布（informational cascades）</span>」發生於個體不顧自身私有資訊、跟隨前人的決定。對於流行或時尚，從眾意味著你不會以令自己不適的方式顯得突兀。投資人也感受到從眾壓力：CFA 協會對全球逾 700 名投資人的調查發現，「被同儕影響而追逐潮流」是最影響其決策的行為偏誤。若人人做著完全相同的事，要打敗同儕就很難。</p>
+<p>多樣性崩解往往同時包含「新投資人進場」與「老練投資人按兵不動」。這些新投資人通常是個人。曾任學者、現為 Acadian 資產管理投組經理人與研究員的 Owen Lamont，檢視過往泡沫對新參與者的描述，包括擠奶女工、哲學家、詩人、擦鞋童、佛教僧侶與計程車司機；Lamont 指出他們的共通點是缺乏金融知識。當這類人收斂到某項投資或投資主題上，多樣性崩解的可能性便升高。同樣地，若老練投資人停止與他們對作，也會加劇多樣性的缺乏——當市場中沒有反向意見在投票，決策規則便收斂、多樣性受損。</p>
+<p>心理學家 Keith Stanovich 區分「可檢驗信念」（testable beliefs）與「遠端信念」（distal beliefs）。可檢驗信念可由觀察驗證；遠端信念是一種信念形式，無法由觀察或經驗驗證。例如「美國政府花在社會安全的金額」是可檢驗信念，而「社會安全支出過高（或過低）」是遠端信念。當我們以與遠端信念一致的方式解讀新資訊時，便出現<span class="term">確認偏誤（confirmation bias）</span>。遠端信念正因無法被證明，往往透過共享身分認同而傳播，因此它們扮演的是「社會訊號」而非「現實的地圖」。這在市場中很重要，因為事實終將勝出。</p>
+
+<div class="note"><strong>如何有效利用行為性無效率？</strong>
+<ul style="margin:8px 0 0;padding-left:20px">
+  <li><strong>警覺過度外推：</strong>市場先生大致明智、價格大致等於價值，但也易走極端；投資人常假設近期模式會延續到未來，因而冒著「買高賣低」的風險。</li>
+  <li><strong>盤點情緒：</strong>當情緒一面倒地正向或負向時，準備好去看相反的論點。為逆向而逆向是壞主意，因為共識可能正確；但當情緒與估值的訊號一致時，機會就會出現。關鍵問題是：「當前價格隱含了對未來財務結果的什麼預期？」——推算要相信什麼樣的營收成長、營業利益率與投資需求，才能合理化今日股價，再與合理情境比較。</li>
+  <li><strong>泡沫：</strong>細節雖各異，泡沫往往經歷相似階段。若懷疑市場處於泡沫，評估它在哪個階段。注意大漲之後產業平均報酬與市場相近，但崩盤風險升高；對相關公司而言，某些基本面特性（如投入資本快速成長）會提高該風險。</li>
+  <li><strong>群眾的智慧與瘋狂：</strong>群眾智慧仰賴異質觀點、彙整機制與「對了得益」的誘因；多樣性是最可能失效的條件。當多樣性崩解，智慧轉為瘋狂。最棘手的是此轉變呈非線性：部分多樣性流失不影響價格，接著一個小變化卻引發大跌。</li>
+  <li><strong>信念擴散：</strong>信念如疾病般擴散，具傳染性、又觸及相連受眾者衝擊最大。可檢驗與遠端信念的區分，凸顯了「分辨事實與意見」的必要。事實有客觀現實、可被推翻；意見難以被推翻。兩者對投資人都有用，但事實應主導。</li>
+</ul>
+</div>
+<p>行為性無效率在不同時間週期消散：動能傾向在相對短期（不到一年）反轉，大型泡沫可能要數年才破裂。利用行為性無效率所需的時間，可能比投資經理人自認能負擔的還長。Ben Graham 對此給了極佳建議：「拿出你知識與經驗的勇氣。若你已從事實形成結論，且確知判斷穩健，就依此行動——即使他人猶豫或不同意。（你不會因為群眾不同意就對或錯。你之所以對，是因為你的資料與推理是對的。）」</p>
+
+<!-- ===================== 分析性無效率 ===================== -->
+<h2 class="sec" id="analytical">分析性無效率</h2>
+<p>當所有參與者擁有相同或近乎相同的資訊，而某些人能比他人更好地分析它時，便出現<strong>分析性無效率</strong>。財務資訊包括盈餘結果（尤其相對於分析師估計）、現金流數據與資本結構；非財務資訊包括公司策略、治理與管理品質。分析優勢可來自：更高的分析技巧、比他人更有效地更新觀點、在不同的時間尺度上運作，或預判市場敘事的改變。</p>
+
+<h3 class="sub">分析技巧</h3>
+<p>網球提供了理解分析技巧的類比。職業選手與業餘選手在同一球場、用同樣器材、遵循同樣規則，但職業選手技術與策略更好、失誤更少。在投資世界，機構往往是職業選手，個人常是業餘選手。機構投資人在正面對決時通常擊敗散戶，這意味著散戶可成為機構超額報酬的良好來源。一份關於散戶行為的綜合調查指出：「證據顯示，平均散戶在費前與費後都跑輸市場。」</p>
+<p>整體市場的費前超額正報酬與負報酬必須相加為零；「技巧差異＋運氣」解釋了正負報酬的大小。一項對台灣全體投資人的詳細研究顯示，機構每年賺取 1.5 個百分點的異常超額報酬，而個人虧損 3.8 個百分點。個人往往技巧太少、自信太多。</p>
+<p>機構通常擁有比個人更好的資訊與分析技巧。例如當股票對「關於未來現金流的好消息」反應不足時，機構傾向從個人手中買進，在這些情況下每年勝過個人 1.4 個百分點。此外，散戶參與率高的 IPO，表現遜於由機構主導的 IPO。實務上，要判斷投資人是基於「不同的資訊」還是「對相同資訊的不同解讀」可能很難；兩者都促成行動，而對盈餘發布等資訊廣泛傳播事件的研究，揭示了多元分析觀點的重要性。</p>
+
+<h3 class="sub">比他人更好地更新觀點</h3>
+<p>分析優勢的下一個來源，是透過妥善整合新資訊，比他人更好地更新觀點。<span class="term">貝氏定理（Bayes' Theorem）</span>提供了依新資訊更新先驗信念的正式框架。證據清楚顯示投資人做得不夠好，並浮現特定的反應過度與反應不足模式。</p>
+<p>芝加哥大學布斯商學院財務學教授 Francesca Bastianello 與 Alex Imas 提供了一個解釋這些模式的框架。要理解其運作，可把「推論」（inference）與「預測」（forecasting）兩項任務分開。例如投資人可用「股價上漲」這個資訊去推論公司好壞，或去預測未來股價。投資人會依其所做的任務而反應過度或不足。</p>
+<p>兩人用經典的「球與甕」模型來分離更新模式：兩個甕，一個代表獲利圍繞高數字波動的好公司，一個代表獲利圍繞零波動的壞公司。參與者看其中一甕的 30 個月數據，須推論結果來自好公司或壞公司，或預測未來獲利。研究者把平均獲利差異、投資人先驗、波動度都固定，以便相對於基準衡量反應。</p>
+<p>結果顯示：參與者在<strong>推論任務中普遍反應不足，在預測任務中反應過度</strong>。這是因為參與者預設「市場過程具持續性」：單一則新聞對公司品質（推論）感覺不太有資訊量，但對明日股價（預測）卻顯得有資訊量。個人往往對強訊號或弱訊號的敏感度不如應有水準；多數人在自身經驗脈絡下看待新資訊，新數據到來時調整不足。人們的注意力也有限，因此不夠重視強訊號、傾向對其反應不足。時間範圍也扮演核心角色：今日的獲利，對下個月是比對三年後更強的訊號；參與者未充分考慮此衰減，因而在預測任務中對短期反應不足、對長期反應過度。</p>
+
+<table>
+  <caption>Exhibit 14：訊號「權重」與「強度」之間的取捨</caption>
+  <thead>
+    <tr><th>特徵</th><th>說明</th><th>理性（貝氏）反應</th><th>預測中觀察到的偏誤</th></tr>
+  </thead>
+  <tbody>
+    <tr><td rowspan="2">衝擊大小</td><td rowspan="2">非預期消息的量</td><td>差異越大＝訊號越強</td><td>對大差異反應不足</td></tr>
+    <tr><td>差異越小＝訊號越弱</td><td>對小差異反應過度</td></tr>
+    <tr><td rowspan="2">持續性</td><td rowspan="2">今日消息與明日的相似程度</td><td>持續性高＝訊號越強</td><td>持續性高時反應不足</td></tr>
+    <tr><td>持續性低＝訊號越弱</td><td>持續性低時反應過度</td></tr>
+    <tr><td rowspan="2">時間範圍</td><td rowspan="2">被預測的時間長度</td><td>範圍越短＝訊號越強</td><td>短範圍時反應不足</td></tr>
+    <tr><td>範圍越長＝訊號越弱</td><td>長範圍時反應過度</td></tr>
+    <tr><td>注意力（單一特徵）</td><td>提高注意力</td><td colspan="2">緩和對該特徵的反應過度／不足</td></tr>
+    <tr><td>注意力（多特徵交互）</td><td>提高注意力</td><td colspan="2">視特徵如何交互而定——可能緩和或加劇反應過度／不足</td></tr>
+  </tbody>
+</table>
+<p class="tsrc">資料來源：Counterpoint Global，依據 Bastianello 與 Imas，〈Biases in Belief Updating Within and Across Domains〉，工作論文，2025 年 12 月 12 日。</p>
+
+<p>「<span class="term">近因偏誤（recency bias）</span>」是相關概念，源於對近期事件給予過多權重。如前所述，對投資人與高階主管的調查一致顯示，他們強烈傾向從「剛發生的小樣本」外推。考量<span class="term">基準率（base rates）</span>——即適當參照類別的結果——有助於緩和此錯誤。賓州大學心理學教授 Phil Tetlock 指出其他常見錯誤，其一是對「看似解釋因果、實則不然」的資訊反應過度。</p>
+<p>併購（M&A）交易的分析是一例。股票分析師常因預期「盈餘增厚」（earnings accretion）而對收購方股票表示讚許，結果在高比例案例中股價反而下跌。原因是每股盈餘的變化，並非捕捉併購因果關係的最佳方式。另一個錯誤則是對「確實有因果關係」的資訊反應不足：延續併購主題，比較「綜效現值」與「所承諾的溢價」能提供有意義卻被低估的資訊；此分析需要一些適度計算，但顯然比基於會計數字的盈餘變化更相關。能分辨「什麼資訊重要、什麼不重要」的決策者，便擁有分析優勢。</p>
+<p>「<span class="term">對比效應（contrast effect）</span>」也解釋了對新資訊的反應過度：若好消息前面是壞消息，它會被認為比實際更亮眼；若跟在好消息之後，則被認為比實際更平淡。這些錯誤可造成錯誤定價，而捕捉對比效應的策略似乎能產生超額報酬。</p>
+<p>以上多聚焦於個人如何以偏離規範理想的方式更新信念。但「<span class="term">超級預測者（superforecasters）</span>」是提供遠高於平均水準預測的人——他們是預測競賽中展現卓越技巧的少數參與者。超級預測者往往共有一些特質：開放心態、務實、分析性、擅長數字、勤奮；他們也常更新機率估計，且以小幅增量進行。基準率訓練往往有助提升預測技巧。教訓是：個人並未把信念更新得像他們所能做到的那麼好，而且有方法可把此技巧改善為一種潛在優勢。</p>
+
+<!-- ===================== 時間套利 ===================== -->
+<h3 class="sub" id="timearb">時間套利</h3>
+<p>經濟學家暨投資業領袖 Jack Treynor 主張，投資人可藉由在「與他人不同的時間尺度」上運作而取得優勢。他在 1970 年代寫道，有兩種投資觀念：</p>
+<blockquote>(a) 那些含意直接明顯、評估時所需特殊專業相對少、因而傳播迅速的（例如「熱門股」）；以及 (b) 那些評估時需要反思、判斷、特殊專業等、因而傳播緩慢的……追求第二種觀念……當然，才是「長期投資」唯一有意義的定義。</blockquote>
+<p>Treynor 引用著名經濟學家 John Maynard Keynes 來解釋此機會的來源。Keynes 補充兩個關鍵要素：</p>
+<blockquote>專業投資人的精力與技巧……事實上，大多不在於對某投資整個生命週期的可能收益做出更優越的長期預測，而在於比一般大眾早一步預見「估值的慣常基礎」之改變。他們關心的，不是某投資對「為長抱而買它的人」真正值多少，而是在大眾心理影響下，三個月或一年後市場會把它估值為多少。</blockquote>
+<p>他接著強調當長期投資者有多困難：</p>
+<blockquote>最終，正是那位最促進公眾利益的長期投資者，在實務上會招來最多批評——只要投資資金是由委員會、董事會或銀行管理。因為他的行為本質上，在一般人眼中必然顯得古怪、不合常規、且魯莽。若他成功，只會坐實眾人對他魯莽的看法；若他短期內失敗（這很有可能），他不會得到多少寬容。世俗智慧教導我們：循規蹈矩地失敗，比不落俗套地成功，對名聲更有利。</blockquote>
+<p>Treynor 與 Keynes 都強調時間範圍的重要，並暗示長期投資者能獲得可觀報酬。但他們也明確指出，長期投資需要「反思」與「判斷」，且實踐者將「招來最多批評」——這是分析與行為議題的混合。</p>
+<p>先延伸 Treynor 的觀點。投資人常用「<strong>時間套利（time arbitrage）</strong>」一詞，指市場把短期雜訊當成長期訊號的情形。以擲硬幣為例：若前 10 次有 7 次擲出反面，市場便把一枚公平硬幣定價成有偏的硬幣，這時就存在時間套利機會。成功利用時間套利需要三件事：一、投資人必須能準確區分訊號與雜訊（此例中，訊號是反正面各半，雜訊是看似偏向反面）；二、訊號最終必須顯現（再擲很多次後，反正面比例會趨近一比一）；三、投資人必須有足夠耐心的資本，等待訊號浮現。</p>
+<p>幾乎所有投資人都尋求長期的滿意結果，卻覺得短期的差結果難以承受。經濟學家 Shlomo Benartzi 與諾貝爾獎得主 Richard Thaler 提出「<span class="term">短視損失趨避（myopic loss aversion）</span>」概念，以解釋「為何<span class="term">股票風險溢酬（equity risk premium）</span>（持有股票而非無風險債券的溢酬）高於理論預期」這個實證謎題。他們結合兩個概念：其一是損失趨避——人類（連同捲尾猴）對損失的痛苦約為同等收益快樂的兩倍，這與古典效用理論不符；其二是「短視」（myopia，近視）——反映你多常查看投組。股市長期上漲，但漲勢時斷時續。</p>
+<p>根據美國一個世紀的數據，你在分散的股票投組中看到獲利的機率約為：單日 54%、單月 63%、單年 75%；持有 15 年以上看到獲利的機率非常接近 100%。Benartzi 與 Thaler 把這些概念結合，提出處理投資人時間範圍的新方式：你越常查看投組，越可能看到損失、越受損失趨避之苦。一個整天盯著投組的投資人，會比少看的人要求更高報酬，以補償承受損失之苦。因此，由於此心理因素，長期投資者願為同一資產付出比短期投資者更高的價格。此概念不只適用於散戶——實地證據顯示專業投資人也受短視損失趨避之苦。1926 至 1990 年間，與已實現股票風險溢酬一致的「投組評估期」約為一年。投資人或許無法選擇自己的損失趨避程度，但可以選擇多常評估投組。</p>
+<p>投資公司 Renaissance Technologies 的研究者，用以實際參數為基礎的模擬技術發現，評估資金經理人最有效的期間長於三年。他們總結道：「最有利的耐心程度，與當前產業實務中所見的非常不同。」</p>
+<p>現在延伸 Keynes 的觀點——他強調採取長期取向之難。哥倫比亞商學院會計學教授 Kalash Jain 與博士生 Dian Jiao，從「股票持有權周轉」的角度檢視時間範圍。他們看一個稱為「持有期（horizon）」的變數，定義為主動型機構投資人持有某公司股份的「連續季數」平均（以各機構持股加權），並排除指數與準指數基金。他們問：在控制基本面與標準因子後，公司的平均持有期是否能預測後續報酬？若存在此溢酬，又由什麼驅動？</p>
+<p>他們證明，持有期是報酬的顯著預測因子，且不會被橫斷面資產定價模型常用的傳統特性所涵蓋。</p>
+
+<figure class="fig" id="ex15">
+  <div class="frame hassvg"><svg viewBox='0 0 560 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='60' y1='30' x2='60' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230' x2='520' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='60' y1='230.0' x2='520' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='60' y1='190.0' x2='520' y2='190.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='194.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='60' y1='150.0' x2='520' y2='150.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='154.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>40</text><line x1='60' y1='110.0' x2='520' y2='110.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='114.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>60</text><line x1='60' y1='70.0' x2='520' y2='70.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='74.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>80</text><line x1='60' y1='30.0' x2='520' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='52' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>100</text><text x='60.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1</text><text x='175.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2</text><text x='290.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>3</text><text x='405.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>4</text><text x='520.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>5</text><rect x='37' y='126' width='46' height='104' fill='#5b8bad'/><text x='60.0' y='121.0' font-size='10' fill='#2f5d7c' text-anchor='middle' font-weight='700'>52</text><rect x='152' y='88' width='46' height='142' fill='#5b8bad'/><text x='175.0' y='83.0' font-size='10' fill='#2f5d7c' text-anchor='middle' font-weight='700'>71</text><rect x='267' y='60' width='46' height='170' fill='#5b8bad'/><text x='290.0' y='55.0' font-size='10' fill='#2f5d7c' text-anchor='middle' font-weight='700'>85</text><rect x='382' y='52' width='46' height='178' fill='#5b8bad'/><text x='405.0' y='47.0' font-size='10' fill='#2f5d7c' text-anchor='middle' font-weight='700'>89</text><rect x='497' y='50' width='46' height='180' fill='#5b8bad'/><text x='520.0' y='45.0' font-size='10' fill='#2f5d7c' text-anchor='middle' font-weight='700'>90</text><text x='290.0' y='262' font-size='11' fill='#44515f' text-anchor='middle' font-weight='700'>持有期分位（最短 → 最長）</text><text x='16' y='130.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>月報酬（基點）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 15：時間套利——長持有期預測超額報酬</span>
+    長條圖。橫軸由「最短持有期（第 1 分位）」到「最長持有期（第 5 分位）」，月報酬大致遞增：第 1 分位約 52 個基點，第 2 分位約 71，第 3 分位約 85，第 4、5 分位約 89–90 個基點。最長持有期分位的月報酬比最短分位高約 37 個基點，相當於每年高 440 個基點。
+    <span class="axis">座標軸：橫軸＝持有期分位（最短→最長）；縱軸＝月報酬（基點），0 至 100。</span>
+    <span class="src">資料來源：Counterpoint Global，依據 Jain 與 Jiao，〈Exploiting Myopia: The Returns to Long-Term Investing〉，工作論文，2025 年 9 月。</span>
+  </figcaption>
+</figure>
+
+<p>與 Keynes 關於「短期難以成功」的評論一致，此溢酬在「具高特異性波動（idiosyncratic volatility）且近期表現差」的股票上最高。結果也顯示，持有期反映的是這些「難以持有」股票中的錯誤定價；而在容易持有的股票中並不出現此錯誤定價。能熬過高特異性波動與短期股價疲弱挑戰的投資人，會得到獎賞。</p>
+<p>蒐集資訊並反映到股價是項昂貴的工作。長期投資讓股東得以把此成本攤銷到較長的持有期間。AQR 資本管理創辦人暨投資長 Cliff Asness 說：「擁有並堅持真正的長期視角，是你能擁有最接近『投資超能力』的東西。」</p>
+
+<!-- ===================== 敘事的力量 ===================== -->
+<h3 class="sub" id="narrative">敘事的力量</h3>
+<p>故事與敘事在信念形成與經濟結果中扮演要角。雖然「故事」與「敘事」常被互換使用，Robert Shiller 區分兩者：敘事包含對「發生了什麼／正在發生什麼」的因果或正當化說明。Shiller 把「<span class="term">敘事經濟學（narrative economics）</span>」定義為「研究敘事如何擴散、改變並影響經濟結果」，並用流行病學模型解釋敘事如何傳播。</p>
+<p>投資人講述並相信的故事，在預期修正中也扮演有意義的角色。財務學教授 Nicholas Mangee 發展了他所稱的「新穎敘事假說」（novel narrative hypothesis）：新穎性在股市中製造不確定性，於是投資人創造敘事來解釋現況、以化解不確定性，而這些敘事形塑投資人的情緒與預期。</p>
+<p>股市的一大謎題是：那些被分析師密切追蹤、相當可預測的超大型公司，為何能出現巨大的價值波動。</p>
+<p>近期一例是 Google 母公司 Alphabet。OpenAI 於 2022 年 11 月推出生成式人工智慧（GenAI）模型 ChatGPT，投資人立即擔心 Google 措手不及、其網路搜尋業務恐受挑戰。而 2025 年秋 Google 最新 GenAI 模型 Gemini 3 的推出，為一段「從迫在眉睫的過時、到不可避免的主導」的敘事擺盪畫下句點。ChatGPT 的推出席捲全球，Google 看似毫無準備——儘管 Transformer 架構（GPT 中的「T」）正是該公司研究者開發的。</p>
+<p>2023 年 2 月初，Google 展示其 GenAI 模型 Bard，部分是為了搶在微軟幾天後（將 ChatGPT 整合進部分產品的）會議之前。連 Google 員工都抱怨這場展示「倉促、搞砸、短視」。在隨後幾天，Alphabet 市值蒸發約 1,000 億美元，敘事圍繞著搜尋業務的未來、司法部提起的反壟斷訴訟，以及在下一波技術中被甩在後頭的風險。</p>
+<p>此後該股表現大致與市場同步，直到 2025 年春開始轉變。該公司搜尋市占雖下滑卻未崩潰；雖輸了對司法部的官司，但補救措施不如預期糟糕；而 2025 年 11 月 Gemini 3 的推出深受市場好評（例如 Salesforce 執行長 Marc Benioff 公開表示自己改用 Gemini 3）。敘事從「Google 落後 OpenAI」轉變為「Google 是最具基礎建設、通路與財務資源、能大規模部署 AI 的最佳定位公司之一」。「過時風險」的折價，被「能力」的溢價取代。</p>
+
+<figure class="fig" id="ex16">
+  <div class="frame hassvg"><svg viewBox='0 0 620 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='55' y1='30' x2='55' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230' x2='585' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230.0' x2='585' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>80</text><line x1='55' y1='196.66666666666669' x2='585' y2='196.66666666666669' stroke='#e0dccf' stroke-width='1'/><text x='47' y='200.66666666666669' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>100</text><line x1='55' y1='163.33333333333334' x2='585' y2='163.33333333333334' stroke='#e0dccf' stroke-width='1'/><text x='47' y='167.33333333333334' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>120</text><line x1='55' y1='130.0' x2='585' y2='130.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='134.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>140</text><line x1='55' y1='96.66666666666669' x2='585' y2='96.66666666666669' stroke='#e0dccf' stroke-width='1'/><text x='47' y='100.66666666666669' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>160</text><line x1='55' y1='63.333333333333314' x2='585' y2='63.333333333333314' stroke='#e0dccf' stroke-width='1'/><text x='47' y='67.33333333333331' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>180</text><line x1='55' y1='30.0' x2='585' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>200</text><text x='55.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>22/11</text><text x='121.25' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>23/4</text><text x='187.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>23/9</text><text x='253.75' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/2</text><text x='320.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/7</text><text x='386.25' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/12</text><text x='452.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/5</text><text x='518.75' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/10</text><text x='585.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/12</text><polyline points='55,197 69,202 84,207 98,212 112,210 127,202 141,193 155,185 170,171 184,173 198,176 213,178 227,180 241,181 256,180 270,178 284,174 299,169 313,164 327,158 341,152 356,146 370,142 384,139 399,137 413,137 427,137 442,140 456,142 470,145 485,138 499,127 513,115 528,103 542,92 556,80 571,68 585,47' fill='none' stroke='#5b8bad' stroke-width='2'/><circle cx='84' cy='207' r='3' fill='#2f5d7c'/><text x='83.64864864864865' y='230.66666666666666' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>ChatGPT 推出</text><circle cx='141' cy='193' r='3' fill='#2f5d7c'/><text x='140.94594594594594' y='183.33333333333334' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>Bard 推出</text><circle cx='528' cy='103' r='3' fill='#2f5d7c'/><text x='527.7027027027027' y='93.33333333333334' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>Gemini 3 推出</text><text x='13' y='130.0' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='700'>相對 S&P500 TSR（=100）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 16：Alphabet 相對總股東報酬，2022 年 11 月–2025 年 12 月</span>
+    單線時間序列圖（相對 S&P 500，指數＝100）。標註三個事件：「ChatGPT 推出」（2022 年底，指數隨後一度回落至 100 以下）、「Bard 推出」（2023 年初）、「Gemini 3 推出」（2025 年底，指數急升至約 190）。整體呈現先弱後在 2025 年春起加速走強。
+    <span class="axis">座標軸：橫軸＝月份 2022/11–2025/12；縱軸＝Alphabet 相對 S&P 500 之總股東報酬（指數＝100），約 80 至 200。</span>
+    <span class="src">資料來源：Counterpoint Global 與 FactSet。</span>
+  </figcaption>
+</figure>
+
+<p>反映此轉變，Alphabet 基於未來 12 個月盈餘估計的本益比，從十幾倍升到接近 30 倍。由於敘事改變，Alphabet 市值（淨於市場）上升 1.8 兆美元，增幅大於整個美國創投業的管理資產規模。</p>
+
+<figure class="fig" id="ex17">
+  <div class="frame hassvg"><svg viewBox='0 0 620 290' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='55' y1='30' x2='55' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230' x2='585' y2='230' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='230.0' x2='585' y2='230.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='234.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>14</text><line x1='55' y1='205.0' x2='585' y2='205.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='209.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>16</text><line x1='55' y1='180.0' x2='585' y2='180.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='184.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>18</text><line x1='55' y1='155.0' x2='585' y2='155.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='159.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='55' y1='130.0' x2='585' y2='130.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='134.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>22</text><line x1='55' y1='105.0' x2='585' y2='105.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='109.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>24</text><line x1='55' y1='80.0' x2='585' y2='80.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='84.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>26</text><line x1='55' y1='55.0' x2='585' y2='55.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='59.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>28</text><line x1='55' y1='30.0' x2='585' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>30</text><text x='55.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>22/11</text><text x='121.25' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>23/4</text><text x='187.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>23/9</text><text x='253.75' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/2</text><text x='320.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/7</text><text x='386.25' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>24/12</text><text x='452.5' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/5</text><text x='518.75' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/10</text><text x='585.0' y='246' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>25/12</text><polyline points='55,168 69,180 84,192 98,205 112,205 127,189 141,172 155,156 170,144 184,151 198,160 213,168 227,174 241,178 256,180 270,179 284,175 299,169 313,162 327,154 341,146 356,139 370,133 384,130 399,130 413,133 427,138 442,145 456,180 470,186 485,192 499,199 513,205 528,176 542,148 556,119 571,90 585,42' fill='none' stroke='#5b8bad' stroke-width='2'/><circle cx='84' cy='192' r='3' fill='#2f5d7c'/><text x='83.64864864864865' y='182.5' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>ChatGPT</text><circle cx='141' cy='172' r='3' fill='#2f5d7c'/><text x='140.94594594594594' y='190.5' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>Bard</text><circle cx='528' cy='176' r='3' fill='#2f5d7c'/><text x='527.7027027027027' y='166.25' font-size='9.5' fill='#2f5d7c' text-anchor='middle' font-weight='700'>Gemini 3</text><text x='13' y='130.0' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='700'>本益比（未來12月估計）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 17：Alphabet 前瞻本益比，2022 年 11 月–2025 年 12 月</span>
+    單線時間序列圖。同樣標註 ChatGPT、Bard、Gemini 3 三事件。本益比在 ChatGPT 推出後一度回落（2025 年中低點約 16 倍），其後隨 Gemini 3 推出急升至約 29 倍。
+    <span class="axis">座標軸：橫軸＝月份 2022/11–2025/12；縱軸＝本益比（未來 12 個月估計），約 14 至 30 倍。</span>
+    <span class="src">資料來源：Counterpoint Global 與 FactSet。</span>
+  </figcaption>
+</figure>
+
+<p>關於敘事的兩點補充。其一，心理學家已證明「對同一事件的不同描述，往往產生系統性不同的判斷」。要認清：描述可以是敘事的核心，但極少只有一種合理描述。你如何描述一個情境，會影響你（以及可能他人）如何決策。其二，Blue Ridge Capital 創辦人暨投組經理人 John Griffin 常說：「當我們能觀察可觀察之事，何必去預測不可預測之事？」他主張單純的觀察就可能展現出與當前敘事相反的事實、或預示下一個敘事；不需要超凡的遠見，只需看清此刻正在發生什麼的能力。Griffin 的觀察與「人們在推論任務中傾向反應不足」的研究一致。</p>
+
+<div class="note"><strong>如何有效利用分析性無效率？</strong>
+<ul style="margin:8px 0 0;padding-left:20px">
+  <li><strong>尋找容易的賽局：</strong>目標是在你買賣股票時比對手方有更高分析技巧。已被詳細研究的一例是機構對個人——研究顯示「笨錢」製造出可被「聰明錢」修正的市場異常。</li>
+  <li><strong>有效更新你的信念：</strong>改變想法以使觀點成為世界的準確地圖，是核心分析技巧。用貝氏定理是正確做法，但研究者已辨識出反應過度與不足的模式。一個提供準確回饋的方法，是寫下你預期會看到的「路標」（含特定結果的機率），用以驗證你的論點是否仍成立、或該改變心意。</li>
+  <li><strong>以時間作為分析優勢來源：</strong>投資流程可為短期或長期持有量身打造。Treynor 主張「傳播緩慢」的觀念定義了長期投資，因為它們需要反思、判斷與特殊專業。長期視角因客戶壓力與職涯風險而困難，但持有「具特異性風險且短期表現差」的股票，長期能產生超額報酬。</li>
+  <li><strong>敘事影響價值：</strong>人類是天生的說故事者，有解釋因果的本能渴望；連結因果的敘事滿足此需求。敘事會演化、可造成價格與價值的落差，甚至不同描述也能導致不同決策。預判公司敘事將如何演化，能幫你從估值的重大變化中獲益。這也解釋了為何全球最大的某些公司能提供可觀報酬：長期而言報導的基本面很重要，但投資社群沿途講述的故事，會帶來買賣機會。</li>
+</ul>
+</div>
+
+<!-- ===================== 資訊性無效率 ===================== -->
+<h2 class="sec" id="informational">資訊性無效率</h2>
+<p>當某些參與者擁有與他人不同的資訊、並能在此不對稱上獲利交易時，便出現<strong>資訊性無效率</strong>。如 Grossman 與 Stiglitz 所指出，蒐集與價值相關的資訊可能很昂貴，而做這件事的投資人，可合理預期賺取超額報酬以補償其努力。</p>
+<p>同時，法規致力確保企業統一揭露與傳播資訊，科技也使其又快又便宜。結果是，蒐集合法與非傳統（「另類」）資料的成本不斷攀升。在資訊理論中，資訊是「某結果相對於某機率模型有多麼非預期或令人意外」的衡量。效率市場假說假設資產價格充分反映所有可得資訊，只有「新的、未被預期的」資訊才會導致異常價格變動；挖出這種資訊，才能帶來超額報酬。</p>
+<p>從他人處分享與獲取資訊，是生物（含人類）學習與集體行為的基礎。但當此過程崩解時，便傳播<span class="term">錯誤資訊（misinformation）</span>——任何被接收者以「使其信念偏離真實狀態」的方式解讀的訊息。具體而言：接收者可能因缺乏完整脈絡而誤解；訊息本身可能在人傳人時退化；或群體陷入集體扭曲、把資訊視為模稜兩可。</p>
+<p>效率市場假說假設投資人以相同方式處理可得資訊。沒有人相信這命題；而如前所見，不需要這麼強的假設，也能達到效率市場。</p>
+<p>有趣的是問：若投資人有顆能提前看到資訊的水晶球，會表現如何？投資顧問公司 Elm Wealth 的 Victor Haghani 及其同事把這問題化為實驗。參與者在下單日前 36 小時被出示《華爾街日報》頭版——例如他們可能看到週四的頭版，再依週二收盤價格下注。他們可對 S&P 500 或 30 年期美國公債做多或做空，並可用槓桿。他們用 2008 至 2022 年隨機呈現的頭條，下注超過 15 個「交易日」。最終報酬反映「方向押對」以及「依水晶球所揭示資訊的感知價值押對適當金額」。</p>
+<p>Haghani 先以實體方式進行，招募 118 名幾乎全是財金碩士生的年輕人，給每人 50 美元起始、獲利上限 100 美元。結果約一半學生虧錢，平均賠付 51.62 美元，在統計上等同打平；六分之一輸光。在逾 2,000 筆交易中，學生猜對方向的比例為 51.5%，而部位大小也拿捏不佳，加重了他們的困境。</p>
+<p>Elm Wealth 接著把遊戲放上網站邀人玩。1,500 名線上參與者的中位數虧損為 30%，逾三分之一破產。較振奮的消息是：玩此遊戲的五位資深總體經濟交易員全都增加了財富，中位數收益 60%、平均收益 130%。專業者猜對市場方向的比例為 63%，並在自認毫無洞見時（約占三分之一的日子）不下任何注；自認有優勢時，他們下的注也比業餘者大。</p>
+<p>由此可見：擁有市場尚未反映的資訊是有價值的。但從資訊獲利很困難，因為它必須與已被定價的不同，且個人對資訊的解讀必須準確。資訊優勢有多種形式：一是合法取得他人沒有、且未反映在價格中的相關資訊；另一種優勢來自「注意到正確的資訊」——付出注意力是有成本的，因此有限注意力會帶來可利用的無效率；最後，預判資訊擴散的影響也可能帶來優勢，因為研究顯示複雜性會減緩資訊的擴散。</p>
+
+<h3 class="sub">搶先得知</h3>
+<p>資訊優勢最明顯的第一個來源，是比他人更早得知與價值相關的事。此處有必要區分「資料（data）」與「資訊（information）」。Data 是 datum 的複數，意為「被給予之物」；資料未必有用。<strong>資訊是把資料組織成有用形式、能減少不確定性的東西。</strong>取得資料不自動帶來資訊優勢，但「把資料轉化為資訊」的能力可成為優勢來源。此來源很可能與規模相關：較大的投資公司能攤銷資料成本，並比小公司更具成本效益地把資料轉成資訊。</p>
+<p>毫無疑問，有些投資人靠取得他人沒有的資訊而賺得超額報酬。研究內線交易是我們得知此事的一種方式。雖然內線交易違法且不對，但檢視過往案例能讓我們洞察資訊如何影響價格。2010 至 2015 年間，駭客從新聞通訊社竊取了約 15 萬份尚未發布的盈餘新聞稿，並把資訊賣給交易者。研究者藉此事件來理解資訊如何反映到價格、以及交易者能多好地用此資訊預測價格變動。</p>
+<p>一篇論文區分「硬」與「軟」資訊：硬資訊反映盈餘意外的大小，軟資訊衡量新聞稿的用字與語氣。研究者發現兩者對股價變動的貢獻大致相當，且彼此僅弱相關。該論文也發現，盈餘公開後，股價只變動了「預期幅度（以對照組衡量）」的約 85%，意味著非法交易已捕捉了約 15% 的價格變動。另一篇論文有交易數據，因而能估計交易者能預測多少超額報酬（考量限制後）：它顯示交易者雖能辨識訊號，訊號對雜訊的比約為 1 比 2.5；實務上這意味訊號雖有價值，但對任何單筆交易而言，仍有被隨機性淹沒的風險。</p>
+<p>有些避險基金合法地大賺，靠的是用《資訊自由法》（Freedom of Information Act）向美國食品藥物管理局（FDA）蒐集關於藥廠的非公開資訊。投資人不僅須決定提出哪些申請，回覆內容往往很技術性、需要足夠科學知識才能準確解讀。蒐集潛在有用資訊有許多創新但昂貴的方法。估計指出投資公司每年在另類資料集上至少花 25 億美元，且預測此資訊市場將持續快速成長。除此之外，投資人還常聘請產業專家理解公司、頂尖律所解讀法律議題、或顧問掌握特定政治動態。</p>
+<p>另一種做法，是從供應商、競爭者、客戶與前員工等多種來源蒐集公開與非公開資訊以建立優勢。傳奇投資人 Phil Fisher 稱之為「閒聊打探法」（scuttlebutt），如今投資人常稱之為「<span class="term">馬賽克理論（mosaic theory）</span>」。這方法不靠單一資訊，而靠各片資訊如何拼湊出與市場不同的看法。</p>
+<p>大體而言，當資產價格更有效率時，社會受益。因此法規聚焦於使企業資訊的取得管道一致。例如美國於 2000 年 10 月實施的「公平揭露規則」（Reg FD），禁止公司「在未同時向公眾揭露的情況下，私下向特定投資人或證券市場專業人士揭露重大資訊」。證據顯示 Reg FD 帶來更高的資訊效率，且某些先前受惠於特權揭露的投資公司失去了資訊優勢。</p>
+<p>Reg FD 的實施無意間製造了一個檢驗市場效率的自然實驗：信用評等機構在該規則制定時獲得豁免，意味著信用分析師能取得股票分析師無法取得的機密資訊。2010 年陶德－法蘭克（Dodd-Frank）立法廢除了該豁免。分析顯示，債券評等的升降，在 Reg FD 之後比之前對價格有更大影響，而在 2010 年信評機構失去特權資訊後，此影響便淡化。</p>
+<p>另一個導致財富移轉的資訊不對稱來源，是公司對股票的買回與發行。一般而言，公司在股價被低估時買回、被高估時發行，這讓持續持有的股東受益、犧牲了賣出或買進的股東。這之所以重要，是因為它意味著公司也賺走了投資人所追求的部分超額報酬。公司能這麼做，是因為高階主管比投資人更了解自家公司。研究此題的學者發現：「這些財富移轉可用多種公司特性來預測，而未來的財富移轉是當前股價的重要決定因素。」</p>
+
+<h3 class="sub">付出注意力</h3>
+<p>《紐約時報》於 1998 年 5 月 3 日刊出一篇頭版報導，談一項癌症治療的潛在突破。EntreMed（後更名 CASI Pharmaceuticals）因擁有該技術的授權而被提及。該股隔日飆漲，從約 12 美元漲到逾 51 美元、成交量龐大，且高股價在該年持續整年。此事之所以引人注目，是因為頂尖科學期刊《Nature》與《紐約時報》早在數月前就報導過這項研究的實質內容——根本沒有新消息。</p>
+<p>這帶出資訊優勢的第二個來源：付出注意力。大量證據顯示投資人注意力有限，因而未能納入所有可得資訊。這給能妥善吸收相關資訊的人帶來機會。光是「資訊在何處被分享」就能影響它反映到價格的速度。</p>
+
+<figure class="fig" id="ex18">
+  <div class="frame hassvg"><svg viewBox='0 0 620 300' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='58' y1='30' x2='58' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='58' y1='240' x2='578' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='58' y1='240.0' x2='578' y2='240.0' stroke='#e0dccf' stroke-width='1'/><text x='50' y='244.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-0.8</text><line x1='58' y1='187.5' x2='578' y2='187.5' stroke='#e0dccf' stroke-width='1'/><text x='50' y='191.5' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>-0.4</text><line x1='58' y1='135.0' x2='578' y2='135.0' stroke='#e0dccf' stroke-width='1'/><text x='50' y='139.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='58' y1='82.49999999999997' x2='578' y2='82.49999999999997' stroke='#e0dccf' stroke-width='1'/><text x='50' y='86.49999999999997' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0.4</text><line x1='58' y1='30.0' x2='578' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='50' y='34.0' font-size='10' fill='#44515f' text-anchor='end' font-weight='400'>0.8</text><text x='58.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2m</text><text x='110.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>6m</text><text x='162.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>10m</text><text x='214.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>30m</text><text x='266.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>50m</text><text x='318.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>2h</text><text x='370.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>4h</text><text x='422.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>6h</text><text x='474.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>1d</text><text x='526.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>5d</text><text x='578.0' y='256' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='400'>15d</text><line x1='58' y1='135.0' x2='578' y2='135.0' stroke='#44515f' stroke-width='1.2'/><polyline points='58,104 110,69 162,67 214,64 266,63 318,62 370,63 422,59 474,54 526,54 578,68' fill='none' stroke='#5b8bad' stroke-width='2'/><polyline points='58,125 110,111 162,110 214,109 266,107 318,106 370,104 422,96 474,82 526,68 578,69' fill='none' stroke='#27506b' stroke-width='2'/><polyline points='58,161 110,188 162,198 214,207 266,208 318,203 370,201 422,194 474,190 526,194 578,194' fill='none' stroke='#5b8bad' stroke-width='2' stroke-dasharray='5 4'/><polyline points='58,142 110,148 162,151 214,155 266,161 318,164 370,172 422,181 474,174 526,188 578,190' fill='none' stroke='#27506b' stroke-width='2' stroke-dasharray='5 4'/><text x='266.0' y='48.375' font-size='9.5' fill='#5b8bad' text-anchor='middle' font-weight='700'>頭版・正</text><text x='266.0' y='95.625' font-size='9.5' fill='#27506b' text-anchor='middle' font-weight='700'>非頭版・正</text><text x='240.0' y='174.375' font-size='9.5' fill='#27506b' text-anchor='middle' font-weight='700'>非頭版・負</text><text x='240.0' y='211.125' font-size='9.5' fill='#5b8bad' text-anchor='middle' font-weight='700'>頭版・負</text><text x='318.0' y='272' font-size='10.5' fill='#44515f' text-anchor='middle' font-weight='700'>新聞發布後經過時間（m分/h時/d日）</text><text x='12' y='135.0' font-size='10' fill='#44515f' text-anchor='middle' font-weight='700'>累計超額報酬（%）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 18：「次級重要」新聞置放後的累計超額報酬</span>
+    多線折線圖，四條線比較被釘在 Bloomberg 終端機「頭版」與「非頭版」、且初始報酬為正或為負的新聞。「頭版、正初始報酬」累計超額報酬最高（約 +0.6%）；「非頭版、正初始報酬」較低（約 +0.2% 起，後逐漸追上）；負向兩條對稱在零軸下方，「頭版、負初始報酬」跌幅最深（約 −0.5%）。頭版故事的價格衝擊與成交量都大得多，但頭版與非頭版的超額報酬會隨時間收斂。
+    <span class="axis">座標軸：橫軸＝新聞發布後經過時間（2 分鐘 m → 15 天 d；m=分、h=時、d=日）；縱軸＝累計超額報酬（%），約 −0.8 至 +0.8。初始報酬為發布後前五分鐘的超額報酬。</span>
+    <span class="src">資料來源：Counterpoint Global，依據 Anastassia Fedyk，〈Front-Page News: The Effect of News Positioning on Financial Markets〉，《Journal of Finance》第 79 卷第 1 期，2024 年 2 月，5–33。</span>
+  </figcaption>
+</figure>
+
+<p>Bloomberg 把新聞標為「次級重要」（secondary important）的條件是：非常顯著（僅占所有新聞的 0.5%），但還不夠格上頭版，除非「主要重要」文章不足。頭版故事的價格衝擊與交易量都高得多，但頭版與非頭版故事的超額報酬會隨時間收斂。</p>
+<p>一個關於注意力影響的基本模型，考量「不專注投資人的比例」。當該比例很低時，市場傾向資訊有效率；但當該比例很高時，資產價格便未能反映可得資訊，「異於市場的看法」（variant perception）的機會於是出現。心理學研究指出幾個決定「不專注投資人比例」的因素：資訊的顯著性、投資人處理資訊所用的資源，以及投資人處理資訊的難易度。一般而言，投資人面對的刺激越多，越難維持注意力——這就是資訊「淹沒在雜訊中」的方式。</p>
+<p>研究者發現，散戶尤其容易被「吸引注意力」的股票吸引。例如電視節目《Mad Money》主持人 Jim Cramer 推薦的股票，享有龐大的短期漲幅；而在如何分配注意力上更嚴謹的機構投資人，較不受此效應影響。</p>
+
+<h3 class="sub">任務複雜度</h3>
+<p>資訊優勢的最後一個來源是任務複雜度。原則是：某資訊的含意越不明顯，市場消化它所需的時間就越久。因此，看穿複雜性可成為超額報酬的來源。</p>
+<p>例如金融經濟學家檢視了「關於某產業的新資訊」如何影響單一業務公司、相對於多業務的集團企業。以一個假想的新資訊為例：一項研究顯示吃巧克力能延長人類壽命。一家只經營巧克力業務的公司，其股價反應會比「巧克力只占部分業務的集團企業」更快。經濟學家「發現強力證據顯示，容易分析的公司會率先納入產業資訊，因此它們的報酬能強烈預測那些需要更複雜分析之公司價值的後續更新」。</p>
+<p>任務複雜度的另一例，是市場如何對「供應鏈中交易夥伴」的相關資訊反應。當兩家公司相關（例如一家是另一家的供應商）時，市場會延遲地把關於第一家公司的新資訊反映到第二家公司的股票上。投資人可在某公司的客戶發布利多後，買進該供應商的股票以賺取超額報酬。</p>
+
+<div class="note"><strong>如何有效利用資訊性無效率？</strong>
+<ul style="margin:8px 0 0;padding-left:20px">
+  <li><strong>蒐集他人沒有的合法資訊：</strong>此優勢來源難以達成且可能昂貴。捕捉市場尚未消化的資訊，能為投資人帶來超額報酬，並以更有效率的價格造福社會。相關做法是蒐集大量弱訊號，組合後產生一個強訊號。</li>
+  <li><strong>認清並非所有資訊都立刻反映到價格：</strong>投資人注意力有限，因此與價值相關的資訊不一定立刻反映到股價。投資人對「引人注意」的資訊反應較快，對「不顯眼」的資訊反應較慢。</li>
+  <li><strong>市場反映「較間接資訊」可能較慢：</strong>研究顯示，若納入資訊的任務複雜，市場效率會較低。資訊優勢可能來自看出「新資訊對市場中那些影響不立即明顯之處」的含意。</li>
+</ul>
+</div>
+
+<!-- ===================== 技術性無效率 ===================== -->
+<h2 class="sec" id="technical">技術性無效率</h2>
+<p>當某些參與者基於「與基本價值無關」的理由而必須買賣證券時，便出現<strong>技術性無效率</strong>。法律、法規、合約與內部政策都可能加諸塑造特定機構行為的規則；這些行為對單一公司或許合理，卻可能製造無效率。此外，有些交易是由限制、要求或無可避免的約束所引發。</p>
+<p>1990 年諾貝爾獎得主、經濟學家 William Sharpe 寫過一篇關於主動管理的論文，提出兩個基本論點：一、主動管理的「平均每一元」費前報酬，將等於被動管理的每一元；二、主動管理的平均每一元費後報酬，將低於被動管理的每一元。</p>
+<p>但 Sharpe 的分析忽略了一件事：指數基金也必須買賣證券，以反映指數的納入與剔除、以及公司的股票買賣。已有大量文獻記錄知名股票指數的這些成本；對債券基金而言，相對成本可能更大；ETF 維持價格等於淨值（NAV）的套利成本，也有類似情形。</p>
+<p>把這連回「我們在玩什麼遊戲」：指數化興起意味著這些基金做更多此類交易、需要對手方。要注意，傳統指數基金的經理人並不在意價格是否有效率，而是設法把追蹤誤差（tracking error）相對指數最小化。剩下的主動投資人更偏向短期，也契合這個故事。如今「與指數基金對作」有不錯的利潤可圖；公司必須夠老練、成本夠低，才能獲利地這麼做。但機會從未如此之好，因為指數化從未如此之大。</p>
+<p>除此之外，對基本面導向的投資人還有其他可利用技術優勢的機會，每種都需要動用資本：一是站在「被迫賣方或買方」的另一邊；二是考量「受資金流影響之證券」的相反側——此時投資經理人必須買賣證券，且以可預測的模式進行；最後是當傳統套利者「資本受限」、未能履行其正常功能時挺身而入。</p>
+
+<h3 class="sub">被迫的賣方或買方</h3>
+<p>法規實際上鼓勵保險公司持有投資級債券，使這些公司的投組看起來相似。這些要求也迫使保險公司賣出被信評機構從投資級降為高收益的債券，這就是<span class="term">被迫賣出（forced selling）</span>的一例。研究顯示，這類「<span class="term">急售（fire sales）</span>」會使殖利率利差擴大到超過基本面所能合理化的程度，造成暫時性的錯誤定價，且往往在事件後數月內被修正。</p>
+<p>經濟學教授 John Geanakoplos 發展了「<span class="term">槓桿循環（leverage cycle）</span>」這個理解被迫賣出的有用框架。其核心觀念是：在理解榮枯時，「能否借到錢」比「利率水準」更重要。衡量借款能力的一個指標是<span class="term">保證金要求（margin requirement）</span>——投資人必須用自有資金支應的證券價值百分比。例如在聯準會 Regulation T 下，買多數股票的最低初始保證金為 50%：買 100 美元股票須出 50 美元、其餘可借。另有維持保證金要求（通常為現值的 25%）：若股價跌到 66.67 美元以下，投資人就會收到追繳保證金通知，許多情況下須賣出部分部位以償還債務。</p>
+<p>以保證金要求衡量的「借款能力」是<strong>順週期的（procyclical）</strong>：資產價格上漲後較易借、下跌後較難借。Geanakoplos 主張，由於投資人觀點異質，有些人會對某資產給出比他人更高的估值；這些樂觀者會在容易借錢時用債務把資產價格推高，從而為崩盤埋下伏筆。當資產價格因「被感知的壞消息」而下跌，波動度、不確定性與分歧便上升。由於樂觀的資產持有者用了大量槓桿，這初始下跌造成其財富大幅縮水，觸發保證金要求、迫使樂觀者賣出，進而導致資產價值進一步下跌、引發更多賣壓，如此循環。這些樂觀的資產持有者賣出的理由，與他們對基本價值的看法無關。</p>
+<p>在價格找到新均衡之前，放款者會提高保證金要求、使借款更難，這會淘汰部分買家、留下更少投資人來支撐價格。此過程引入「<span class="term">外溢（spillovers）</span>」風險——某資產類別的持有者為彌補損失而賣出其他類別的資產。槓桿循環顯示，由於追繳保證金與更嚴格保證金要求所造成的被迫賣出，資產價格可能大幅跌破公允價值。這是一場為「能站在交易另一邊的投資人」創造技術優勢的急售。</p>
+<p>並非所有被迫交易都是賣出，也有被迫買進。最明顯的例子是必須買回股票以平倉的放空者。這可能由以下情況造成：股價大漲帶來無法承受的虧損風險、借券成本上升，或由內線買進、放款人索回股票、或散戶協調買進所引發的軋空（short squeeze）。</p>
+
+<h3 class="sub">資金流的重要性</h3>
+<p>一種技術優勢來自「基金因資金流入或流出而買賣特定證券」。故事梗概是：投資人傾向把錢給表現好的基金、從表現差的基金撤資。獲得額外資本的經理人傾向買進他們已持有的證券，面臨贖回的經理人則必須賣出投組中的證券、且通常從最具流動性者開始。</p>
+<p>因此，正資金流傾向製造正向價格壓力、負資金流製造負向壓力。這些效應對「難交易、流動性成本高」的證券尤為顯著。它短期內為基金成果加減分，但價格效應會在數月、甚至數年內反轉。一項分析結論指出，避險基金三分之一的超額報酬（alpha）可歸因於投資人資金流。</p>
+<p>關於「資金流入指數基金、流出主動基金」之影響的辯論仍在持續。核心問題是：這些資金流對資產價格影響多大？一派主張：由於股票需求曲線向下傾斜，這些需求衝擊對價格有重大且持久的影響。與之抗衡的研究則顯示：公司本身會創造供給以滿足需求、需求衝擊的影響傾向反轉、且大型股的估值並不極端。</p>
+<p>思考「誰在另一邊」的一種方法，是依交易「由基本價值或流動性引發」來分類。為基本面理由買賣的股票顯示「選股技巧」，為流動性理由交易的股票則呈現「負面績效效應」。證據顯示，老練的基金以「為技術理由賣出者」為代價而獲益。</p>
+
+<h3 class="sub">當套利者缺席</h3>
+<p>當套利者沒有足夠資本來縮小價格與價值的落差時，也會出現技術性無效率。一例是跨交易所套利：投資人在不同地方以不同價格買賣同一資產（例如美國與南韓的比特幣），鎖定利潤。理論上無風險、不需資本，但這類機會稀少，因為幾乎總有某種成本。在<span class="term">風險套利（risk arbitrage）</span>中，投資人買賣資產卻不保證獲利，故引入了「風險」。套利者在投資界很多，正常情況下有足夠資本去獲利地消除價格與價值的背離。但他們的資本並非無限。</p>
+<p>專業套利者通常是代理人，資本來自富人、校務基金或退休基金等委託人，並與大宗經紀商（prime broker）協商可用槓桿的額度與成本。歷史顯示，委託人與放款者都會在極端壓力時撤退，使有意義的套利機會持續存在——這能創造機會。</p>
+<p><strong>長期資本管理公司（LTCM）</strong>是一個涵蓋我們所談多種無效率來源的案例研究。LTCM 成立於 1994 年，前四年享有逾 30% 的複合年報酬，卻在 1998 年實質破產。其覆滅原因包括俄羅斯曝險（俄國 1998 年 8 月貶值貨幣並對債務違約），以及高槓桿部位的虧損。一個銀行團出手紓困，並在基金最終清算時賺得些微利潤。</p>
+<p>LTCM 困境中一個常被忽略的面向，是其他基金與銀行模仿其部位的程度。如同 LeBaron 的基於主體模型，金融機構複製了 LTCM 的交易，使這些交易變得擁擠、增加市場脆弱性；也與 LeBaron 模型一致，模仿在早期有利於報酬，卻使尋找新的可獲利交易越來越難。1998 年 7 月，時任 Travelers 集團執行長的 Sandy Weill 決定關閉所羅門兄弟（Salomon Brothers）的美國套利部門。Salomon 讓公司內另一組人去清算套利帳簿，使解開部位的過程比正常更快、虧損更多，為 LTCM 及其他做過類似交易的公司製造了壓力。</p>
+<p>槓桿也在 LTCM 覆滅中扮演要角。該公司 1998 年初的資產對權益比為 27 比 1。LTCM 許多部位需要高槓桿才能產生滿意報酬，而該槓桿比相當於當時五大投資銀行的平均水準。對於「低風險且屬於良好分散投組一部分」的收斂交易，大量槓桿可以合理。以五年歷史資料計算，LTCM 各部位之間的相關係數在 1998 年初前低於 0.10（0 表示完全不相關、1.0 表示完全正相關）。為壓力測試投組，LTCM 風險經理人假設相關係數可能升到 0.30（他們認為這不太可能）；但危機爆發時相關係數飆升至 0.70，使傳統風險管理工具基本上失效。</p>
+<p>LTCM 在 1998 年 8 月虧損 44% 的資本，並於 9 月初致函客戶，暗示機會集看來異常吸引人。此訊息立即外洩。此信非但未達到吸引新資本的預期效果，反而使 LTCM 的對手方更加擔憂、進一步加壓其部位。LTCM 是「槓桿循環如何上演」的生動例子。其故事顯示技術性無效率如何因「缺乏資本充裕的套利者」而浮現。這些是極端條件，但此類事件在市場中不時發生。能否取得資本，是利用這些機會的關鍵。</p>
+<p>在結束技術性無效率前，值得一提<span class="term">分拆（spin-offs）</span>——把全資子公司的股份，按比例、免稅地分配給母公司股東。Gotham Capital 創辦人 Joel Greenblatt 解釋，技術優勢之所以出現，是因為「一旦分拆股份分配給母公司股東，它們通常會被立即賣出、不顧價格或基本價值」。歷史上，分拆平均為被分拆公司與母公司都創造價值。一篇關於分拆文獻的整合分析總結道：「主要結論一致：分拆與強烈顯著的異常報酬相關。」促成此價值創造的因素包括：聚焦更銳利的企業、給投資人更好的資訊、強化併購機會，以及某些情況下更有利的稅務待遇。分拆可能同時結合分析、資訊與技術性無效率，值得在尋找優勢時持續關注。</p>
+
+<div class="note"><strong>如何有效利用技術性無效率？</strong>
+<ul style="margin:8px 0 0;padding-left:20px">
+  <li><strong>留意被迫賣方：</strong>市場參與者週期性地不顧基本價值而買賣。一例是槓桿循環的解開——樂觀買家因追繳保證金而被迫賣出。</li>
+  <li><strong>觀察投資人資金流：</strong>市場層面要看的是流入指數、流出主動管理。基金層面的簡單故事是：流入跟隨短期好報酬、收到資金的經理人常買更多手中持股而製造短期推升；流出通常跟隨差績效、經理人必須賣出持股、通常從最具流動性的部位開始。</li>
+  <li><strong>尋找套利者被繃緊之處：</strong>正常情況下套利者非常擅長對齊價格與價值——他們找出並縮小落差的能力，正是解釋市場為何有效率的途徑之一。但套利者不時會無法協調行動、或缺乏所需資本去縮小價格與價值的落差。</li>
+  <li><strong>留意分拆：</strong>長久以來分拆都是技術性無效率的絕佳例子。雖然近年報酬不如數十年前那麼好，仍持續提供機會。我們認為，在分拆宣布時就值得評估，看是否存在資訊、分析或技術上的機會。</li>
+</ul>
+</div>
+
+<!-- ===================== 結論 ===================== -->
+<h2 class="sec" id="conclusion">結論</h2>
+<p>市場不可能完全資訊效率，因為蒐集資訊並反映到價格是有成本的。效率程度，取決於取得資訊有多難，以及買賣證券以捕捉價值所伴隨的摩擦。效率跨越國家與資產類別呈現一條連續譜。</p>
+
+<table>
+  <caption>Exhibit 19：市場效率連續譜</caption>
+  <thead>
+    <tr><th>較無效率</th><th>較有效率</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>分析師覆蓋有限</td><td>分析師覆蓋充足</td></tr>
+    <tr><td>資訊複雜</td><td>資訊直接易懂</td></tr>
+    <tr><td>投資人多樣性低（擁擠）</td><td>投資人多樣性高</td></tr>
+    <tr><td>有被迫的買方或賣方</td><td>買賣方流量中性</td></tr>
+    <tr><td>替代品少</td><td>替代品多</td></tr>
+    <tr><td>放空受限</td><td>容易放空</td></tr>
+    <tr><td>融資成本高</td><td>融資成本低</td></tr>
+    <tr><td>交易成本高</td><td>交易成本低</td></tr>
+    <tr><td>套利者取得資本受限</td><td>套利者資金充裕</td></tr>
+  </tbody>
+</table>
+<p class="tsrc">資料來源：Counterpoint Global。</p>
+
+<p>已故耶魯校務基金前投資長 David Swensen 提出一個基於「主動經理人報酬分布」的簡單投資機會衡量：報酬離散度（dispersion）寬的資產類別，比離散度窄的，為有技巧的主動經理人提供更多創造超額報酬的機會。</p>
+
+<figure class="fig" id="ex20">
+  <div class="frame hassvg"><svg viewBox='0 0 660 330' xmlns='http://www.w3.org/2000/svg' font-family='Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif' style='width:100%;height:auto;background:#fff'><line x1='55' y1='30' x2='55' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='240' x2='635' y2='240' stroke='#44515f' stroke-width='1.2'/><line x1='55' y1='240.0' x2='635' y2='240.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='244.0' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>-30</text><line x1='55' y1='213.75' x2='635' y2='213.75' stroke='#e0dccf' stroke-width='1'/><text x='47' y='217.75' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>-20</text><line x1='55' y1='187.5' x2='635' y2='187.5' stroke='#e0dccf' stroke-width='1'/><text x='47' y='191.5' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>-10</text><line x1='55' y1='161.25' x2='635' y2='161.25' stroke='#e0dccf' stroke-width='1'/><text x='47' y='165.25' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>0</text><line x1='55' y1='135.0' x2='635' y2='135.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='139.0' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>10</text><line x1='55' y1='108.75' x2='635' y2='108.75' stroke='#e0dccf' stroke-width='1'/><text x='47' y='112.75' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>20</text><line x1='55' y1='82.5' x2='635' y2='82.5' stroke='#e0dccf' stroke-width='1'/><text x='47' y='86.5' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>30</text><line x1='55' y1='56.25' x2='635' y2='56.25' stroke='#e0dccf' stroke-width='1'/><text x='47' y='60.25' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>40</text><line x1='55' y1='30.0' x2='635' y2='30.0' stroke='#e0dccf' stroke-width='1'/><text x='47' y='34.0' font-size='9.5' fill='#44515f' text-anchor='end' font-weight='400'>50</text><line x1='55.0' y1='35.25' x2='55.0' y2='226.875' stroke='#44515f' stroke-width='1'/><rect x='46' y='130' width='18' height='55' fill='#2b8abf' fill-opacity='0.85'/><text x='55.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>創投</text><line x1='93.66666666666666' y1='114.0' x2='93.66666666666666' y2='205.875' stroke='#44515f' stroke-width='1'/><rect x='85' y='143' width='18' height='37' fill='#2b8abf' fill-opacity='0.85'/><text x='93.66666666666666' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>併購</text><line x1='132.33333333333331' y1='106.125' x2='132.33333333333331' y2='200.625' stroke='#44515f' stroke-width='1'/><rect x='123' y='146' width='18' height='34' fill='#2b8abf' fill-opacity='0.85'/><text x='132.33333333333331' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>房地產</text><line x1='171.0' y1='137.625' x2='171.0' y2='184.875' stroke='#44515f' stroke-width='1'/><rect x='162' y='156' width='18' height='13' fill='#2b8abf' fill-opacity='0.85'/><text x='171.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>私募債</text><line x1='209.66666666666666' y1='87.75' x2='209.66666666666666' y2='195.375' stroke='#44515f' stroke-width='1'/><rect x='201' y='148' width='18' height='26' fill='#c4a35a' fill-opacity='0.85'/><text x='209.66666666666666' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>全球總體</text><line x1='248.33333333333331' y1='103.5' x2='248.33333333333331' y2='198.0' stroke='#44515f' stroke-width='1'/><rect x='239' y='148' width='18' height='26' fill='#c4a35a' fill-opacity='0.85'/><text x='248.33333333333331' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>多空股票</text><line x1='287.0' y1='114.0' x2='287.0' y2='187.5' stroke='#44515f' stroke-width='1'/><rect x='278' y='151' width='18' height='21' fill='#c4a35a' fill-opacity='0.85'/><text x='287.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>多策略</text><line x1='325.6666666666667' y1='108.75' x2='325.6666666666667' y2='190.125' stroke='#44515f' stroke-width='1'/><rect x='317' y='148' width='18' height='24' fill='#c4a35a' fill-opacity='0.85'/><text x='325.6666666666667' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>事件驅動</text><line x1='364.3333333333333' y1='108.75' x2='364.3333333333333' y2='211.125' stroke='#44515f' stroke-width='1'/><rect x='355' y='151' width='18' height='21' fill='#27506b' fill-opacity='0.85'/><text x='364.3333333333333' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>小型成長</text><line x1='403.0' y1='121.875' x2='403.0' y2='205.875' stroke='#44515f' stroke-width='1'/><rect x='394' y='148' width='18' height='29' fill='#27506b' fill-opacity='0.85'/><text x='403.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>大型成長</text><line x1='441.66666666666663' y1='129.75' x2='441.66666666666663' y2='192.75' stroke='#44515f' stroke-width='1'/><rect x='433' y='153' width='18' height='18' fill='#27506b' fill-opacity='0.85'/><text x='441.66666666666663' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>小型價值</text><line x1='480.3333333333333' y1='127.125' x2='480.3333333333333' y2='192.75' stroke='#44515f' stroke-width='1'/><rect x='471' y='151' width='18' height='24' fill='#27506b' fill-opacity='0.85'/><text x='480.3333333333333' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>大型價值</text><line x1='519.0' y1='140.25' x2='519.0' y2='179.625' stroke='#44515f' stroke-width='1'/><rect x='510' y='156' width='18' height='10' fill='#b4503f' fill-opacity='0.85'/><text x='519.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>新興市場</text><line x1='557.6666666666667' y1='145.5' x2='557.6666666666667' y2='174.375' stroke='#44515f' stroke-width='1'/><rect x='549' y='157' width='18' height='8' fill='#b4503f' fill-opacity='0.85'/><text x='557.6666666666667' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>高收益</text><line x1='596.3333333333334' y1='148.125' x2='596.3333333333334' y2='179.625' stroke='#44515f' stroke-width='1'/><rect x='587' y='157' width='18' height='9' fill='#b4503f' fill-opacity='0.85'/><text x='596.3333333333334' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>中期核心</text><line x1='635.0' y1='153.375' x2='635.0' y2='169.125' stroke='#44515f' stroke-width='1'/><rect x='626' y='159' width='18' height='5' fill='#b4503f' fill-opacity='0.85'/><text x='635.0' y='254' font-size='8' fill='#44515f' text-anchor='middle' font-weight='400'>短期</text><text x='113.0' y='270' font-size='10' fill='#1c2733' text-anchor='middle' font-weight='700'>私募資本</text><text x='267.6666666666667' y='270' font-size='10' fill='#1c2733' text-anchor='middle' font-weight='700'>避險基金</text><text x='422.3333333333333' y='270' font-size='10' fill='#1c2733' text-anchor='middle' font-weight='700'>股票型共同基金</text><text x='577.0' y='270' font-size='10' fill='#1c2733' text-anchor='middle' font-weight='700'>固定收益共同基金</text><text x='9' y='135.0' font-size='9.5' fill='#44515f' text-anchor='middle' font-weight='700'>相對中位數離散度（%）</text></svg></div>
+  <figcaption>
+    <span class="cap-t">Exhibit 20：各資產類別主動經理人的報酬離散度</span>
+    箱形圖（盒鬚圖），橫排 16 個資產類別，分四大群組：<strong>私募資本（Private Capital）</strong>——創投、併購、房地產、私募債；<strong>避險基金（Hedge Funds）</strong>——全球總體、多空股票（L/S Equity）、多策略、事件驅動；<strong>股票型共同基金</strong>——小型成長、大型成長、小型價值、大型價值；<strong>固定收益共同基金</strong>——新興市場、高收益、中期核心、短期。離散度自左向右遞減：<strong>創投最高、短期債券投組最低</strong>。
+    <span class="axis">座標軸：縱軸＝相對中位數的離散度（%），約 −30 至 +50。每個箱形顯示第 5、25、75、95 百分位。私募股權為自始的內部報酬率（IRR）至 2026/1/6、年份 1980–2022；避險與共同基金為至 2025/12/31 的五年年化總報酬；L/S＝多空。</span>
+    <span class="src">資料來源：Counterpoint Global 與 Morningstar Direct。</span>
+  </figcaption>
+</figure>
+
+<p>我們把市場無效率分為四個領域：行為、分析、資訊與技術。這些類別彼此重疊不少。<strong>行為性無效率很可能最持久</strong>，因為人性長久以來變化不大、未來也不太可能大變；行為性無效率也最難捕捉，因為我們個人傾向「與群眾為伍」，並在不可避免的表現不佳期間承受基金投資人的壓力。</p>
+<p>要創造超額報酬，投資人應尋找「技巧能發揮作用的容易賽局」。在投資中如同在撲克裡，致勝關鍵是參與一個「存在技巧差異、而你身為其中最有技巧的玩家」的賽局。這是個挑戰，因為投資通常高度競爭、參與者技巧低的市場往往很小、且代理成本常驅使錯誤行為。</p>
+<p>本報告的主要目標，是鼓勵主動投資人提問並形成對「誰在另一邊？」的知情答案。我們建議記錄那些被認知到的無效率，以衡量它們預測超額報酬的能力如何。避險基金 D.E. Shaw 創辦人 David Shaw 這麼說：</p>
+<blockquote>單一個無效率可能不足以克服交易成本。然而當多個無效率碰巧同時發生，它們便可能提供一個「統計期望利潤超過相關交易成本」的交易機會。其他條件相同下，你能辨識的無效率越多，你可能擁有的交易機會就越多。</blockquote>
+
+<!-- ===================== 檢查清單 ===================== -->
+<h2 class="sec" id="checklist">檢查清單</h2>
+<p class="lead">原報告所附的投資自查清單，逐項對照本報告的四類無效率框架。</p>
+<ul class="check">
+  <li>投資人是否過度外推結果，導致不切實際的預期？</li>
+  <li>某證券、產業或資產類別是否有追逐績效的跡象？</li>
+  <li>情緒指標是否顯示極端的恐懼或貪婪？</li>
+  <li>投資人是否持有相關的觀點，從而在市場中製造脆弱性？</li>
+  <li>你是否擁有不同的時間範圍，以及時間套利的機會？</li>
+  <li>你能否撐過高特異性風險與短期回檔？</li>
+  <li>你是否比競爭對手更具分析技巧？</li>
+  <li>你是否對資訊放上不同、且更精確的權重？</li>
+  <li>你是否依新資訊準確地更新觀點？</li>
+  <li>你是否有理由相信某證券的敘事將會改變？</li>
+  <li>你是否比他人更理解一個複雜的投資機會？</li>
+  <li>你是否合法取得了其他投資人沒有的資訊？</li>
+  <li>你是否注意到所有相關資訊？</li>
+  <li>你是否在與被迫的買方或賣方交易？</li>
+  <li>你能否站在資金流的另一邊？</li>
+  <li>當套利者資金耗盡時，你能否挺身而入？</li>
+</ul>
+
+<footer>
+  原文：Michael J. Mauboussin & Dan Callahan, “Who Is On the Other Side? A Framework for Understanding Market (In)Efficiency,” Counterpoint Global Insights, Morgan Stanley Investment Management, 2026 年 1 月 21 日。<br>
+  © 2026 Morgan Stanley. All rights reserved.｜本中文電子書為翻譯整理之學習用途版本，涵蓋正文（p.1–50）與檢查清單（p.51）；未含 Appendix A/B/C、Endnotes 與 References。所有圖表（Exhibit 1–20）因無向量原檔可裁切，改以佔位框＋中文圖說呈現。
+</footer>
+
+</main>
+</div>
+<script>
+  const bar=document.getElementById('progress');
+  const links=[...document.querySelectorAll('nav.toc a')];
+  function onScroll(){
+    const h=document.documentElement;
+    const sc=(h.scrollTop)/(h.scrollHeight-h.clientHeight);
+    bar.style.width=(sc*100)+'%';
+    let cur='';
+    document.querySelectorAll('main [id]').forEach(s=>{
+      if(s.getBoundingClientRect().top<140) cur=s.id;
+    });
+    links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+</script>
+</body>
+</html>
