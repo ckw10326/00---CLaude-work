@@ -1,94 +1,149 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的 Gemini 聊天室（自動存 Google 資料庫）</title>
-  <script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-compat.js"></script>
-  <style>
-    body { font-family: "Microsoft JhengHei", sans-serif; margin:0; padding:20px; background:#f0f2f5; }
-    #chat { height:70vh; overflow-y:auto; border:1px solid #ddd; padding:15px; background:white; border-radius:10px; }
-    .message { margin:10px 0; padding:12px; border-radius:10px; max-width:80%; }
-    .user { background:#dcf8c6; align-self:flex-end; margin-left:auto; }
-    .gemini { background:#e5e5ea; }
-    input { width:80%; padding:15px; font-size:16px; }
-    button { padding:15px 25px; font-size:16px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的知識庫</title>
+<style>
+  :root {
+    --ink: #1c2733;
+    --ink-soft: #44515f;
+    --paper: #f4f1ea;
+    --card: #ffffff;
+    --rule: #d9d3c7;
+    --accent: #2f5d7c;
+    --accent-soft: #e7eef3;
+    --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+  }
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  header p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .container {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 24px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .article-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.15s;
+  }
+  .article-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(47,93,124,0.1);
+  }
+  .article-card .title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .article-card:hover .title {
+    color: var(--accent);
+  }
+  .article-card .meta {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .article-card .arrow {
+    font-size: 1.2rem;
+    color: var(--rule);
+    flex-shrink: 0;
+    margin-left: 16px;
+    transition: all 0.15s;
+  }
+  .article-card:hover .arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+  .count {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--rule);
+    margin-top: 60px;
+  }
+</style>
 </head>
 <body>
-  <h1>🚀 我的 Gemini 聊天室（自動存 Google 資料庫）</h1>
-  <div id="chat"></div>
-  <input id="input" placeholder="輸入訊息並按送出...">
-  <button onclick="sendMessage()">送出給 Gemini</button>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDwt8LwdYDcrYPsFRvaapLjRII1cTsQZP4",
-      authDomain: "chat-record-fe700.firebaseapp.com",
-      projectId: "chat-record-fe700",
-      storageBucket: "chat-record-fe700.firebasestorage.app",
-      messagingSenderId: "157324518018",
-      appId: "1:157324518018:web:b735b8f9bd551fd5b64a9b",
-      measurementId: "G-EP4G9HP58D"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const API_KEY = 'AIzaSyDzKLLf55z_p-UfhxGSis72a5qTOEL3hrQ';  // ←←← 這裡改成你的 Gemini API Key！
-    const MODEL = 'gemini-1.5-flash';
+<header>
+  <h1>我的知識庫</h1>
+  <p>閱讀筆記與思考整理</p>
+</header>
 
-    // 即時顯示聊天記錄
-    const chatDiv = document.getElementById('chat');
-    db.collection('gemini_chats').orderBy('timestamp').onSnapshot(snapshot => {
-      chatDiv.innerHTML = '';
-      snapshot.forEach(doc => {
-        const msg = doc.data();
-        const div = document.createElement('div');
-        div.className = `message ${msg.role}`;
-        div.innerHTML = `<strong>${msg.role === 'user' ? '你' : 'Gemini'}：</strong> ${msg.text}`;
-        chatDiv.appendChild(div);
-      });
-      chatDiv.scrollTop = chatDiv.scrollHeight;
-    });
+<div class="container">
+  <p class="count">共 1 篇文章</p>
 
-    async function sendMessage() {
-      const input = document.getElementById('input');
-      const text = input.value.trim();
-      if (!text) return;
+  <div class="section-title">所有文章</div>
 
-      // 存你的訊息
-      await db.collection('gemini_chats').add({
-        role: 'user',
-        text: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
+  <div class="article-list">
 
-      input.value = '';
+    <a class="article-card" href="articles/who_is_on_the_other_side_1.html">
+      <div>
+        <div class="title">誰在另一邊？理解市場（不）效率的框架</div>
+        <div class="meta">投資思維 · 市場效率</div>
+      </div>
+      <div class="arrow">→</div>
+    </a>
 
-      // 呼叫 Gemini（自動帶最近歷史）
-      const history = await db.collection('gemini_chats').orderBy('timestamp', 'desc').limit(20).get();
-      let contents = [];
-      history.forEach(doc => {
-        const d = doc.data();
-        contents.unshift({ role: d.role, parts: [{ text: d.text }] });
-      });
+  </div>
+</div>
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: contents })
-      });
-      const json = await res.json();
-      const aiText = json.candidates[0].content.parts[0].text;
+<footer>
+  持續更新中
+</footer>
 
-      // 存 Gemini 回應（自動存檔完成！）
-      await db.collection('gemini_chats').add({
-        role: 'gemini',
-        text: aiText,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  </script>
 </body>
 </html>
