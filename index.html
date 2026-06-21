@@ -106,6 +106,56 @@
     color: var(--ink-soft);
     margin-bottom: 20px;
   }
+  .file-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .file-card .title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .file-card .meta {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .file-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .btn {
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-view {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-view:hover {
+    background: #244a63;
+  }
+  .btn-download {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .btn-download:hover {
+    background: #d8e5ee;
+  }
   footer {
     text-align: center;
     padding: 40px 24px;
@@ -138,6 +188,19 @@
       <div class="arrow">→</div>
     </a>
 
+  </div>
+
+  <div class="section-title" style="margin-top:40px;">簡報</div>
+
+  <div class="file-card">
+    <div>
+      <div class="title">交友心動聚 — 張烜華</div>
+      <div class="meta">自我介紹簡報 · PowerPoint</div>
+    </div>
+    <div class="file-actions">
+      <a class="btn btn-view" href="presentation.html">線上預覽</a>
+      <a class="btn btn-download" href="intro-zhang.pptx" download>下載簡報</a>
+    </div>
   </div>
 </div>
 

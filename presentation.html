@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交友心動聚 — 張烜華</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  gap: 28px;
+}
+.slide {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16/9;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.s1 .bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s1 .title-box {
+  position: absolute; top: 12%; right: 5%;
+  background: rgba(255,255,255,0.88);
+  border-radius: 10px; padding: 4% 5%; max-width: 40%; text-align: center;
+}
+.s1 .title-box h1 { font-size: clamp(1rem, 3vw, 1.9rem); color: #2C3E50; font-weight: 700; line-height: 1.4; }
+.s2 { padding: 5% 6%; display: flex; flex-direction: column; gap: 4%; }
+.slide-title { display: flex; align-items: center; gap: 2%; }
+.bar { width: 6px; height: 2em; background: #2C3E50; border-radius: 3px; flex-shrink: 0; }
+.slide-title h2 { font-size: clamp(0.85rem, 2vw, 1.4rem); color: #2C3E50; font-weight: 700; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3%; flex: 1; }
+.card {
+  background: #f8f9fa; border-radius: 10px; padding: 5% 4% 4%;
+  display: flex; flex-direction: column; align-items: center; gap: 5%; border: 1px solid #e8e8e8;
+}
+.card img { width: 60%; object-fit: contain; }
+.card h3 { font-size: clamp(0.7rem, 1.4vw, 1rem); color: #2C3E50; font-weight: 700; text-align: center; }
+.card p { font-size: clamp(0.55rem, 1vw, 0.78rem); color: #666; text-align: center; line-height: 1.5; }
+.s3 { padding: 5% 6%; display: flex; flex-direction: column; gap: 4%; }
+.s3 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3%; flex: 1; }
+.col-card { border-radius: 10px; padding: 5% 6%; display: flex; flex-direction: column; gap: 5%; }
+.col-card.blue { background: #EBF5FB; }
+.col-card.orange { background: #FEF9E7; }
+.col-card h3 { font-size: clamp(0.7rem, 1.4vw, 1rem); font-weight: 700; }
+.col-card.blue h3 { color: #3498DB; }
+.col-card.orange h3 { color: #E67E22; }
+.col-card ul { list-style: none; display: flex; flex-direction: column; gap: 6%; }
+.col-card ul li { font-size: clamp(0.6rem, 1.1vw, 0.82rem); color: #2C3E50; padding-left: 5%; line-height: 1.5; }
+.col-card.blue ul li { border-left: 3px solid #3498DB; }
+.col-card.orange ul li { border-left: 3px solid #E67E22; }
+.s3 .doge-wrap { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; pointer-events: none; height: 35%; }
+.s3 .doge-wrap img { height: 100%; object-fit: contain; opacity: 0.12; }
+.s4 { padding: 5% 6%; display: grid; grid-template-columns: 1fr 1fr; gap: 4%; }
+.s4-left { display: flex; flex-direction: column; gap: 5%; }
+.criteria { display: flex; flex-direction: column; gap: 5%; flex: 1; justify-content: center; }
+.c-item { display: flex; align-items: center; gap: 3%; }
+.c-item img.icon { width: clamp(20px, 3vw, 32px); flex-shrink: 0; }
+.c-item p { font-size: clamp(0.6rem, 1.1vw, 0.88rem); color: #2C3E50; font-weight: 600; line-height: 1.5; }
+.c-item p span { font-weight: 400; color: #555; }
+.s4-right { display: flex; align-items: center; justify-content: center; }
+.s4-right img { width: 90%; object-fit: contain; }
+.s5 { padding: 5% 6%; display: grid; grid-template-columns: 1fr 1fr; gap: 4%; align-items: center; }
+.s5-left { display: flex; flex-direction: column; gap: 5%; }
+.s5 .cta { font-size: clamp(0.85rem, 1.8vw, 1.3rem); color: #D35400; font-weight: 700; }
+.s5 .body { font-size: clamp(0.6rem, 1.1vw, 0.85rem); color: #555; line-height: 1.8; }
+.s5-right { display: flex; align-items: center; justify-content: center; }
+.s5-right img { width: 68%; object-fit: contain; }
+.back-link {
+  display: inline-block; margin-bottom: 4px; color: #2f5d7c; text-decoration: none;
+  font-size: 0.9rem;
+}
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div style="width:100%;max-width:900px;">
+  <a class="back-link" href="index.html">← 回到知識庫首頁</a>
+</div>
+
+<!-- Slide 1 -->
+<div class="slide s1">
+  <img class="bg-img" src="slides/slide1_bg.png" alt="">
+  <div class="title-box"><h1>你好，我是張小華！</h1></div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide s2">
+  <div class="slide-title"><div class="bar"></div><h2>不是體育專業，而是...</h2></div>
+  <div class="cards">
+    <div class="card"><img src="slides/slide2_engineer.png" alt="工程師"><h3>電機工程師</h3><p>內建除錯系統的理工腦</p></div>
+    <div class="card"><img src="slides/slide2_building.png" alt="巷弄探險"><h3>巷弄探險家</h3><p>喜歡走讀巷弄與展覽的聽眾</p></div>
+    <div class="card"><img src="slides/slide2_sport.png" alt="運動"><h3>運動愛好者</h3><p>「零壓力屬性」的隊友／對手</p></div>
+  </div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide s3">
+  <div class="slide-title"><div class="bar"></div><h2>產品免責聲明：標準的 INTP</h2></div>
+  <div class="cols">
+    <div class="col-card blue">
+      <h3>別人眼裡的我（表面上）</h3>
+      <ul><li>好奇心強，喜歡掌控事情</li><li>邏輯清晰、智力超群</li><li>嘴上邏輯嚴密</li></ul>
+    </div>
+    <div class="col-card orange">
+      <h3>真實的我（實際上）</h3>
+      <ul><li>極度護短，對自己人挺到底</li><li>腦袋裡點子一堆，行動上的樹懶</li><li>社交能量低，下班偶爾特別宅</li></ul>
+    </div>
+  </div>
+  <div class="doge-wrap"><img src="slides/slide3_doge.png" alt=""></div>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide s4">
+  <div class="s4-left">
+    <div class="slide-title"><div class="bar"></div><h2>尋找什麼樣的隊友？</h2></div>
+    <div class="criteria">
+      <div class="c-item"><img class="icon" src="slides/slide4_icon0.png" alt=""><p>日常頻率：<span>動靜皆宜，有自己的興趣目標</span></p></div>
+      <div class="c-item"><img class="icon" src="slides/slide4_icon1.png" alt=""><p>未來藍圖：<span>期待長遠穩定的關係</span></p></div>
+      <div class="c-item"><img class="icon" src="slides/slide4_icon2.png" alt=""><p>一票否決：<span>冷熱暴力／態度差</span></p></div>
+    </div>
+  </div>
+  <div class="s4-right"><img src="slides/slide4_couple.png" alt=""></div>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide s5">
+  <div class="s5-left">
+    <div class="slide-title"><div class="bar"></div><h2>讓我們聊聊吧！</h2></div>
+    <p class="cta">期待與你相識 😉</p>
+    <p class="body">如果你覺得剛才的內容有產生共鳴，<br>或是你也想分享你的「故事」，<br>非常歡迎來找我聊聊！</p>
+  </div>
+  <div class="s5-right"><img src="slides/slide5_qr.jpg" alt="Instagram QR Code"></div>
+</div>
+
+</body>
+</html>
