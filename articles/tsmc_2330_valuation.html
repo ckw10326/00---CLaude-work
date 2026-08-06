@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台積電 (2330) 估值分析 — Forward P/E × 盈餘成長 × 地緣折價</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0D0B14;
+  --panel:#161225;
+  --panel2:#120F1E;
+  --line:#2B2344;
+  --ink:#EDEAF7;
+  --muted:#9A92B8;
+  --euv:#A78BFA;      /* EUV 紫 */
+  --gold:#E8C468;     /* 金屬層 */
+  --green:#5AD8A6;
+  --red:#F2708A;
+  --mono:"SF Mono","Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+header{padding:56px 0 36px;border-bottom:1px solid var(--line);
+  background:
+   radial-gradient(1000px 420px at 85% -10%, rgba(167,139,250,.13), transparent 60%),
+   radial-gradient(700px 300px at 8% 0%, rgba(232,196,104,.08), transparent 60%);}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.25em;color:var(--euv);text-transform:uppercase}
+h1{font-size:clamp(26px,4.2vw,40px);font-weight:800;margin:10px 0 6px;letter-spacing:.02em}
+h1 .tick{font-family:var(--mono);color:var(--gold);font-weight:600}
+.sub{color:var(--muted);max-width:740px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .l{font-size:12px;color:var(--muted)}
+.kpi .v{font-family:var(--mono);font-size:24px;font-weight:700;margin-top:2px}
+.kpi .n{font-size:11px;color:var(--muted)}
+.v.p{color:var(--euv)} .v.g{color:var(--gold)} .v.gr{color:var(--green)} .v.r{color:var(--red)}
+.est{font-family:var(--mono);font-size:10px;color:var(--gold);border:1px solid rgba(232,196,104,.4);border-radius:4px;padding:0 4px;vertical-align:middle;margin-left:4px}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.secnum{font-family:var(--mono);color:var(--euv);font-size:13px;letter-spacing:.15em}
+h2{font-size:22px;font-weight:800;margin:6px 0 4px}
+.lede{color:var(--muted);max-width:780px;margin-bottom:22px}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+.grid2r{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
+@media(max-width:860px){.grid2,.grid2r{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{font-size:15px;margin-bottom:10px}
+.chartbox{position:relative;height:320px}
+.chartbox.tall{height:360px}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:2px solid var(--line);padding-left:10px}
+.formula{font-family:var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13.5px;color:var(--green);overflow-x:auto}
+
+/* P/E ladder */
+.ladder{display:grid;gap:10px;margin-top:8px}
+.rung{display:grid;grid-template-columns:120px 1fr 88px;align-items:center;gap:12px}
+.rung .lab{font-size:13px;color:var(--muted)}
+.rung .bar{height:34px;border-radius:8px;position:relative;background:var(--panel2);border:1px solid var(--line);overflow:hidden}
+.rung .fill{position:absolute;inset:0;border-radius:8px}
+.rung .val{font-family:var(--mono);font-weight:700;text-align:right}
+.bandmarks{display:grid;grid-template-columns:120px 1fr 88px;gap:12px;margin-top:2px}
+.bandline{position:relative;height:18px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.bandline span{position:absolute;transform:translateX(-50%)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+th{font-size:12px;color:var(--muted);font-weight:600;text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--mono);text-align:right;padding:8px 10px;border-bottom:1px solid rgba(43,35,68,.5)}
+td:first-child{font-family:var(--sans)}
+tr.hl td{color:var(--gold);font-weight:700}
+
+.verdict{background:linear-gradient(135deg,rgba(167,139,250,.10),rgba(232,196,104,.06));border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:26px}
+.verdict h2{color:var(--euv)}
+.vlist{margin-top:14px;display:grid;gap:12px}
+.vitem{display:flex;gap:12px;align-items:flex-start}
+.vitem .b{font-family:var(--mono);color:var(--euv);font-weight:700;flex-shrink:0}
+
+footer{padding:32px 0 60px;color:var(--muted);font-size:12px}
+footer h4{color:var(--ink);font-size:13px;margin-bottom:8px}
+footer li{margin-left:18px;margin-bottom:4px}
+.disc{margin-top:16px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Valuation Deep-Dive · 2026.08</div>
+    <h1>台積電 <span class="tick">2330.TW</span><br>Forward P/E位階 × 盈餘成長模型 × 地緣折價</h1>
+    <p class="sub">框架與世界先進完全不同：台積電是「成長疊加週期」，用未來獲利定價。三支柱：① Forward P/E位階 ② 公司指引驅動的EPS路徑（含毛利率稀釋橋）③ ADR溢價與地緣折價。標示「估」者為推算值。</p>
+    <div class="kpis">
+      <div class="kpi"><div class="l">股價（2026/8/6）</div><div class="v">2,365</div><div class="n">52週區間 1,125–2,535</div></div>
+      <div class="kpi"><div class="l">Trailing P/E</div><div class="v r">27.1x</div><div class="n">近四季EPS 87.39元</div></div>
+      <div class="kpi"><div class="l">2026E Forward P/E</div><div class="v p">≈22x<span class="est">估</span></div><div class="n">2026E EPS ≈105–110元</div></div>
+      <div class="kpi"><div class="l">2026Q2 毛利率</div><div class="v g">67.7%</div><div class="n">三率三升、皆創歷史新高</div></div>
+      <div class="kpi"><div class="l">2026 股利</div><div class="v gr">24元</div><div class="n">年增33%，殖利率≈1.0%</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ 0. 方法確認 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">00 / WHY NOT P/B</div>
+    <h2>先講清楚：為什麼台積電不能套世界先進的框架</h2>
+    <div class="grid2r">
+      <div class="card">
+        <h3>兩家公司的估值性質對照</h3>
+        <table>
+          <tr><th>維度</th><th>世界先進</th><th>台積電</th></tr>
+          <tr><td>獲利型態</td><td>純週期波動</td><td>成長為主、週期疊加</td></tr>
+          <tr><td>EPS穩定度</td><td>單年可腰斬</td><td>連年墊高（22→27→45→66→100+）</td></tr>
+          <tr><td>定價權</td><td>受中國價格戰壓制</td><td>近乎獨佔、主動漲價</td></tr>
+          <tr><td>適用主軸</td><td>P/B × ROE</td><td>Forward P/E × 成長</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>EPS長期軌跡：這不是週期股的形狀</h3>
+        <div class="chartbox"><canvas id="eps"></canvas></div>
+        <p class="note">2023年是唯一衰退年（-18%），隨後兩年暴力回升。當EPS趨勢線本身持續向上，P/E的分母就有意義；P/B反而會因ROE結構性上移（2026年ROE估逾35%）不斷失去歷史錨點。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 1. Forward P/E 位階 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">01 / FORWARD P/E POSITION</div>
+    <h2>估值梯：貴的是「過去」，未來一路降階</h2>
+    <p class="lede">成長股估值的核心視角：同一個股價2,365元，除以不同年度的EPS，得到完全不同的貴賤結論。這就是「估值梯」——成長本身會消化估值。</p>
+
+    <div class="card">
+      <h3>P/E 估值梯（股價2,365元固定，分母換年份）</h3>
+      <div class="ladder">
+        <div class="rung"><div class="lab">Trailing（近四季 87.39）</div>
+          <div class="bar"><div class="fill" style="width:90%;background:linear-gradient(90deg,rgba(242,112,138,.25),rgba(242,112,138,.75))"></div></div>
+          <div class="val" style="color:var(--red)">27.1x</div></div>
+        <div class="rung"><div class="lab">2026E（EPS≈107<span class="est">估</span>）</div>
+          <div class="bar"><div class="fill" style="width:73%;background:linear-gradient(90deg,rgba(167,139,250,.25),rgba(167,139,250,.8))"></div></div>
+          <div class="val" style="color:var(--euv)">≈22.1x</div></div>
+        <div class="rung"><div class="lab">2027E（EPS≈130<span class="est">估</span>）</div>
+          <div class="bar"><div class="fill" style="width:60%;background:linear-gradient(90deg,rgba(90,216,166,.25),rgba(90,216,166,.8))"></div></div>
+          <div class="val" style="color:var(--green)">≈18.2x</div></div>
+      </div>
+      <p class="note">歷史錨點：2022年空頭谷底 Trailing P/E約11.5x（股價448÷EPS 39.2）、2024年底約23.8x、AI行情以來高峰約33x。目前27.1x位於<b style="color:var(--red)">歷史區間上緣</b>；但2026E的22x落回十年常態帶（15–25x）中上段，2027E的18x已接近常態帶中值。<b style="color:var(--ink)">結論的關鍵不在倍數本身，而在「你信不信分母」</b>——這正是第二支柱要驗證的事。</p>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>P/E 位階史（Trailing，年底錨點）</h3>
+        <div class="chartbox"><canvas id="peband"></canvas></div>
+        <p class="note">灰帶為十年常態區間15–25x（近似值）。2022年跌到11.5x是「地緣恐慌+庫存去化」雙殺的極端值；現在27x則反映市場把AI成長visibility拉長到2028年後。</p>
+      </div>
+      <div class="card">
+        <h3>PEG 檢核：用成長率校正倍數</h3>
+        <div class="formula">PEG = Forward P/E ÷ EPS成長率<br>= 22.1 ÷ 30（保守長期成長%）≈ 0.74</div>
+        <table>
+          <tr><th>假設的長期EPS成長</th><th>PEG</th><th>解讀</th></tr>
+          <tr><td>20%（保守）</td><td>1.11</td><td>略貴</td></tr>
+          <tr class="hl"><td>30%（近三年趨勢下緣）</td><td>0.74</td><td>合理偏便宜</td></tr>
+          <tr><td>40%（2026指引：營收+40%）</td><td>0.55</td><td>便宜</td></tr>
+        </table>
+        <p class="note">PEG&lt;1通常視為成長未被充分定價。台積電的矛盾點：用「當下獲利」看它貴（27x），用「成長校正」看它不貴（PEG 0.74）——市場給的其實是<b style="color:var(--ink)">成長股的合理價，而非泡沫價</b>。風險全在成長率假設能否兌現。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. 盈餘成長模型 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">02 / EARNINGS MODEL</div>
+    <h2>EPS路徑：公司指引給的分母，可信度多高</h2>
+    <p class="lede">2026E EPS≈107元的推導：上半年已實現49.32元（Q1 22.08 + Q2 27.25），Q3依公司指引（營收季增12%、毛利率65–67%）推約29元，Q4保守持平推約29元。分母的最大威脅不是需求，是毛利率的兩把稀釋刀。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>毛利率橋：67.7%會被什麼吃掉</h3>
+        <div class="chartbox tall"><canvas id="bridge"></canvas></div>
+        <p class="note">公司明講的兩把刀：<b>2奈米快速爬坡稀釋3–4個百分點</b>（Q3起發酵）、<b>海外廠（亞利桑那/熊本/德國）稀釋2–4個百分點</b>。即使雙刀全砍，毛利率仍守在60%上下——對照2024年的56%、長期承諾底線53%，獲利結構仍是升級後的水準。抵銷力量：漲價（魏哲家：「保證幫客戶賺大錢」的另一面是敢收費）與2奈米良率爬升。</p>
+      </div>
+      <div class="card">
+        <h3>成長引擎清單（2026/7/16法說）</h3>
+        <table>
+          <tr><th>項目</th><th>數字</th></tr>
+          <tr class="hl"><td>2026全年美元營收成長</td><td>&gt;40%（二度上修）</td></tr>
+          <tr><td>資本支出</td><td>600–640億美元（上修逾10%）</td></tr>
+          <tr><td>先進製程營收占比</td><td>77%（3nm 30%、2nm開始貢獻3%）</td></tr>
+          <tr><td>亞利桑那追加投資</td><td>+1,000億美元</td></tr>
+          <tr><td>台灣新建</td><td>13座先進製程/封裝廠</td></tr>
+          <tr><td>技術路線</td><td>A14→2028、A13/A12→2029</td></tr>
+        </table>
+        <p class="note">資本支出是比EPS更誠實的訊號：台積電看得到客戶2–3年的下單能見度才敢上修80億美元。反向指標同樣成立——<b style="color:var(--ink)">哪天它開始砍capex，才是AI週期真正見頂的訊號</b>，屆時本頁全部估值假設需要重跑。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3. 折價項 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">03 / DISCOUNT LAYER</div>
+    <h2>地緣折價與ADR溢價：同一家公司、兩個價格</h2>
+    <p class="lede">你持有VUAA/CSPX，裡面的台積電是TSM ADR——它比你在台股買2330貴。這個價差本身就是市場對「地緣風險放在哪個帳本」的定價。</p>
+
+    <div class="grid2r">
+      <div class="card">
+        <h3>ADR溢價現況</h3>
+        <table>
+          <tr><th>項目</th><th>數值</th></tr>
+          <tr><td>TSM（2026/8/5）</td><td>US$414.03</td></tr>
+          <tr><td>換算台股價（÷5×匯率）</td><td>2,674元</td></tr>
+          <tr class="hl"><td>目前溢價</td><td>≈11%</td></tr>
+          <tr><td>十年平均溢價</td><td>6.4%</td></tr>
+          <tr><td>2025年初峰值</td><td>25%</td></tr>
+        </table>
+        <p class="note">溢價從25%峰值收斂到11%，仍高於十年均值。成因：美系基金區域限制只能買ADR、指數被動資金、美股給的AI估值加成。</p>
+      </div>
+      <div class="card">
+        <h3>溢價位階與對你的實際意涵</h3>
+        <div class="chartbox"><canvas id="adr"></canvas></div>
+        <p class="note">對台灣投資人的直接推論：<b style="color:var(--ink)">同樣的台積電曝險，直接買2330比透過美股（含你的英股ETF內含部位）便宜約11%</b>。但ETF換得的是免個股集中風險+英股稅務優勢（股息預扣15% vs ADR層層扣），兩者不是同一種商品。若你的目的是「加碼台積電」，2330是價格效率較高的入口；若是「維持全球分散」，ETF內含的溢價是分散成本的一部分，不必為此調倉。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 4. 結論 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="verdict">
+      <div class="secnum">04 / VERDICT</div>
+      <h2>分析結論</h2>
+      <div class="vlist">
+        <div class="vitem"><span class="b">▸</span><div><b>與世界先進是鏡像關係。</b>世界先進：週期股被當成長股定價（P/B超過獲利巔峰期）→ 貴得沒有防護。台積電：Trailing 27x在歷史上緣，但2026E 22x落回常態帶、PEG≈0.74 → <b>貴的是「已實現的過去」，用成長校正後仍在合理區</b>。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>估值的全部重量壓在分母可信度上。</b>2026E EPS≈107元有一半（49.32）已實現、Q3有公司指引背書，短期可信度高；2027E的130元則依賴「AI需求延續+2奈米良率+漲價落地」三個假設同時成立。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>結論最脆弱的一環：</b>27x的Trailing P/E隱含市場相信成長能見度直到2028年。若AI資本支出週期在2027年放緩（雲端業者capex出現第一次下修），P/E從27x壓回20x的過程中，即使EPS不衰退、股價也會先跌25%——<b>估值收縮風險大於獲利衰退風險</b>，這是與2022年（獲利+估值雙殺）不同的風險結構。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>操作意涵（非建議）：</b>驗證點有三：①雲端四巨頭的capex指引（領先指標）②台積電自身capex是否續增（反向警報器）③2奈米毛利率稀釋是否如期在4個百分點內收斂。加碼管道上，2330比ADR/美系ETF內含部位便宜約11%。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>資料來源與時點</h4>
+    <ul>
+      <li>2026Q2財報（EPS 27.25、毛利率67.7%、營益率60.3%）、Q3指引、全年營收成長&gt;40%、資本支出600–640億美元、亞利桑那+1000億美元、股利24元：2026/7/16法說會（豐雲學堂、經理人、TVBS、股市爆料同學會、Smart智富）</li>
+      <li>股價2,365、Trailing P/E 27.06、近四季EPS 87.39、市值61.33兆：鉅亨網（2026/8/6）</li>
+      <li>歷年EPS：2022 39.20 / 2023 32.34 / 2024 45.25 / 2025 66.26（Win投資、公開財報）</li>
+      <li>TSM US$414.03、換算價2,674、十年平均溢價6.4%、2025峰值25%：玩股網（2026/8/5）、PTT股票公社</li>
+      <li>2026E EPS≈107、2027E≈130、P/E歷史錨點、PEG：本頁推算，方法如各段內文所述</li>
+    </ul>
+    <div class="disc">⚠ 標示「估」之數值均為依公開資訊之推算，非公司揭露值。2027E不確定性顯著高於2026E。本頁為方法論展示與資料整理，不構成投資建議；我不是持牌財務顧問，實際投資決策請自行評估風險。</div>
+  </div>
+</footer>
+
+<script>
+const C = {euv:'#A78BFA',gold:'#E8C468',green:'#5AD8A6',red:'#F2708A',muted:'#9A92B8',ink:'#EDEAF7'};
+Chart.defaults.color = C.muted;
+Chart.defaults.borderColor = 'rgba(43,35,68,.6)';
+Chart.defaults.font.family = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+
+/* --- EPS 軌跡 --- */
+new Chart(document.getElementById('eps'),{
+  type:'bar',
+  data:{labels:['2022','2023','2024','2025','2026E','2027E'],
+    datasets:[{label:'年度EPS（元）',
+      data:[39.20,32.34,45.25,66.26,107,130],
+      backgroundColor:['rgba(154,146,184,.55)','rgba(154,146,184,.55)','rgba(154,146,184,.55)','rgba(154,146,184,.55)','rgba(167,139,250,.85)','rgba(90,216,166,.6)'],
+      borderColor:['transparent','transparent','transparent','transparent','transparent',C.green],
+      borderWidth:[0,0,0,0,0,2],borderDash:[4,3],borderRadius:6}]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:(i)=>` EPS ${i.raw}元${i.dataIndex>=4?'（估）':''}`}}},
+    scales:{y:{title:{display:true,text:'元'},grid:{color:'rgba(43,35,68,.4)'}}}}
+});
+
+/* --- P/E band --- */
+new Chart(document.getElementById('peband'),{
+  type:'line',
+  data:{labels:['2022底','2023底','2024底','2025底','2026/8'],
+    datasets:[
+      {label:'Trailing P/E',data:[11.5,17,23.8,22,27.1],
+       borderColor:C.euv,backgroundColor:C.euv,pointRadius:5,tension:.3},
+      {label:'常態帶上緣 25x',data:[25,25,25,25,25],borderColor:'rgba(154,146,184,.35)',pointRadius:0,borderDash:[5,4],fill:'+1',backgroundColor:'rgba(154,146,184,.08)'},
+      {label:'常態帶下緣 15x',data:[15,15,15,15,15],borderColor:'rgba(154,146,184,.35)',pointRadius:0,borderDash:[5,4]}
+    ]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},
+    scales:{y:{title:{display:true,text:'倍'},grid:{color:'rgba(43,35,68,.4)'},min:5,max:35}}}
+});
+
+/* --- 毛利率橋 --- */
+new Chart(document.getElementById('bridge'),{
+  type:'bar',
+  data:{labels:['2026Q2 實際','2nm爬坡稀釋','海外廠稀釋','稀釋後區間','長期承諾底線'],
+    datasets:[{label:'毛利率 (%)',
+      data:[[0,67.7],[63.7,67.7],[59.7,63.7],[0,60.7],[0,53]],
+      backgroundColor:['rgba(232,196,104,.85)','rgba(242,112,138,.6)','rgba(242,112,138,.4)','rgba(167,139,250,.7)','rgba(154,146,184,.35)'],
+      borderRadius:5}]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:(i)=>{
+        const t=['67.7%（歷史新高）','-3~4個百分點','-2~4個百分點','≈60%±2（估）','53%（公司承諾）'];
+        return ' '+t[i.dataIndex];}}}},
+    scales:{y:{title:{display:true,text:'%'},grid:{color:'rgba(43,35,68,.4)'},min:45,max:72}}}
+});
+
+/* --- ADR 溢價 --- */
+new Chart(document.getElementById('adr'),{
+  type:'bar',
+  data:{labels:['十年平均','目前（2026/8）','2025年初峰值'],
+    datasets:[{label:'ADR溢價 (%)',data:[6.4,11,25],
+      backgroundColor:['rgba(154,146,184,.55)','rgba(167,139,250,.85)','rgba(242,112,138,.6)'],borderRadius:8}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:(i)=>` 溢價 ${i.raw}%`}}},
+    scales:{x:{title:{display:true,text:'TSM相對2330溢價 %'},grid:{color:'rgba(43,35,68,.4)'},max:30}}}
+});
+</script>
+</body>
+</html>

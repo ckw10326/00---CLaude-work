@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界先進 (5347) 估值分析 — P/B位階 × ROE趨勢 × 同業比較</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0B1020;
+  --panel:#121A30;
+  --panel2:#0F1628;
+  --line:#22304F;
+  --ink:#E8EDF7;
+  --muted:#8B99B8;
+  --copper:#E0A458;   /* 銅導線 */
+  --teal:#4FD1C5;     /* 晶圓青 */
+  --red:#F2708A;
+  --amber:#F6C453;
+  --mono:"SF Mono","Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ---------- Hero ---------- */
+header{padding:56px 0 36px;border-bottom:1px solid var(--line);
+  background:
+   radial-gradient(1000px 400px at 80% -10%, rgba(224,164,88,.10), transparent 60%),
+   radial-gradient(700px 300px at 10% 0%, rgba(79,209,197,.07), transparent 60%);}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.25em;color:var(--copper);text-transform:uppercase}
+h1{font-size:clamp(26px,4.2vw,40px);font-weight:800;margin:10px 0 6px;letter-spacing:.02em}
+h1 .tick{font-family:var(--mono);color:var(--teal);font-weight:600}
+.sub{color:var(--muted);max-width:720px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .l{font-size:12px;color:var(--muted)}
+.kpi .v{font-family:var(--mono);font-size:24px;font-weight:700;margin-top:2px}
+.kpi .n{font-size:11px;color:var(--muted)}
+.v.c{color:var(--copper)} .v.t{color:var(--teal)} .v.r{color:var(--red)} .v.a{color:var(--amber)}
+.est{font-family:var(--mono);font-size:10px;color:var(--amber);border:1px solid rgba(246,196,83,.4);border-radius:4px;padding:0 4px;vertical-align:middle;margin-left:4px}
+
+/* ---------- Sections ---------- */
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.secnum{font-family:var(--mono);color:var(--copper);font-size:13px;letter-spacing:.15em}
+h2{font-size:22px;font-weight:800;margin:6px 0 4px}
+.lede{color:var(--muted);max-width:760px;margin-bottom:22px}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{font-size:15px;margin-bottom:10px;color:var(--ink)}
+.chartbox{position:relative;height:320px}
+.chartbox.tall{height:360px}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:2px solid var(--line);padding-left:10px}
+
+/* ---------- P/B gauge ---------- */
+.gauge{position:relative;height:74px;border-radius:10px;margin:18px 0 6px;
+  background:linear-gradient(90deg,#1E5F4E 0%,#1E5F4E 30%,#7A6224 30%,#7A6224 58%,#6B2436 58%,#6B2436 100%);}
+.gauge .zone{position:absolute;top:8px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.85)}
+.marker{position:absolute;top:-14px;transform:translateX(-50%);text-align:center}
+.marker .pin{width:2px;height:100px;background:var(--ink);margin:0 auto}
+.marker .tag{font-family:var(--mono);font-size:12px;background:var(--ink);color:#0B1020;border-radius:6px;padding:2px 8px;font-weight:700;white-space:nowrap}
+.marker.ghost .pin{background:var(--muted);height:88px}
+.marker.ghost .tag{background:transparent;color:var(--muted);border:1px dashed var(--muted)}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ---------- Formula ---------- */
+.formula{font-family:var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13.5px;color:var(--teal);overflow-x:auto;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+th{font-size:12px;color:var(--muted);font-weight:600;text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--mono);text-align:right;padding:8px 10px;border-bottom:1px solid rgba(34,48,79,.5)}
+td:first-child{font-family:var(--sans)}
+tr.hl td{color:var(--copper);font-weight:700}
+
+/* ---------- Verdict ---------- */
+.verdict{background:linear-gradient(135deg,rgba(224,164,88,.10),rgba(79,209,197,.06));border:1px solid rgba(224,164,88,.35);border-radius:16px;padding:26px}
+.verdict h2{color:var(--copper)}
+.vlist{margin-top:14px;display:grid;gap:12px}
+.vitem{display:flex;gap:12px;align-items:flex-start}
+.vitem .b{font-family:var(--mono);color:var(--copper);font-weight:700;flex-shrink:0}
+
+footer{padding:32px 0 60px;color:var(--muted);font-size:12px}
+footer h4{color:var(--ink);font-size:13px;margin-bottom:8px}
+footer li{margin-left:18px;margin-bottom:4px}
+.disc{margin-top:16px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Valuation Deep-Dive · 2026.08</div>
+    <h1>世界先進 <span class="tick">5347.TWO</span><br>P/B位階 × ROE趨勢 × 同業比較</h1>
+    <p class="sub">依三支柱框架執行：① 本淨比位階（搭配合理P/B推算）② ROE未來趨勢（聚焦VSMC折舊攤提衝擊）③ 與聯電、力積電的橫向比較。所有標示「估」者為推算值，來源列於頁尾。</p>
+    <div class="kpis">
+      <div class="kpi"><div class="l">股價（2026/7/22）</div><div class="v">154.5</div><div class="n">7月中曾因台積電法說跌停</div></div>
+      <div class="kpi"><div class="l">每股淨值 BPS</div><div class="v t">≈32<span class="est">估</span></div><div class="n">由 2024 EPS÷ROE 推算</div></div>
+      <div class="kpi"><div class="l">目前 P/B</div><div class="v c">≈4.8x<span class="est">估</span></div><div class="n">高於2022獲利巔峰均值3.8x</div></div>
+      <div class="kpi"><div class="l">2024 ROE</div><div class="v r">12.8%</div><div class="n">僅為2022年(38%)的三分之一</div></div>
+      <div class="kpi"><div class="l">2026H1 EPS</div><div class="v">2.78</div><div class="n">Q1 1.22 + Q2 1.56（15季新高）</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ 1. P/B 位階 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">01 / P/B POSITION</div>
+    <h2>本淨比位階：現價已高於2022獲利巔峰時的估值</h2>
+    <p class="lede">週期股的核心問句不是「本益比幾倍」，而是「市場願意用幾倍淨值，換取這家公司當前的股東報酬率」。下方位階尺以可驗證的歷史錨點定位。</p>
+
+    <div class="card">
+      <h3>P/B 位階尺（可驗證錨點）</h3>
+      <div style="padding:24px 6px 0">
+        <div class="gauge">
+          <span class="zone" style="left:8%">低估區</span>
+          <span class="zone" style="left:42%">歷史常態</span>
+          <span class="zone" style="left:75%">昂貴區</span>
+          <!-- scale 1.0x~6.0x, position = (pb-1)/5 -->
+          <div class="marker ghost" style="left:44%"><div class="tag">2022均值 3.2x*</div><div class="pin"></div></div>
+          <div class="marker" style="left:76%"><div class="tag">目前 ≈4.8x 估</div><div class="pin"></div></div>
+        </div>
+        <div class="scale"><span>1.0x</span><span>2.0x</span><span>3.0x</span><span>4.0x</span><span>5.0x</span><span>6.0x</span></div>
+      </div>
+      <p class="note">*2022年均價93.5元 ÷ 期初BPS約24.5元 ≈ 3.8x；÷ 期末BPS約29.3元 ≈ 3.2x。無論取哪個口徑，<b style="color:var(--copper)">當年ROE高達38%時市場給的P/B，都低於現在ROE約13%時的≈4.8x</b>——代表市場已大幅預付「AI電源管理 + VSMC」的成長期待。</p>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>合理P/B推算（Justified P/B）</h3>
+        <div class="formula">合理P/B = (ROE − g) ÷ (r − g)　　r=9%, g=3%</div>
+        <table>
+          <tr><th>情境</th><th>永續ROE</th><th>合理P/B</th><th>對應股價<span class="est">估</span></th></tr>
+          <tr><td>悲觀：折舊壓垮獲利</td><td>13%</td><td>1.7x</td><td>≈54元</td></tr>
+          <tr><td>基準：回到跨週期均值</td><td>20%</td><td>2.8x</td><td>≈90元</td></tr>
+          <tr class="hl"><td>樂觀：VSMC滿載+AI放量</td><td>25%</td><td>3.7x</td><td>≈118元</td></tr>
+        </table>
+        <p class="note">目前≈4.8x 高於樂觀情境的3.7x——要合理化現價，市場隱含假設是「ROE回到接近30%」或「折現率明顯低於9%」。這是本分析最尖銳、也最容易被攻擊的結論：若你認為AI電源管理是結構性成長（公司說法：2026年AI營收翻倍、2027更顯著），r與g的假設就該調整，合理P/B會上移。</p>
+      </div>
+      <div class="card">
+        <h3>P/B vs ROE：錯位的核心</h3>
+        <div class="chartbox"><canvas id="pbroe"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. ROE 趨勢 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">02 / ROE TRAJECTORY</div>
+    <h2>ROE未來趨勢：VSMC折舊是2027年的分水嶺</h2>
+    <p class="lede">ROE = 淨利率 × 資產週轉 × 槓桿。對晶圓廠而言，折舊攤提直接吃掉淨利率——VSMC於2027Q1量產後折舊「逐季增加」，這是估算未來ROE時最大的已知變數。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>ROE 歷史與推估（2020–2027E）</h3>
+        <div class="chartbox tall"><canvas id="roe"></canvas></div>
+        <p class="note">2020–2024為公司永續報告書揭露值；2025依 EPS 4.3 ÷ BPS≈32 推算；2026E取券商預估EPS 6.26元上緣與公司下半年展望折衷；2027E為區間——上緣假設VSMC營收貢獻抵銷折舊，下緣假設折舊先行、產能爬坡緩慢。</p>
+      </div>
+      <div class="card">
+        <h3>折舊費用走勢（新台幣億元）</h3>
+        <div class="chartbox tall"><canvas id="dep"></canvas></div>
+        <p class="note">2026年折舊約92.5億元、年增約8%（公司法說指引）。2027年因VSMC量產「逐季增加」但未給具體數字——圖中以虛線區間表示，切勿當作精確預測。資本支出2026年維持600–700億元，其中約85%投入VSMC。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>VSMC 關鍵參數（12吋新加坡廠）</h3>
+      <table>
+        <tr><th>項目</th><th>原規劃</th><th>最新</th><th>影響方向</th></tr>
+        <tr><td>總資本支出</td><td>78億美元</td><td>67億美元</td><td style="color:var(--teal)">折舊壓力↓（客戶寄託設備）</td></tr>
+        <tr><td>滿載月產能</td><td>5.5萬片</td><td>4.4萬片</td><td style="color:var(--red)">營收天花板↓</td></tr>
+        <tr><td>量產時點</td><td>2027年</td><td>2027 Q1</td><td>折舊自2027起逐季墊高</td></tr>
+        <tr><td>股權結構</td><td colspan="2">世界先進60%（24億美元）／恩智浦40%（14億美元）</td><td>NXP為錨定客戶</td></tr>
+        <tr><td>製程／技術來源</td><td colspan="2">130–40nm 特殊製程，技術授權自台積電</td><td>消費、車用終端</td></tr>
+      </table>
+      <p class="note">兩面刃解讀：資本支出下修21%讓折舊衝擊比原案溫和，但產能同步下修20%也壓縮了2028年後的營收上限。市場若只慶祝前者、忽略後者，2028年的成長預期就有下修風險。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3. 同業比較 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="secnum">03 / PEER COMPARISON</div>
+    <h2>同業比較：世界先進的P/B溢價是三家中最高</h2>
+    <p class="lede">三家台系成熟製程代工廠的估值定位。EV/EBITDA因力積電未公開完整數據且各家折舊政策差異大，此處以「P/B × 隱含ROE」為主軸，EV/EBITDA以定性方式標註。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>P/B 對比（2026年中）</h3>
+        <div class="chartbox"><canvas id="peer"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>估值-報酬對照表</h3>
+        <table>
+          <tr><th>公司</th><th>P/B</th><th>隱含/實際ROE</th><th>每付1倍P/B<br>換到的ROE</th></tr>
+          <tr class="hl"><td>世界先進 5347</td><td>≈4.8x<span class="est">估</span></td><td>≈13%</td><td>2.7%</td></tr>
+          <tr><td>聯電 2303</td><td>3.59x</td><td>≈8.6%*</td><td>2.4%</td></tr>
+          <tr><td>力積電 6770</td><td>2.64x</td><td>低檔（虧轉盈階段）</td><td>—</td></tr>
+        </table>
+        <p class="note">*聯電隱含ROE由 P/B 3.59 ÷ P/E 41.5 反推。「每付1倍P/B換到的ROE」越高越划算——世界先進(2.7%)略優於聯電(2.4%)，但兩者都反映市場對「當前獲利」付出了高溢價，賭的是未來：世界先進賭VSMC+AI電源，聯電賭台積電成熟製程減產的轉單效應（研調已證實聯電獲少量加單）。力積電P/B最低，但對應的是最弱的獲利體質與記憶體波動風險，便宜有其原因。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>EV/EBITDA 定性註記</h3>
+      <p style="font-size:14px;color:var(--muted)">晶圓廠折舊佔成本比重極高，EV/EBITDA理論上比P/E更能反映現金創造能力。但目前公開來源缺乏三家一致口徑的EV/EBITDA數據（力積電尤其不全），且VSMC以合資公司併入報表後，少數股權處理會扭曲EV計算。<b style="color:var(--ink)">誠實結論：此指標目前資訊不足、無法客觀比較</b>——與其用湊出來的數字硬比，不如等2026年報揭露後再補。若你有券商報告的EV/EBITDA數據，貼給我即可納入更新。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 4. 結論 ══════════ -->
+<section>
+  <div class="wrap">
+    <div class="verdict">
+      <div class="secnum">04 / VERDICT</div>
+      <h2>分析結論</h2>
+      <div class="vlist">
+        <div class="vitem"><span class="b">▸</span><div><b>P/B位階：昂貴區。</b>≈4.8x不僅高於歷史常態，甚至超過2022年ROE 38%巔峰期市場給的估值。這不是「便宜的週期股」，是「被當成長股定價的週期股」。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>ROE趨勢：2026回升、2027受折舊考驗。</b>2026H1毛利率已從27%區間回升至32.3%、Q2 EPS創15季新高，ROE正在爬升；但2027年VSMC折舊逐季墊高，ROE能否守住升勢，取決於新產能填載速度——這是多空分歧的主戰場。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>結論最脆弱的一環：</b>合理P/B推算對r（折現率）與g（永續成長率）極度敏感。若AI電源管理確實是結構性需求（公司稱2027年供不應求將更明顯），g上調1個百分點，合理P/B就會大幅上移，「昂貴」的結論會被削弱。反之若2027年成熟製程價格戰（中國77%新增產能）壓制ASP，連基準情境的ROE 20%都達不到。</div></div>
+        <div class="vitem"><span class="b">▸</span><div><b>操作意涵（非建議）：</b>現價買進=押注樂觀情境完全兌現且無執行風險。較穩健的做法是把「VSMC量產後首兩季的稼動率與毛利率」當作驗證點，屆時再校準估值模型。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>資料來源與時點</h4>
+    <ul>
+      <li>ROE 2020–2024（21.3 / 36.5 / 38.0 / 16.2 / 12.8%）、毛利率2023–2024（27.3 / 27.1%）、EPS 2024（4.16元）：世界先進2024年永續報告書</li>
+      <li>2026Q1財報（EPS 1.22、毛利率29.29%）、VSMC資本支出78→67億美元、產能5.5→4.4萬片：2026/5/5法說會（自由財經、知新聞）</li>
+      <li>2026Q2財報（EPS 1.56、毛利率32.3%）、折舊92.5億指引、資本支出600–700億：2026/8/4法說會（鉅亨網、ETtoday）</li>
+      <li>2025年EPS 4.3元：Yahoo股市（2026/2）；2022年數據：使用者提供之Goodinfo表格</li>
+      <li>聯電P/B 3.59–3.9x、P/E 41.5x、力積電P/B 2.64x：財報狗、玩股網（2026/6–7）</li>
+      <li>股價154.5元：鉅亨網 2026/7/22；券商2026年EPS預估6.26元：CMoney（2026/6）</li>
+    </ul>
+    <div class="disc">⚠ 標示「估」之數值（BPS、P/B、2026E/2027E ROE、折舊區間、對應股價）均為依上述公開資訊之推算，非公司揭露值。本頁為方法論展示與資料整理，不構成投資建議；我不是持牌財務顧問，實際投資決策請自行評估風險。</div>
+  </div>
+</footer>
+
+<script>
+const C = {copper:'#E0A458',teal:'#4FD1C5',red:'#F2708A',amber:'#F6C453',muted:'#8B99B8',line:'#22304F',ink:'#E8EDF7'};
+Chart.defaults.color = C.muted;
+Chart.defaults.borderColor = 'rgba(34,48,79,.6)';
+Chart.defaults.font.family = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+
+/* --- P/B vs ROE 錯位圖 --- */
+new Chart(document.getElementById('pbroe'),{
+  type:'bar',
+  data:{labels:['2022（獲利巔峰）','2026（現在）'],
+    datasets:[
+      {label:'ROE (%)',data:[38,13],backgroundColor:'rgba(79,209,197,.75)',borderRadius:6,yAxisID:'y'},
+      {label:'市場給的P/B (x)',data:[3.8,4.8],backgroundColor:'rgba(224,164,88,.85)',borderRadius:6,yAxisID:'y2'}
+    ]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'},tooltip:{callbacks:{}}},
+    scales:{
+      y:{position:'left',title:{display:true,text:'ROE %'},grid:{color:'rgba(34,48,79,.4)'},max:45},
+      y2:{position:'right',title:{display:true,text:'P/B 倍'},grid:{display:false},max:6}
+    }}
+});
+
+/* --- ROE 趨勢 --- */
+new Chart(document.getElementById('roe'),{
+  type:'line',
+  data:{labels:['2020','2021','2022','2023','2024','2025估','2026E','2027E'],
+    datasets:[
+      {label:'ROE 實際 (%)',data:[21.3,36.5,38.0,16.2,12.8,null,null,null],
+       borderColor:C.teal,backgroundColor:C.teal,pointRadius:4,tension:.3},
+      {label:'ROE 推估 (%)',data:[null,null,null,null,12.8,13.4,18,null],
+       borderColor:C.amber,backgroundColor:C.amber,borderDash:[6,4],pointRadius:4,tension:.3},
+      {label:'2027E 上緣（VSMC順利填載）',data:[null,null,null,null,null,null,18,19],
+       borderColor:'rgba(79,209,197,.5)',borderDash:[3,3],pointRadius:0,tension:.3},
+      {label:'2027E 下緣（折舊先行）',data:[null,null,null,null,null,null,18,13],
+       borderColor:'rgba(242,112,138,.7)',borderDash:[3,3],pointRadius:0,tension:.3}
+    ]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},
+    scales:{y:{title:{display:true,text:'%'},grid:{color:'rgba(34,48,79,.4)'},min:0,max:42}}}
+});
+
+/* --- 折舊 --- */
+new Chart(document.getElementById('dep'),{
+  type:'bar',
+  data:{labels:['2025估','2026指引','2027E'],
+    datasets:[
+      {label:'折舊費用（億元）',data:[85.6,92.5,null],backgroundColor:['rgba(139,153,184,.6)','rgba(224,164,88,.85)'],borderRadius:6},
+      {label:'2027區間下緣（未揭露）',data:[null,null,110],backgroundColor:'rgba(242,112,138,.25)',borderColor:'rgba(242,112,138,.8)',borderWidth:{top:2},borderRadius:6},
+      {label:'2027增量帶（示意）',data:[null,null,35],backgroundColor:'rgba(242,112,138,.12)',borderColor:'rgba(242,112,138,.4)',borderWidth:1,borderDash:[4,3],borderRadius:6}
+    ]},
+  options:{maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},
+      tooltip:{callbacks:{footer:(items)=>items[0].label==='2027E'?'公司僅表示「逐季增加」，區間為示意非預測':''}}},
+    scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'新台幣億元'},grid:{color:'rgba(34,48,79,.4)'},max:160}}}
+});
+
+/* --- 同業 P/B --- */
+new Chart(document.getElementById('peer'),{
+  type:'bar',
+  data:{labels:['世界先進 5347','聯電 2303','力積電 6770'],
+    datasets:[{label:'P/B（倍）',data:[4.8,3.59,2.64],
+      backgroundColor:['rgba(224,164,88,.9)','rgba(79,209,197,.7)','rgba(139,153,184,.6)'],borderRadius:8}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:(i)=>` P/B ${i.raw}x${i.dataIndex===0?'（估）':''}`}}},
+    scales:{x:{title:{display:true,text:'股價淨值比（倍）'},grid:{color:'rgba(34,48,79,.4)'},max:6}}}
+});
+</script>
+</body>
+</html>
