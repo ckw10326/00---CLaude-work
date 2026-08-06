@@ -770,6 +770,13 @@ body{
   cursor:not-allowed;font-weight:500
 }
 .btn[disabled]:hover{transform:none;color:var(--rule)}
+.uplink{margin:38px 0 0}
+.uplink a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  color:var(--ink-soft);text-decoration:none
+}
+.uplink a:hover{color:var(--seal)}
+.uplink a:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
 
 /* ---------- 旅遊頁 ---------- */
 .topbar{
@@ -907,9 +914,8 @@ a.src:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
     <p class="index-lede">自己查證過的行程資料。只留下會影響決定的內容：日期、實際交通時間、以及容易被旅遊文章寫錯的地方。</p>
     <div class="menu">
       <button class="btn" data-go="travel">旅遊</button>
-      <button class="btn" disabled>投資</button>
-      <button class="btn" disabled>工作</button>
     </div>
+    <p class="uplink"><a href="../">← 回我的知識庫</a></p>
   </div>
 </section>
 
