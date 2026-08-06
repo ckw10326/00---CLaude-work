@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>旅遊筆記</title>
+<title>日本花火 — 旅遊筆記</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -788,6 +788,7 @@ body{
   background:none;border:none;padding:0;cursor:pointer;
   font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--ink-soft)
 }
+.back{text-decoration:none;display:inline-block}
 .back:hover{color:var(--seal)}
 .back:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
 .section-name{font-family:var(--serif);font-weight:700;font-size:20px;letter-spacing:.1em;margin:0}
@@ -906,26 +907,13 @@ a.src:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
 </head>
 <body>
 
-<!-- ══════════ 首頁 ══════════ -->
-<section id="view-index" class="view is-active" aria-label="首頁">
-  <div class="wrap index-inner">
-    <p class="eyebrow">Personal notes</p>
-    <h1 class="index-title">旅遊筆記<small>TRAVEL NOTES</small></h1>
-    <p class="index-lede">自己查證過的行程資料。只留下會影響決定的內容：日期、實際交通時間、以及容易被旅遊文章寫錯的地方。</p>
-    <div class="menu">
-      <button class="btn" data-go="travel">日本花火</button>
-    </div>
-    <p class="uplink"><a href="../">← 回我的知識庫</a></p>
-  </div>
-</section>
-
 <!-- ══════════ 旅遊 ══════════ -->
-<section id="view-travel" class="view" aria-label="旅遊">
+<section id="view-travel" class="view is-active" aria-label="日本花火">
   <header class="topbar">
     <div class="wrap">
       <div class="topbar-inner">
-        <button class="back" data-go="index">← 回首頁</button>
-        <h1 class="section-name">旅遊</h1>
+        <a class="back" href="../">← 回我的知識庫</a>
+        <h1 class="section-name">旅遊筆記</h1>
       </div>
       <div class="tabs" role="tablist" aria-label="旅遊分頁">
         <button class="tab" role="tab" id="tab-hanabi" aria-controls="panel-hanabi" aria-selected="true">日本花火</button>
@@ -1138,33 +1126,7 @@ a.src:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
 
 <script>
 (function(){
-  var views = {
-    index: document.getElementById('view-index'),
-    travel: document.getElementById('view-travel')
-  };
-
-  function show(name){
-    if(!views[name]) name = 'index';
-    Object.keys(views).forEach(function(k){
-      views[k].classList.toggle('is-active', k === name);
-    });
-    if(location.hash.slice(1) !== name){
-      history.pushState(null, '', '#' + name);
-    }
-    window.scrollTo(0,0);
-    window.dispatchEvent(new CustomEvent('viewchange',{detail:name}));
-    document.title = name === 'travel' ? '旅遊 — 旅遊筆記' : '旅遊筆記';
-  }
-
-  document.querySelectorAll('[data-go]').forEach(function(el){
-    el.addEventListener('click', function(){ show(el.dataset.go); });
-  });
-
-  window.addEventListener('popstate', function(){
-    show(location.hash.slice(1) || 'index');
-  });
-
-  // 分頁：目前只有一個，結構保留給之後新增
+  // 分頁切換；目前只有一個啟用中的分頁，結構保留給之後新增
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab:not([disabled])'));
   tabs.forEach(function(tab){
     tab.addEventListener('click', function(){
@@ -1176,8 +1138,6 @@ a.src:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
       });
     });
   });
-
-  show(location.hash.slice(1) || 'index');
 })();
 </script>
 
