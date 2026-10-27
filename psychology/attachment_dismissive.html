@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>愛情風格測評 - 疏離型依戀報告</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg-pink: #fde8e8;
+      --title-brown: #4a2c2a;
+      --square-peach: #f5c4a8;
+      --highlight-coral: #e5989b;
+      --text-main: #333333;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 10px 60px;
+      background-color: #f2f2f5;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .toolbar {
+      position: sticky;
+      top: 12px;
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.92);
+      padding: 8px 14px;
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      backdrop-filter: blur(6px);
+    }
+    .btn {
+      border: none;
+      background: #e76f51;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: 0.92; }
+    #report-card {
+      width: 100%;
+      max-width: 463px;
+      background: #ffffff;
+      padding: 44px 38px 56px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      line-height: 1.85;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+    }
+    .center-label {
+      text-align: center;
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+    .pill-wrap {
+      text-align: center;
+      margin: 28px 0 30px;
+    }
+    .pill-title {
+      display: inline-block;
+      background: var(--bg-pink);
+      color: var(--title-brown);
+      font-family: "Kaiti TC", "STKaiti", "DFKai-SB", serif;
+      font-size: 29px;
+      font-weight: 700;
+      padding: 4px 36px;
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+    }
+    p {
+      margin: 0 0 22px;
+      text-align: justify;
+    }
+    .sub-heading {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 16.5px;
+      margin: 30px 0 18px;
+    }
+    .sub-heading::before {
+      content: "";
+      display: inline-block;
+      width: 18px;
+      height: 22px;
+      background: var(--square-peach);
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .quadrant-box {
+      width: 100%;
+      margin: 16px 0 24px;
+      text-align: center;
+    }
+    .hl-step {
+      display: inline;
+      background: var(--highlight-coral);
+      color: #2b2b2b;
+      padding: 2px 4px;
+      font-weight: 600;
+    }
+    .step-block { margin: 22px 0; }
+    .letter-center {
+      text-align: center;
+      margin: 14px 0 22px;
+    }
+    .letter-sign {
+      text-align: right;
+      margin: 8px 0 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="btn" onclick="exportLongImage()">📥 下載無縫長圖 (.png)</button>
+  </div>
+
+  <main id="report-card">
+    <div class="center-label">你的依戀風格是：</div>
+    <div class="pill-wrap"><span class="pill-title">疏離型</span></div>
+
+    <p>在親密關係中，你的迴避程度比較高。你並不願意過多的捲入到和戀人的親密關係中，特別是遇到衝突時，你不願意用直接的方式解決問題。你習慣把自己從中抽離出來，喜歡把自己和戀人當成完全獨立的個體對待，所以內心深處，你討厭一段感情過分束縛自己。</p>
+    <p>感情中，你的焦慮程度比較低，雖然戀人也會影響你的情緒，但你不會因此而不知所措。自信的你覺得即便是單身，也能將生活過得很好。所以，戀愛中的你對待愛情比較無所謂，冷靜而疏離。</p>
+
+    <div class="sub-heading">你所屬的象限：</div>
+
+    <div class="quadrant-box">
+      <svg viewBox="0 0 360 320" width="100%" height="auto">
+        <text x="180" y="24" text-anchor="middle" fill="#666" font-size="14">低迴避</text>
+        <text x="180" y="308" text-anchor="middle" fill="#666" font-size="14">高迴避</text>
+        <text x="28" y="165" text-anchor="middle" fill="#666" font-size="14">低焦慮</text>
+        <text x="332" y="165" text-anchor="middle" fill="#666" font-size="14">高焦慮</text>
+        <line x1="180" y1="42" x2="180" y2="278" stroke="#7a5c58" stroke-width="1.2"/>
+        <polygon points="180,38 176,45 184,45" fill="#7a5c58"/>
+        <polygon points="180,282 176,275 184,275" fill="#7a5c58"/>
+        <line x1="62" y1="160" x2="298" y2="160" stroke="#7a5c58" stroke-width="1.2"/>
+        <polygon points="58,160 65,156 65,164" fill="#7a5c58"/>
+        <polygon points="302,160 295,156 295,164" fill="#7a5c58"/>
+        <rect x="82" y="210" width="76" height="24" rx="12" fill="#fde8e8"/>
+        <text x="120" y="227" text-anchor="middle" fill="#4a2c2a" font-family="serif" font-size="16" font-weight="bold">疏離型</text>
+      </svg>
+    </div>
+
+    <p>疏離型依戀在愛情依戀中是比較少見的群體，人群比例不到20%，是一種特徵比較典型的非安全型依戀。</p>
+
+    <div class="pill-wrap"><span class="pill-title">愛情畫像</span></div>
+
+    <div class="sub-heading">愛情這場博弈，誰定輸贏？</div>
+    <p>比起其他依戀類型，戀愛中的你更注重愛情的「博弈」。你很少依賴戀人，因為依賴一個人讓你感到脆弱，而這種脆弱感對你而言，是權力被剝奪。為了獲得主動權，你不太把自己的缺點展露在對方面前，戀人是否喜歡自己，對你來說也並不是天大的事兒。對你來說，最重要的事情是，不讓自己成為感情的俘虜。</p>
+    <p>所以在愛情這場「權力的遊戲」中時，看上去你是贏家，但其實，輸贏只是你維護個人自我價值的一種方式，對感情來說並沒有實際的意義。</p>
+
+    <div class="sub-heading">愛情真的不重要嗎？</div>
+    <p>當愛情出現衝突時，相比於直接和戀人爭論，你更擅長用間接的方式來表達不滿，比如沉默和冷暴力。於你而言，愛不需要執著，隨時可以遺忘。無所謂期待，也無所謂失望。你不會因為喜歡戀人和放下自己的自尊心，你覺得大不了一個人也可以過得很好。</p>
+    <p>你是一個怕麻煩的人。所以當愛情發生衝突時，你寧可讓步，平息事態。但如果戀愛消耗了太多的精力，或者給了你太多痛苦，你可能會放手。在愛情和個人空間裡，你傾向於選擇後者。如果要問你，愛情重要嗎？你或許會先回答說，這要看愛情麻不麻煩。</p>
+
+    <div class="sub-heading">缺乏共情，表情跟不上情緒</div>
+    <p>已有研究發現，疏離型依戀類型的人缺乏足夠的共情，不太善於表達情感。或許很多時候你也能敏銳地覺察到戀人的情緒，但可能因為你不善於與人溝通，往往逃避真實地表達自己，長期下來，你對親密戀人的需要很少能給到及時的反饋或滿足，甚至常被認為是不解風情。這可能也與日常生活中，你的表情跟不上情緒有關。即便在你感到難過或悲傷的時候，你的外在表情也很少能準確傳達。</p>
+
+    <div class="pill-wrap"><span class="pill-title">原因解析</span></div>
+
+    <div class="sub-heading">不安全的基因</div>
+    <p>影響你的依戀類型的原因中，<strong>先天因素佔據大約一半。</strong>Gillath對雙胞胎的研究發現，不安全型依戀風格可能遺傳於焦慮的母親（註：痴迷型、恐懼型和疏離型同屬於不安全型依戀）。而擁有成對Dopamine受體基因(DRD2)比起只有單一或沒有該基因的人更容易發展成痴迷型和恐懼型依戀。</p>
+
+    <div class="sub-heading">堆積的「失望」</div>
+    <p>疏離型依戀往往與幼年時期父母對你的情感忽視有關。如果曾經渴望的東西總是沒有被滿足，那麼你將會把期待從外界轉向自身。你不再渴望親密他人是否給你回饋，因而也不用再承擔失望的痛苦。你會不斷說服自己「我並不需要它」。長期的這種思維模式奠定了你的依戀基礎。</p>
+
+    <div class="pill-wrap"><span class="pill-title">愛情自我修煉</span></div>
+
+    <p>內心的恐懼和害怕，是不安全型依戀的人在面對愛情時有的迷惘。我們渴望完美的關係，可能想通過完美的愛來迴避心裡的害怕和痛苦。但結果往往是<strong>「我心愛的人離開我了，我很傷心，為什麼命運總是如此待我？」</strong></p>
+    <p>尋求愛的過程，並不能讓你逃避內心的恐懼。<strong>人生最大的騙局之一，就是以為我們終將遇到一個能使我們快樂並遠離恐懼的人。</strong>但很少意識到，追求愛情的戲碼，其實只是因為我們的內在小孩想要尋求解脫。所以，最根本的方式是，養成更安全型的依戀，找到並安撫你曾經受傷的內心小孩。</p>
+
+    <div class="step-block"><span class="hl-step">1、覺察內心的共依存結構</span></div>
+    <p>當你受挫、失望之時，被遺棄感、恐懼的傷口會被觸動，你可能會想要去控制、支配別人，可能會讓關係變得更糟。當你開始有了覺察時，就是治療的開始。</p>
+
+    <div class="step-block"><span class="hl-step">2、接受恐懼和痛苦，並給予他們充分的空間</span></div>
+    <p>當傷害降臨時，你越是坦然面對，就越容易穿越它。當你越是希望在關係中得到療癒，結果可能越是糟糕。等到激情期過去，你不可避免要面對失望。所以，接受痛苦，給他們充分的空間。</p>
+    <p>你可以想像一個讓你印象深刻的被遺棄或恐懼的情境，然後思考這樣一些問題：<br>
+    是什麼觸動了你的不安？你是如何感受到這種恐懼感的？<br>
+    什麼是你預期該得到還是沒有得到的？<br>
+    你對這樣的挫折有什麼反應？<br>
+    你想過什麼策略嗎？</p>
+
+    <div class="step-block"><span class="hl-step">3、尋求外在支持</span></div>
+    <p>找到可靠的朋友，分享你的感受和想法。</p>
+
+    <div class="step-block"><span class="hl-step">4、尋找內部連接</span></div>
+    <p>想像你是一名睿智又溫和的魔法師或老巫師，想要擁抱最初受傷時候的自己，告訴ta你想要ta，接受ta。跟ta說，一切都不是你的錯。<br>
+    這封信不需要太長，兩三段就可以了。例如：<br>
+    親愛的小XX：</p>
+    <div class="letter-center">
+      很高興我終於找到你了。<br>
+      這個過程雖然很累，但是找到了你，一切都值得。<br>
+      你知道，我愛你，並且要你永遠跟我在一起。<br>
+      如果有機會，我會告訴你，你對我來說有多重要。
+    </div>
+    <div class="letter-sign">愛你的XX。</div>
+
+    <p>然後，再讓自己以【受傷小孩】的身份寫一封回信。為了更好地進入情境，最好用你的左手來寫。因為左手更能與你大腦中的潛意識相連。例如：<br>
+    親愛的XX：</p>
+    <div class="letter-center">
+      我要你來找我，給我安全，帶我所有想要的。
+    </div>
+    <div class="letter-sign">小XX</div>
+
+    <div class="step-block"><span class="hl-step">5、冥想</span></div>
+    <p>通過冥想，可以了解自己的愛情創傷的根源，從而更好地獲得療癒。<br>
+    開始時靜靜地坐著並逐漸感受你的環境……把自己定位在空間與時間之中。感覺背和臀部接觸到你所坐的椅子……感覺你的衣服在你身上……盡可能去聽各種不同的聲音……感受房間裡的空氣……就此刻而言，應該沒有任何地方是你必須要去的，沒有任何事是你必須去做的……現在就只要在這兒……如果你以前沒這麼做過，你可以把眼睛閉起來……你可以感覺到你的呼吸……感受到空氣的吸入和呼出……要感知到在你吸入和呼出之際，從鼻孔經過的那種感覺……</p>
+    <p>現在你可能會覺得眼皮有點沉重……你可以就此讓它們緊閉起來……或許你也會覺得下巴挺重的……還有你的手臂和雙手……也許你會覺得簡直無法挪動你的雙手……可能還感到你的腿和腳的沉重……好像你也無法挪動他們……或者你有完全相反的感覺，好像你整個人都在漂浮……你的手腳都像羽毛似的……你真的能感覺你的感覺，不管是輕還是重的……而且不管怎麼樣，總是非常適合你……</p>
+    <p>想像你遇到了那個最初受傷時候的自己，ta在哪裡，現在在做什麼？ta有什麼樣的感覺？ta是在害怕嗎？恐懼嗎……</p>
+    <p>然後成熟的你，以一名睿智、溫和的魔法師身份在那兒。你慈愛地看著ta。接著，你讓自己進入最初受傷的那個自己身體裡，聽這位魔法師的告白：</p>
+    <div class="letter-center">
+      歡迎來到這世上。我一直在等你的到來。<br>
+      我很高興有你在這兒。<br>
+      我已經預備好一個適合你居住的（特…）
+    </div>
+  </main>
+
+  <script>
+    async function exportLongImage() {
+      const card = document.getElementById('report-card');
+      const canvas = await html2canvas(card, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const link = document.createElement('a');
+      link.download = '愛情風格測評_疏離型_無縫長圖.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
