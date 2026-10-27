@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>依戀類型測試分析 - 焦慮型</title>
+    <style>
+        :root {
+            --bg-main: #f5f6f4;
+            --bg-header: #eaede8;
+            --primary-green: #688577;
+            --primary-green-light: #e0e8e4;
+            --text-dark: #2c3531;
+            --text-muted: #848e89;
+            --card-bg: #ffffff;
+            --promo-pink: #c7828f;
+            --axis-line: #8c9690;
+            --border-dashed: #cfd6d2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+            background-color: #e2e5e1;
+            color: var(--text-dark);
+            line-height: 1.75;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        /* 模擬手機長圖容器 */
+        .long-image-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--bg-main);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 32px;
+        }
+
+        /* 頂部導覽列 */
+        .top-nav {
+            background-color: var(--bg-main);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .nav-back {
+            font-size: 20px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 300;
+            cursor: default;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: Georgia, serif;
+            font-weight: bold;
+            font-size: 19px;
+            color: var(--primary-green);
+        }
+
+        .brand-icon {
+            background-color: var(--primary-green);
+            color: white;
+            width: 22px;
+            height: 24px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .brand-reg {
+            font-size: 11px;
+            color: #b0b8b4;
+            vertical-align: super;
+            font-family: sans-serif;
+            font-weight: normal;
+        }
+
+        .nav-capsule {
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #e0e3e0;
+            border-radius: 16px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--text-dark);
+            letter-spacing: 2px;
+        }
+
+        /* 類型橫幅 */
+        .type-banner {
+            background-color: var(--bg-header);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .type-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .type-title span {
+            color: var(--primary-green);
+        }
+
+        .btn-share {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* 座標圖區塊 */
+        .chart-section {
+            padding: 28px 20px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .axis-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--axis-line);
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+
+        .chart-middle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .axis-label-side {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--axis-line);
+            white-space: nowrap;
+        }
+
+        .grid-box {
+            width: 220px;
+            height: 220px;
+            border: 1.5px dashed var(--border-dashed);
+            position: relative;
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* 十字座標軸 */
+        .grid-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background-color: var(--axis-line);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .grid-box::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 3px;
+            background-color: var(--axis-line);
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+
+        /* 落點（高焦慮、低迴避：左上象限） */
+        .plot-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-green);
+            border-radius: 50%;
+            left: 42%;
+            top: 26%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(104, 133, 119, 0.15);
+        }
+
+        /* 標籤與推薦測試區 */
+        .meta-section {
+            padding: 8px 20px 16px;
+        }
+
+        .tag-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .tag-icon {
+            background-color: var(--primary-green);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .rec-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .rec-check {
+            background-color: #ebd5d8;
+            color: #b56b77;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* 粉色推薦卡片 */
+        .promo-card {
+            background-color: var(--promo-pink);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .promo-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .promo-title {
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.4;
+            max-width: 72%;
+            margin-bottom: 6px;
+        }
+
+        .promo-btn {
+            background-color: #ffffff;
+            color: var(--promo-pink);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            float: right;
+            margin-top: -18px;
+            text-decoration: none;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        /* 雙欄小卡片 */
+        .sub-promo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .sub-card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .sub-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .sub-card-header span {
+            color: #ccc;
+            font-weight: normal;
+        }
+
+        .sub-card-desc {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* 報告正文白色卡片區 */
+        .content-wrapper {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .report-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .card-main-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .report-card p {
+            font-size: 15.5px;
+            color: #3b423e;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .report-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-quote {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .closing-title {
+            font-size: 16px;
+            color: #4a544f;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        /* 底部按鈕列 */
+        .bottom-actions {
+            padding: 28px 20px 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 0;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(104, 133, 119, 0.25);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="long-image-container">
+    <!-- 頂部導覽列 -->
+    <div class="top-nav">
+        <span class="nav-back">&#10094;</span>
+        <div class="brand-logo">
+            <span class="brand-icon">t</span>
+            typebox<span class="brand-reg">&copy;</span>
+        </div>
+        <div class="nav-capsule">&bull;&bull;&bull; &odot;</div>
+    </div>
+
+    <!-- 人格類型橫幅 -->
+    <div class="type-banner">
+        <div class="type-title">人格類型：<span>焦慮型</span></div>
+        <button class="btn-share">分享給好友</button>
+    </div>
+
+    <!-- 依戀座標圖 -->
+    <div class="chart-section">
+        <div class="axis-label">高焦慮</div>
+        <div class="chart-middle">
+            <div class="axis-label-side">低迴避</div>
+            <div class="grid-box">
+                <div class="plot-point" title="您的落點：高焦慮、低迴避"></div>
+            </div>
+            <div class="axis-label-side">高迴避</div>
+        </div>
+        <div class="axis-label">低焦慮</div>
+    </div>
+
+    <!-- 推薦測試區（拼合自圖1） -->
+    <div class="meta-section">
+        <div class="tag-row">
+            <span>@依戀類型測試分析</span>
+            <span class="tag-icon">&#128279;</span>
+        </div>
+        <div class="rec-header">
+            <span class="rec-check">&#10003;</span>
+            <span>測過依戀類型測試的人，也會測這些</span>
+        </div>
+
+        <div class="promo-card clearfix">
+            <div class="promo-top">
+                <span>理想型</span>
+                <span>約4分鐘</span>
+            </div>
+            <div class="promo-title">為什麼有些人讓你一眼瞬間上頭？</div>
+            <span class="promo-btn">去測試 &rarr;</span>
+        </div>
+
+        <div class="sub-promo-grid">
+            <div class="sub-card">
+                <div class="sub-card-header">哲學傾向 <span>&#10095;</span></div>
+                <div class="sub-card-desc">你到底靠什麼理解人生？</div>
+            </div>
+            <div class="sub-card">
+                <div class="sub-card-header">DnD陣營 <span>&#10095;</span></div>
+                <div class="sub-card-desc">規則和利益衝突時你選誰？</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 完整分析內容（無縫拼合圖1至圖6所有卡片並轉為繁體中文） -->
+    <div class="content-wrapper">
+        
+        <!-- 卡片 1：你是「焦慮型依戀」 -->
+        <div class="report-card">
+            <h2 class="card-main-title">你是「焦慮型依戀」</h2>
+            <p>—— 敏銳的情感雷達，渴望深度連結的追逐者</p>
+            <p>【高焦慮・低迴避】</p>
+            <p>在依戀座標系中，你擁有極高的情感濃度，渴望與伴侶建立緊密無間的連結。對於親密關係，你的內心底層程式碼是：</p>
+            <p class="highlight-quote">「我渴望親密，但我總擔心你不愛我了。」</p>
+            <p>在感情中，你就像一台高精度的情感雷達。你對伴侶的語氣、眼神、回覆速度極其敏感，任何細微的變化都能被你捕捉到。你不僅不排斥依賴，反而視其為愛的證明。你付出很多，也渴望獲得同等濃度的回應。</p>
+        </div>
+
+        <!-- 卡片 2：你的力量來源 -->
+        <div class="report-card">
+            <h2 class="card-main-title">你的力量來源</h2>
+            <p>這種「患得患失」，並不是因為你「無理取鬧」或「矯情」，而是你早期習得的生活智慧。</p>
+            <p>也許在你成長的環境中，照顧者的回應是時好時壞、不可預測的。為了確保照顧者不會消失，你學會了時刻保持警惕，並放大自己的情緒訊號來博取關注。</p>
+            <p>這賦予了你極強的同理心。你是天生的傾聽者和照顧者，能夠敏銳地感知到他人的情緒變化，並給予最溫暖的陪伴。你對待感情的真誠和投入，是極為珍貴的品質。</p>
+        </div>
+
+        <!-- 卡片 3：你的潛在盲區 -->
+        <div class="report-card">
+            <h2 class="card-main-title">你的潛在盲區</h2>
+            <p>你的敏感是一份禮物，但如果沒有邊界，它也可能變成傷害你的利刃。作為焦慮型，你需要留意以下幾點：</p>
+            
+            <h3 class="card-subtitle">過度解讀「微表情」</h3>
+            <p>當伴侶回覆訊息變慢，或者語氣稍顯平淡，你內心的警報器就會立刻拉響，開始腦補各種負面劇本：「我是不是做錯了什麼？」「他是不是變心了？」這種過度解讀往往會製造出並不存在的危機。</p>
+
+            <h3 class="card-subtitle">「抗議行為」的陷阱</h3>
+            <p>當你感到不安時，你可能不會直接說「我需要安慰」，而是透過賭氣、瘋狂發訊息、故意冷落甚至提分手來引起對方注意。這種「推開對方是為了讓他拉住我」的策略，往往會把伴侶推得更遠。</p>
+
+            <h3 class="card-subtitle">在愛裡弄丟了自己</h3>
+            <p>你太渴望融合，以至於很容易把伴侶的需求置於自己之上。你的情緒完全隨著對方的態度起伏，為了維持關係，你可能會無底線地妥協，直到失去自我。</p>
+        </div>
+
+        <!-- 卡片 4：關係進化指南 -->
+        <div class="report-card">
+            <h2 class="card-main-title">關係進化指南</h2>
+            <p>你需要學習的不是「變得冷漠」，而是學會「自我安撫」。以下建議能幫你找回內心的平靜：</p>
+
+            <h3 class="card-subtitle">練習「暫停鍵」</h3>
+            <p>當恐慌情緒來襲，想瘋狂發訊息或質問對方時，強迫自己暫停10分鐘。深呼吸，離開現在的環境去喝杯水。你會發現，很多衝動只是暫時的情緒海嘯，等浪潮退去，你會慶幸自己沒發那則訊息。</p>
+
+            <h3 class="card-subtitle">用「直接表達」代替「指責」</h3>
+            <p>試著把「你怎麼又不回我訊息，你根本不在乎我」換成「你很久沒回訊息，我有點擔心和失落，我需要你的回應來感到安心」。直接表達脆弱，比憤怒的指責更能喚起伴侶的愛意。</p>
+
+            <h3 class="card-subtitle">把注意力收回到自己身上</h3>
+            <p>不要把安全感的開關完全交到別人手裡。培養一些不需要伴侶參與也能讓你開心的愛好。當你開始愛自己、關注自己的生活時，你對他人的「抓取感」就會降低，關係反而會變得更輕鬆。</p>
+
+            <div class="closing-title">給你的專屬寄語</div>
+            <p>「你的敏感不是詛咒，而是感知世界的觸角。</p>
+            <p>你不需要透過討好或用力抓緊來證明自己值得被愛。請試著把對他人的那份關注，分一半給自己。當你學會先擁抱自己，你的愛將不再是索取，而是真正的滋養。」</p>
+        </div>
+
+    </div>
+
+    <!-- 底部按鈕列（去除截圖中間遮擋，移至長圖最下方） -->
+    <div class="bottom-actions">
+        <button class="action-btn">查看所有類型</button>
+        <button class="action-btn">重新測試</button>
+    </div>
+</div>
+
+</body>
+</html>
