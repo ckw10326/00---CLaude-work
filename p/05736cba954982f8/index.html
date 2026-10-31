@@ -1,424 +1,106 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    <title>與馨婷的聊天對話深度分析｜Gemini 分析</title>
-    <style>
-        :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --primary-light: #eff6ff;
-            --accent-amber: #d97706;
-            --accent-amber-bg: #fffbeb;
-            --accent-rose: #e11d48;
-            --accent-rose-bg: #fff1f2;
-            --accent-teal: #0d9488;
-            --accent-teal-bg: #f0fdfa;
-            --border-color: #e2e8f0;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.65;
-            padding: 2rem 1rem;
-        }
-        .container {
-            max-width: 1080px;
-            margin: 0 auto;
-        }
-        header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: #ffffff;
-            padding: 2.5rem 2rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        header .badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            margin-bottom: 0.75rem;
-            letter-spacing: 0.05em;
-        }
-        header h1 {
-            font-size: 1.85rem;
-            margin-bottom: 0.75rem;
-            font-weight: 700;
-        }
-        header p.core-verdict {
-            font-size: 1.05rem;
-            color: #cbd5e1;
-            border-left: 4px solid #38bdf8;
-            padding-left: 1rem;
-            margin-top: 1rem;
-        }
-        .section-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 2rem;
-            margin-bottom: 1.75rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-        }
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .tree-box {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-family: "Consolas", "Monaco", monospace;
-            font-size: 0.92rem;
-            overflow-x: auto;
-            white-space: pre;
-            line-height: 1.55;
-        }
-        /* Timeline */
-        .timeline {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
-            margin-top: 1rem;
-        }
-        .timeline-item {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            background: #fafafa;
-            position: relative;
-        }
-        .timeline-item.phase-1 { border-top: 4px solid #f43f5e; }
-        .timeline-item.phase-2 { border-top: 4px solid #f59e0b; }
-        .timeline-item.phase-3 { border-top: 4px solid #64748b; }
-        .timeline-date {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin-bottom: 0.35rem;
-        }
-        .timeline-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.65rem;
-        }
-        /* Grid layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-            gap: 1.5rem;
-        }
-        @media (max-width: 600px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-        .case-box {
-            background: var(--primary-light);
-            border-left: 4px solid var(--primary);
-            padding: 1.1rem 1.25rem;
-            border-radius: 0 10px 10px 0;
-            margin-bottom: 1rem;
-        }
-        .case-box.amber {
-            background: var(--accent-amber-bg);
-            border-left-color: var(--accent-amber);
-        }
-        .case-box.rose {
-            background: var(--accent-rose-bg);
-            border-left-color: var(--accent-rose);
-        }
-        .case-box.teal {
-            background: var(--accent-teal-bg);
-            border-left-color: var(--accent-teal);
-        }
-        .case-title {
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            color: #0f172a;
-        }
-        .quote {
-            font-style: italic;
-            color: #334155;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            margin: 0.5rem 0;
-            font-size: 0.94rem;
-            border: 1px dashed #cbd5e1;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0.75rem;
-            font-size: 0.95rem;
-        }
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 0.85rem 1rem;
-            text-align: left;
-            vertical-align: top;
-        }
-        th {
-            background-color: #f1f5f9;
-            font-weight: 700;
-            color: #334155;
-        }
-        tr:nth-child(even) td {
-            background-color: #f8fafc;
-        }
-        ul.styled-list {
-            list-style: none;
-        }
-        ul.styled-list li {
-            position: relative;
-            padding-left: 1.4rem;
-            margin-bottom: 0.75rem;
-        }
-        ul.styled-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0.25rem;
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.2rem;
-            line-height: 1.3;
-        }
-        .tag {
-            display: inline-block;
-            padding: 0.15rem 0.55rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 6px;
-            margin-right: 0.4rem;
-        }
-        .tag-blue { background: #dbeafe; color: #1e40af; }
-        .tag-rose { background: #ffe4e6; color: #9f1239; }
-        .tag-amber { background: #fef3c7; color: #92400e; }
-        .tag-teal { background: #ccfbf1; color: #115e59; }
-        footer {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>與馨婷的對話分析｜Gemini 分析／Grok Bot 分析</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; max-width: 100%; background: #f8fafc; }
+  .tabbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .tabbar button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #1e293b;
+    font: 600 15px/1.25 -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
+  .tabbar button[aria-selected="true"] {
+    background: #1e293b;
+    color: #fff;
+    border-color: #1e293b;
+  }
+  .stage { position: relative; }
+  iframe.pane {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fff;
+  }
+  iframe.pane:not(.is-active) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
-
-<div class="container">
-    <header>
-        <div class="badge">📊 單一文本深度剖析報告 ｜ 2024.02.14 – 2024.04.17</div>
-        <h1>與馨婷的聊天對話深度分析｜Gemini 分析</h1>
-        <p class="core-verdict">
-            <strong>🎯 核心結論：</strong>這是一場「理性學者（INTP-A）」與「感性探險家（ISFP）」的雙向試探。兩人日常作息與閒聊默契極佳，但卡在<strong>「雙方都不願先打破安全邊界」</strong>以及<strong>「理性解題 vs. 感性討拍」</strong>的底層錯位，最終從高頻曖昧自然降溫為舒適圈好友。
-        </p>
-    </header>
-
-    <!-- 樹狀結構總覽 -->
-    <section class="section-card">
-        <div class="section-title">🌳 分析架構總覽</div>
-        <div class="tree-box">📦 「與馨婷的聊天」單一文本深度分析
-├── 🎯 核心結論：INTP 理性學者與 ISFP 感性防禦者的雙向試探，因安全邊界與情緒接球錯位而自然退溫。
-├── 🔍 一、4 個核心觀察維度（沒注意到的細節與感覺）
-│   ├── ⏱️ 1. 節奏與非文字訊號：從「日均百句、深夜 2 點收尾」到「隔週寒暄」的三階段退潮
-│   ├── 🎾 2. 情緒接球率：她的「軟性丟球/示弱」屢次撞上你的「鋼鐵邏輯/換框說理」
-│   ├── ⚖️ 3. 隱性權力與邊界感：「發睡覺卡」的控場權轉移，與「高標準檢核表」的雙向勸退
-│   └── 🛡️ 4. 衝突與防禦機制：無正面爭吵，但充滿「先發制人的保護色（介紹對象、自稱壞脾氣）」
-├── 🪞 二、從單一文本抓「自己的盲點」與「對方的缺陷」
-│   ├── 🧠 1. 你的盲點：把曖昧當辯論賽（一定要講贏）、對脆弱訊號「過度鈍感」、無意識吐槽外貌與飲食
-│   └── 🥀 2. 她的缺陷：前任創傷導致的「被動防禦（想黏不敢黏）」、習慣性生悶氣與冷處理、知行矛盾
-└── 💡 總結與洞察：她是你感情修煉路上的「極佳教練」，促成你在 04/17 對 NLP 換框與溝通藝術的覺察。</div>
-    </section>
-
-    <!-- 維度一：節奏與時間線 -->
-    <section class="section-card">
-        <div class="section-title">⏱️ 維度一：節奏與「非文字」訊號（熱度退潮的精準時間線）</div>
-        <p style="margin-bottom: 1rem; color: var(--text-muted);">將兩個月的時間戳記攤開，可以清楚觀察到這段關係經歷了明顯的「三階段溫差」：</p>
-        <div class="timeline">
-            <div class="timeline-item phase-1">
-                <div class="timeline-date">STAGE 1 ｜ 02/14 – 03/08 (約 3 週)</div>
-                <div class="timeline-title">🔥 高頻曖昧與深夜陪伴期</div>
-                <ul class="styled-list">
-                    <li>幾乎<strong>天天聊到凌晨 01:00～02:00</strong>，白天上班也在偷聊（10:00 休息、午休、下班前）。</li>
-                    <li>成功推進兩次單獨約會：<strong>02/23</strong>（雙連吃 12MINI＋西門燈會）、<strong>03/03</strong>（三重 U2 包廂看《沙丘》）。</li>
-                    <li>建立專屬儀式感：睡前互發「睡覺卡」、每天提醒簽到賺 mo 幣、分享房間天花板投影燈與床伴枕頭。</li>
-                </ul>
-            </div>
-            <div class="timeline-item phase-2">
-                <div class="timeline-date">STAGE 2 ｜ 03/08 深夜 – 03/16</div>
-                <div class="timeline-title">⚠️ 關鍵轉折與斷層出現</div>
-                <ul class="styled-list">
-                    <li><strong>關鍵轉折點（03/08 23:06 - 03/09 00:29）</strong>：她唱完 KTV 回家吐露深層脆弱（「心裡有一塊心事沒被理解…連我媽都不懂我」），你因想睡且「太跳沒 get 到」草草結束話題，隔天也未追問。</li>
-                    <li>此後出現明顯斷層：03/10 完全沒聊、03/13 僅聊 3 分鐘、03/17–03/19 斷聯三天。</li>
-                </ul>
-            </div>
-            <div class="timeline-item phase-3">
-                <div class="timeline-date">STAGE 3 ｜ 03/20 – 04/17</div>
-                <div class="timeline-title">🧊 退回舒適圈普通好友</div>
-                <ul class="styled-list">
-                    <li><strong>03/25 至 04/07 出現長達 13 天的完全空白</strong>。</li>
-                    <li><strong>04/13</strong> 雖一起跟同事去看新莊/三重預售屋（你幫她買了玩火奶茶），<strong>04/17</strong> 也記得祝她生日快樂，但對話已完全退去曖昧試探，轉為純粹的知識交流（股票、房價、NLP 書籍）。</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- 維度二：情緒接球率 -->
-    <section class="section-card">
-        <div class="section-title">🎾 維度二：情緒接球率（感性丟球 vs. 理性閃避的經典切片）</div>
-        <p style="margin-bottom: 1.25rem; color: var(--text-muted);">你在行動上非常貼心（騎車接送、記得她愛喝的飲料、分享保養與優惠），但在「純情感流動的接球」上，常無意間用直男邏輯打散曖昧氛圍：</p>
-        
-        <div class="case-box rose">
-            <div class="case-title">📌 切片 1：獨處與迷茫的脆弱信號（02/22 00:18）</div>
-            <div class="quote">
-                <strong>馨婷：</strong>「其實我也只是想平凡過日子，但一個人就覺得很空會怕，好像沒什麼目標可以奮鬥的感覺，漸漸就很迷茫。」<br>
-                <strong>小華：</strong>「[貼圖] 堅強獨立的好孩子～但我很受家人照顧，無聊會一起看電影、看電視討論…所以真的就不無聊，我覺得我姊可能也是因為這樣才還沒結婚。」
-            </div>
-            <p><strong>💡 潛台詞拆解：</strong>當女生在凌晨 12 點半吐露「一個人很空會怕」時，這是一個極佳的情感推進窗口。但你的回應卻是給她貼上「堅強獨立好孩子」的標籤，並轉頭炫耀自己家裡很熱鬧、一點都不無聊，等於把正在喊孤單的她推回原地。</p>
-        </div>
-
-        <div class="case-box amber">
-            <div class="case-title">📌 切片 2：KTV 後的深層心事被漏接（03/08 23:06 – 03/09 00:29）</div>
-            <div class="quote">
-                <strong>馨婷：</strong>「你有沒有過，心裡有一塊心事沒有被人理解的感覺…就有時會覺得，內心世界沒有被理解到，沒人懂，連我媽都不懂我。」<br>
-                <strong>小華：</strong>「我剛在跟我姐分享進口貨物稅率及基本費用分析，準備睡覺…太跳沒 get 到，像是？看網路文章取暖找認同？」<br>
-                <strong>馨婷：</strong>「明天再說吧，你不是睏了…那你自己要記得問，忘了就算了，小金魚。」
-            </div>
-            <p><strong>💡 潛台詞拆解：</strong>這是整份紀錄中她最卸下心防的瞬間。她因為跟媽媽約吃飯起爭執，感嘆原生家庭迫使她獨立、內心沒人懂。結果你先是跳出來講「關稅分析」，接著把她的孤獨感解讀為「看網路文章取暖」。她最後說「你自己要記得問，忘了就算了」，其實是在測試你隔天會不會把她的心事放在心上——結果隔天你完全忘了問。</p>
-        </div>
-
-        <div class="case-box">
-            <div class="case-title">📌 切片 3：重複傳送文章的「收回訊息」細節（03/15 00:45）</div>
-            <div class="quote">
-                <strong>小華：</strong>「有個故事，就是一對夫妻，女方家境不錯幫出頭期款，然後老婆就想換 20w up 的木頭家具…」<br>
-                <strong>馨婷：</strong>「我好像有看過這個」➔ <strong>[00:46 馨婷已收回訊息]</strong> ➔ 改回：「老婆對家具品質很在乎…」
-            </div>
-            <p><strong>💡 潛台詞拆解：</strong>為什麼她秒收回「我好像有看過這個」？因為這篇 PTT 婚姻版文章，根本就是你在 <strong>02/24 00:33</strong> 親自傳給她、還跟她討論過一番的文章！她發現你忘了曾傳給她，為了顧及你的面子選擇收回訊息並陪你重新聊一次，但心裡對你的「金魚腦」默默記了一筆。</p>
-        </div>
-
-        <div class="case-box teal">
-            <div class="case-title">📌 切片 4：生日當天的「活該一個人」感嘆（04/17 20:12）</div>
-            <div class="quote">
-                <strong>馨婷：</strong>「我自己有濾水壺啊，濾過的水才會煮，我可是很周到的。你看我完蛋了，我都能靠自己，我哪還需要有人來照顧我，是不是活該一個人？」<br>
-                <strong>小華：</strong>「沒有，男生不愛生活白癡，你是生活天才，請看你媽，這麼可愛你怎麼捨得兇她。」
-            </div>
-            <p><strong>💡 潛台詞拆解：</strong>她在生日這天感嘆「是不是活該一個人」，渴望的是被肯定女性魅力與被呵護的需求；你卻開始理性論證「生活白癡 vs. 生活天才」，還把話題轉到她媽媽身上。</p>
-        </div>
-    </section>
-
-    <!-- 維度三 & 四：權力邊界與雙向勸退 -->
-    <section class="section-card">
-        <div class="section-title">⚖️ 維度三＆四：隱性權力、邊界感與「雙向攤牌勸退」</div>
-        <p style="margin-bottom: 1rem; color: var(--text-muted);">這段關係之所以沒有硬闖進交往階段，是因為你們在深夜長聊中，誠實地把彼此的「感情底線與雷區」攤在陽光下，完成了理性的風險評估：</p>
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 22%;">交鋒議題</th>
-                    <th style="width: 39%;">張小華的立場（INTP 理性學者）</th>
-                    <th style="width: 39%;">馨婷的立場（ISFP 感性藝術家）</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>吵架與認錯機制</strong><br><span class="tag tag-rose">核心衝突點</span></td>
-                    <td>「我是死不認錯型，除非拿出鐵證、說理說得過我就服！」、「以前女友不能任性，我就啪啪啪打臉她，從不慣著別人。」(02/20)</td>
-                    <td>「有時候感情沒什麼道理對錯欸，有道理又如何？」、「女生講不贏惱羞，男生要哄啊、要讓女生，有時候女人越寵越可愛。」(02/20, 02/25)</td>
-                </tr>
-                <tr>
-                    <td><strong>訊息回覆與斷聯</strong><br><span class="tag tag-amber">安全感落差</span></td>
-                    <td>把現實優先度放得比通訊軟體高，「是我常忽視別人，克服不了自己的惰性」、「喜歡講電話勝過傳訊息」。(02/21)</td>
-                    <td>「很不 ok 啊！在講電話前的那段時間女生會亂想，會覺得不被重視，不哄我無視我的不悅就會開始小劇場、最後吵架。」(02/21)</td>
-                </tr>
-                <tr>
-                    <td><strong>擇偶決策模式</strong><br><span class="tag tag-blue">心動 vs. 檢核表</span></td>
-                    <td>「INTP 可能都不是心動型的，單純看相處舒不舒服…想像一個檢查表（Checklist）慢慢打勾。」、「不會考慮單親媽媽，我很勢利又嫌麻煩。」(02/17, 03/04)</td>
-                    <td>「我很重視感覺，第一要合眼緣，如果沒有喜歡，就比較不會想為了對方調整自己。」(03/04)</td>
-                </tr>
-                <tr>
-                    <td><strong>家務與潔癖邊界</strong><br><span class="tag tag-teal">生活習慣</span></td>
-                    <td>運動完回家會先打電動再洗澡、冬天不愛洗太多次澡、早上起床不洗臉直接出門、睡前才刷牙。(02/17, 03/02, 03/04)</td>
-                    <td>「沒換居家服不能坐家具、沒洗澡絕對不能碰床」、「早上沒洗臉髒髒欸」、「一間空房間被我當倉庫亂囤東西」。(02/27, 03/04)</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- 二、自己的盲點 vs 對方的缺陷 -->
-    <div class="grid-2">
-        <section class="section-card" style="margin-bottom: 0;">
-            <div class="section-title">🪞 你的 3 大盲點（自我檢視）</div>
-            <ul class="styled-list">
-                <li>
-                    <strong>1. 習慣性「放大檢視與吐槽」：</strong><br>
-                    她拍打掃完的廚房求稱讚（02/15），你第一反應卻是抓包：「這張照片避開重要區域，像是水槽的碗一堆沒洗」；她聊飲食與身材，你常直男補刀：「少吃加工肉食品」、「螞蟻人」、「你的素食世界太狹窄」、「你家那麼小能屯成什麼樣」。雖是朋友互虧，但消解了曖昧的寵溺感。
-                </li>
-                <li>
-                    <strong>2. 把曖昧當「邏輯辯論賽」：</strong><br>
-                    當她撒嬌測試「爸爸我想要那個玩具，因為我比較愛你」（02/25），你直接回「您北可不是那麼好騙的，有條件的愛、物質！沒有人會愛你啦甲賽」。在感情話題上太追求邏輯完勝，容易讓感性型女生覺得踢到鐵板。
-                </li>
-                <li>
-                    <strong>3. 「大實話」破壞浪漫氣氛：</strong><br>
-                    你在 03/08 自曝前女友驚喜送健康餐盒，你卻直白跟對方說「自己先吃過東西、吃太飽吃不下」而踩雷。連馨婷都忍不住當場教你：「真的是不能直白說吃太飽，這是不解風情的行為…無論如何心意最重要。」
-                </li>
-            </ul>
-        </section>
-
-        <section class="section-card" style="margin-bottom: 0;">
-            <div class="section-title">🥀 馨婷的 3 大缺陷與矛盾（客觀評估）</div>
-            <ul class="styled-list">
-                <li>
-                    <strong>1. 前任創傷導致的「防禦性退縮」：</strong><br>
-                    剛結束一段與「離過婚有小孩的天菜壞男人」長達 28 個月斷斷續續的內耗關係（03/04, 03/07），讓她處於「想黏不敢黏」的狀態。常故意放出保護色（如：「什麼時候介紹男生給我」），既渴望陪伴又不敢真正投入。
-                </li>
-                <li>
-                    <strong>2. 易爆脾氣與「被動攻擊（冷戰）」：</strong><br>
-                    多次承認自己急性子、脾氣差：對媽媽改時間直接傳訊飆罵（03/08）；對女主管幫她做完工作選擇「生悶氣、故意已讀不回 10 分鐘冷戰」（02/29）；跟前任吵架也是「因為他生氣，我就反過來生氣他生氣」（02/23）。這與你追求的「情緒穩定」存在根本衝突。
-                </li>
-                <li>
-                    <strong>3. 嚴重「知行矛盾」與拖延症：</strong><br>
-                    嘴上天天焦慮「體脂高、肚肚胖、下巴長大膿包痘」，行為上卻是「一個月花 1700 喝手搖奶茶、愛吃素雞排與炸物、從清晨 4 點睡到下午 5 點（連睡 13 小時）」；工作上不喜歡的事會拖延好幾個月到最後一刻才面對。
-                </li>
-            </ul>
-        </section>
-    </div>
-
-    <!-- 總結與洞察 -->
-    <section class="section-card" style="margin-top: 1.75rem; background: linear-gradient(to right, #eff6ff, #f8fafc);">
-        <div class="section-title">💡 總結洞察：這段對話帶給你的真正價值</div>
-        <p style="margin-bottom: 0.75rem;">
-            回頭看這份 2024 年初的紀錄，兩人最終退回朋友位置，並非因為誰做錯了什麼，而是<strong>「INTP 的高度自律、講求邏輯公平」</strong>與<strong>「ISFP 的感性隨性、渴望無條件被寵」</strong>在深層價值觀上精準篩選後的必然結果。
-        </p>
-        <p>
-            更關鍵的是，馨婷在對話中扮演了你感情修煉路上的<strong>「最佳陪練員」</strong>——她毫不藏私地用女性視角點破了你的直男盲點（如餐盒事件、斷聯小劇場、哄女生的邏輯）。而你在紀錄最末段（<strong>04/17 20:22</strong>）主動提到自己開始閱讀 <strong>NLP（察言觀色講對話的藝術、換框思考）</strong>與<strong>決策書籍（吵架前重要時刻訊號出現時，皮要繃緊講對話）</strong>，正是將這兩個月與她交手的實戰經驗，成功內化為你後續人際與感情進化的重要養分。
-        </p>
-    </section>
-
-    <footer>
-        Generated by AI Conversation Analyst ｜ 專注於時間差、回應落差與重複行為模式的深度解構
-    </footer>
+<div class="tabbar" role="tablist" aria-label="分析版本">
+  <button type="button" role="tab" id="tab-gemini" aria-controls="pane-gemini" aria-selected="true">Gemini 分析</button>
+  <button type="button" role="tab" id="tab-grok" aria-controls="pane-grok" aria-selected="false">Grok Bot 分析</button>
 </div>
-
+<div class="stage">
+  <iframe class="pane is-active" id="pane-gemini" title="Gemini 分析"></iframe>
+  <iframe class="pane" id="pane-grok" title="Grok Bot 分析"></iframe>
+</div>
+<script type="application/json" id="doc-gemini">"\u003c!DOCTYPE html>\n\u003chtml lang=\"zh-TW\">\n\u003chead>\n    \u003cmeta charset=\"UTF-8\">\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    \u003cmeta name=\"robots\" content=\"noindex, nofollow, noarchive\">\n    \u003ctitle>與馨婷的聊天對話深度分析｜Gemini 分析\u003c/title>\n    \u003cstyle>\n        :root {\n            --bg-color: #f8fafc;\n            --card-bg: #ffffff;\n            --text-main: #1e293b;\n            --text-muted: #64748b;\n            --primary: #2563eb;\n            --primary-light: #eff6ff;\n            --accent-amber: #d97706;\n            --accent-amber-bg: #fffbeb;\n            --accent-rose: #e11d48;\n            --accent-rose-bg: #fff1f2;\n            --accent-teal: #0d9488;\n            --accent-teal-bg: #f0fdfa;\n            --border-color: #e2e8f0;\n        }\n        * {\n            box-sizing: border-box;\n            margin: 0;\n            padding: 0;\n        }\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Microsoft JhengHei\", \"PingFang TC\", sans-serif;\n            background-color: var(--bg-color);\n            color: var(--text-main);\n            line-height: 1.65;\n            padding: 2rem 1rem;\n        }\n        .container {\n            max-width: 1080px;\n            margin: 0 auto;\n        }\n        header {\n            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);\n            color: #ffffff;\n            padding: 2.5rem 2rem;\n            border-radius: 16px;\n            margin-bottom: 2rem;\n            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);\n        }\n        header .badge {\n            display: inline-block;\n            background: rgba(255, 255, 255, 0.15);\n            padding: 0.25rem 0.75rem;\n            border-radius: 999px;\n            font-size: 0.85rem;\n            margin-bottom: 0.75rem;\n            letter-spacing: 0.05em;\n        }\n        header h1 {\n            font-size: 1.85rem;\n            margin-bottom: 0.75rem;\n            font-weight: 700;\n        }\n        header p.core-verdict {\n            font-size: 1.05rem;\n            color: #cbd5e1;\n            border-left: 4px solid #38bdf8;\n            padding-left: 1rem;\n            margin-top: 1rem;\n        }\n        .section-card {\n            background: var(--card-bg);\n            border-radius: 14px;\n            padding: 2rem;\n            margin-bottom: 1.75rem;\n            border: 1px solid var(--border-color);\n            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);\n        }\n        .section-title {\n            font-size: 1.35rem;\n            font-weight: 700;\n            margin-bottom: 1.25rem;\n            padding-bottom: 0.75rem;\n            border-bottom: 2px solid var(--border-color);\n            display: flex;\n            align-items: center;\n            gap: 0.5rem;\n        }\n        .tree-box {\n            background: #0f172a;\n            color: #e2e8f0;\n            padding: 1.5rem;\n            border-radius: 12px;\n            font-family: \"Consolas\", \"Monaco\", monospace;\n            font-size: 0.92rem;\n            overflow-x: auto;\n            white-space: pre;\n            line-height: 1.55;\n        }\n        /* Timeline */\n        .timeline {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\n            gap: 1.25rem;\n            margin-top: 1rem;\n        }\n        .timeline-item {\n            border: 1px solid var(--border-color);\n            border-radius: 12px;\n            padding: 1.25rem;\n            background: #fafafa;\n            position: relative;\n        }\n        .timeline-item.phase-1 { border-top: 4px solid #f43f5e; }\n        .timeline-item.phase-2 { border-top: 4px solid #f59e0b; }\n        .timeline-item.phase-3 { border-top: 4px solid #64748b; }\n        .timeline-date {\n            font-size: 0.85rem;\n            font-weight: 700;\n            color: var(--text-muted);\n            margin-bottom: 0.35rem;\n        }\n        .timeline-title {\n            font-size: 1.1rem;\n            font-weight: 700;\n            margin-bottom: 0.65rem;\n        }\n        /* Grid layouts */\n        .grid-2 {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));\n            gap: 1.5rem;\n        }\n        @media (max-width: 600px) {\n            .grid-2 { grid-template-columns: 1fr; }\n        }\n        .case-box {\n            background: var(--primary-light);\n            border-left: 4px solid var(--primary);\n            padding: 1.1rem 1.25rem;\n            border-radius: 0 10px 10px 0;\n            margin-bottom: 1rem;\n        }\n        .case-box.amber {\n            background: var(--accent-amber-bg);\n            border-left-color: var(--accent-amber);\n        }\n        .case-box.rose {\n            background: var(--accent-rose-bg);\n            border-left-color: var(--accent-rose);\n        }\n        .case-box.teal {\n            background: var(--accent-teal-bg);\n            border-left-color: var(--accent-teal);\n        }\n        .case-title {\n            font-weight: 700;\n            margin-bottom: 0.4rem;\n            color: #0f172a;\n        }\n        .quote {\n            font-style: italic;\n            color: #334155;\n            background: rgba(255, 255, 255, 0.7);\n            padding: 0.5rem 0.75rem;\n            border-radius: 6px;\n            margin: 0.5rem 0;\n            font-size: 0.94rem;\n            border: 1px dashed #cbd5e1;\n        }\n        table {\n            width: 100%;\n            border-collapse: collapse;\n            margin-top: 0.75rem;\n            font-size: 0.95rem;\n        }\n        th, td {\n            border: 1px solid var(--border-color);\n            padding: 0.85rem 1rem;\n            text-align: left;\n            vertical-align: top;\n        }\n        th {\n            background-color: #f1f5f9;\n            font-weight: 700;\n            color: #334155;\n        }\n        tr:nth-child(even) td {\n            background-color: #f8fafc;\n        }\n        ul.styled-list {\n            list-style: none;\n        }\n        ul.styled-list li {\n            position: relative;\n            padding-left: 1.4rem;\n            margin-bottom: 0.75rem;\n        }\n        ul.styled-list li::before {\n            content: \"•\";\n            position: absolute;\n            left: 0.25rem;\n            color: var(--primary);\n            font-weight: bold;\n            font-size: 1.2rem;\n            line-height: 1.3;\n        }\n        .tag {\n            display: inline-block;\n            padding: 0.15rem 0.55rem;\n            font-size: 0.8rem;\n            font-weight: 600;\n            border-radius: 6px;\n            margin-right: 0.4rem;\n        }\n        .tag-blue { background: #dbeafe; color: #1e40af; }\n        .tag-rose { background: #ffe4e6; color: #9f1239; }\n        .tag-amber { background: #fef3c7; color: #92400e; }\n        .tag-teal { background: #ccfbf1; color: #115e59; }\n        footer {\n            text-align: center;\n            color: var(--text-muted);\n            font-size: 0.88rem;\n            margin-top: 2rem;\n            padding-top: 1rem;\n            border-top: 1px solid var(--border-color);\n        }\n    \u003c/style>\n\u003c/head>\n\u003cbody>\n\n\u003cdiv class=\"container\">\n    \u003cheader>\n        \u003cdiv class=\"badge\">📊 單一文本深度剖析報告 ｜ 2024.02.14 – 2024.04.17\u003c/div>\n        \u003ch1>與馨婷的聊天對話深度分析｜Gemini 分析\u003c/h1>\n        \u003cp class=\"core-verdict\">\n            \u003cstrong>🎯 核心結論：\u003c/strong>這是一場「理性學者（INTP-A）」與「感性探險家（ISFP）」的雙向試探。兩人日常作息與閒聊默契極佳，但卡在\u003cstrong>「雙方都不願先打破安全邊界」\u003c/strong>以及\u003cstrong>「理性解題 vs. 感性討拍」\u003c/strong>的底層錯位，最終從高頻曖昧自然降溫為舒適圈好友。\n        \u003c/p>\n    \u003c/header>\n\n    \u003c!-- 樹狀結構總覽 -->\n    \u003csection class=\"section-card\">\n        \u003cdiv class=\"section-title\">🌳 分析架構總覽\u003c/div>\n        \u003cdiv class=\"tree-box\">📦 「與馨婷的聊天」單一文本深度分析\n├── 🎯 核心結論：INTP 理性學者與 ISFP 感性防禦者的雙向試探，因安全邊界與情緒接球錯位而自然退溫。\n├── 🔍 一、4 個核心觀察維度（沒注意到的細節與感覺）\n│   ├── ⏱️ 1. 節奏與非文字訊號：從「日均百句、深夜 2 點收尾」到「隔週寒暄」的三階段退潮\n│   ├── 🎾 2. 情緒接球率：她的「軟性丟球/示弱」屢次撞上你的「鋼鐵邏輯/換框說理」\n│   ├── ⚖️ 3. 隱性權力與邊界感：「發睡覺卡」的控場權轉移，與「高標準檢核表」的雙向勸退\n│   └── 🛡️ 4. 衝突與防禦機制：無正面爭吵，但充滿「先發制人的保護色（介紹對象、自稱壞脾氣）」\n├── 🪞 二、從單一文本抓「自己的盲點」與「對方的缺陷」\n│   ├── 🧠 1. 你的盲點：把曖昧當辯論賽（一定要講贏）、對脆弱訊號「過度鈍感」、無意識吐槽外貌與飲食\n│   └── 🥀 2. 她的缺陷：前任創傷導致的「被動防禦（想黏不敢黏）」、習慣性生悶氣與冷處理、知行矛盾\n└── 💡 總結與洞察：她是你感情修煉路上的「極佳教練」，促成你在 04/17 對 NLP 換框與溝通藝術的覺察。\u003c/div>\n    \u003c/section>\n\n    \u003c!-- 維度一：節奏與時間線 -->\n    \u003csection class=\"section-card\">\n        \u003cdiv class=\"section-title\">⏱️ 維度一：節奏與「非文字」訊號（熱度退潮的精準時間線）\u003c/div>\n        \u003cp style=\"margin-bottom: 1rem; color: var(--text-muted);\">將兩個月的時間戳記攤開，可以清楚觀察到這段關係經歷了明顯的「三階段溫差」：\u003c/p>\n        \u003cdiv class=\"timeline\">\n            \u003cdiv class=\"timeline-item phase-1\">\n                \u003cdiv class=\"timeline-date\">STAGE 1 ｜ 02/14 – 03/08 (約 3 週)\u003c/div>\n                \u003cdiv class=\"timeline-title\">🔥 高頻曖昧與深夜陪伴期\u003c/div>\n                \u003cul class=\"styled-list\">\n                    \u003cli>幾乎\u003cstrong>天天聊到凌晨 01:00～02:00\u003c/strong>，白天上班也在偷聊（10:00 休息、午休、下班前）。\u003c/li>\n                    \u003cli>成功推進兩次單獨約會：\u003cstrong>02/23\u003c/strong>（雙連吃 12MINI＋西門燈會）、\u003cstrong>03/03\u003c/strong>（三重 U2 包廂看《沙丘》）。\u003c/li>\n                    \u003cli>建立專屬儀式感：睡前互發「睡覺卡」、每天提醒簽到賺 mo 幣、分享房間天花板投影燈與床伴枕頭。\u003c/li>\n                \u003c/ul>\n            \u003c/div>\n            \u003cdiv class=\"timeline-item phase-2\">\n                \u003cdiv class=\"timeline-date\">STAGE 2 ｜ 03/08 深夜 – 03/16\u003c/div>\n                \u003cdiv class=\"timeline-title\">⚠️ 關鍵轉折與斷層出現\u003c/div>\n                \u003cul class=\"styled-list\">\n                    \u003cli>\u003cstrong>關鍵轉折點（03/08 23:06 - 03/09 00:29）\u003c/strong>：她唱完 KTV 回家吐露深層脆弱（「心裡有一塊心事沒被理解…連我媽都不懂我」），你因想睡且「太跳沒 get 到」草草結束話題，隔天也未追問。\u003c/li>\n                    \u003cli>此後出現明顯斷層：03/10 完全沒聊、03/13 僅聊 3 分鐘、03/17–03/19 斷聯三天。\u003c/li>\n                \u003c/ul>\n            \u003c/div>\n            \u003cdiv class=\"timeline-item phase-3\">\n                \u003cdiv class=\"timeline-date\">STAGE 3 ｜ 03/20 – 04/17\u003c/div>\n                \u003cdiv class=\"timeline-title\">🧊 退回舒適圈普通好友\u003c/div>\n                \u003cul class=\"styled-list\">\n                    \u003cli>\u003cstrong>03/25 至 04/07 出現長達 13 天的完全空白\u003c/strong>。\u003c/li>\n                    \u003cli>\u003cstrong>04/13\u003c/strong> 雖一起跟同事去看新莊/三重預售屋（你幫她買了玩火奶茶），\u003cstrong>04/17\u003c/strong> 也記得祝她生日快樂，但對話已完全退去曖昧試探，轉為純粹的知識交流（股票、房價、NLP 書籍）。\u003c/li>\n                \u003c/ul>\n            \u003c/div>\n        \u003c/div>\n    \u003c/section>\n\n    \u003c!-- 維度二：情緒接球率 -->\n    \u003csection class=\"section-card\">\n        \u003cdiv class=\"section-title\">🎾 維度二：情緒接球率（感性丟球 vs. 理性閃避的經典切片）\u003c/div>\n        \u003cp style=\"margin-bottom: 1.25rem; color: var(--text-muted);\">你在行動上非常貼心（騎車接送、記得她愛喝的飲料、分享保養與優惠），但在「純情感流動的接球」上，常無意間用直男邏輯打散曖昧氛圍：\u003c/p>\n        \n        \u003cdiv class=\"case-box rose\">\n            \u003cdiv class=\"case-title\">📌 切片 1：獨處與迷茫的脆弱信號（02/22 00:18）\u003c/div>\n            \u003cdiv class=\"quote\">\n                \u003cstrong>馨婷：\u003c/strong>「其實我也只是想平凡過日子，但一個人就覺得很空會怕，好像沒什麼目標可以奮鬥的感覺，漸漸就很迷茫。」\u003cbr>\n                \u003cstrong>小華：\u003c/strong>「[貼圖] 堅強獨立的好孩子～但我很受家人照顧，無聊會一起看電影、看電視討論…所以真的就不無聊，我覺得我姊可能也是因為這樣才還沒結婚。」\n            \u003c/div>\n            \u003cp>\u003cstrong>💡 潛台詞拆解：\u003c/strong>當女生在凌晨 12 點半吐露「一個人很空會怕」時，這是一個極佳的情感推進窗口。但你的回應卻是給她貼上「堅強獨立好孩子」的標籤，並轉頭炫耀自己家裡很熱鬧、一點都不無聊，等於把正在喊孤單的她推回原地。\u003c/p>\n        \u003c/div>\n\n        \u003cdiv class=\"case-box amber\">\n            \u003cdiv class=\"case-title\">📌 切片 2：KTV 後的深層心事被漏接（03/08 23:06 – 03/09 00:29）\u003c/div>\n            \u003cdiv class=\"quote\">\n                \u003cstrong>馨婷：\u003c/strong>「你有沒有過，心裡有一塊心事沒有被人理解的感覺…就有時會覺得，內心世界沒有被理解到，沒人懂，連我媽都不懂我。」\u003cbr>\n                \u003cstrong>小華：\u003c/strong>「我剛在跟我姐分享進口貨物稅率及基本費用分析，準備睡覺…太跳沒 get 到，像是？看網路文章取暖找認同？」\u003cbr>\n                \u003cstrong>馨婷：\u003c/strong>「明天再說吧，你不是睏了…那你自己要記得問，忘了就算了，小金魚。」\n            \u003c/div>\n            \u003cp>\u003cstrong>💡 潛台詞拆解：\u003c/strong>這是整份紀錄中她最卸下心防的瞬間。她因為跟媽媽約吃飯起爭執，感嘆原生家庭迫使她獨立、內心沒人懂。結果你先是跳出來講「關稅分析」，接著把她的孤獨感解讀為「看網路文章取暖」。她最後說「你自己要記得問，忘了就算了」，其實是在測試你隔天會不會把她的心事放在心上——結果隔天你完全忘了問。\u003c/p>\n        \u003c/div>\n\n        \u003cdiv class=\"case-box\">\n            \u003cdiv class=\"case-title\">📌 切片 3：重複傳送文章的「收回訊息」細節（03/15 00:45）\u003c/div>\n            \u003cdiv class=\"quote\">\n                \u003cstrong>小華：\u003c/strong>「有個故事，就是一對夫妻，女方家境不錯幫出頭期款，然後老婆就想換 20w up 的木頭家具…」\u003cbr>\n                \u003cstrong>馨婷：\u003c/strong>「我好像有看過這個」➔ \u003cstrong>[00:46 馨婷已收回訊息]\u003c/strong> ➔ 改回：「老婆對家具品質很在乎…」\n            \u003c/div>\n            \u003cp>\u003cstrong>💡 潛台詞拆解：\u003c/strong>為什麼她秒收回「我好像有看過這個」？因為這篇 PTT 婚姻版文章，根本就是你在 \u003cstrong>02/24 00:33\u003c/strong> 親自傳給她、還跟她討論過一番的文章！她發現你忘了曾傳給她，為了顧及你的面子選擇收回訊息並陪你重新聊一次，但心裡對你的「金魚腦」默默記了一筆。\u003c/p>\n        \u003c/div>\n\n        \u003cdiv class=\"case-box teal\">\n            \u003cdiv class=\"case-title\">📌 切片 4：生日當天的「活該一個人」感嘆（04/17 20:12）\u003c/div>\n            \u003cdiv class=\"quote\">\n                \u003cstrong>馨婷：\u003c/strong>「我自己有濾水壺啊，濾過的水才會煮，我可是很周到的。你看我完蛋了，我都能靠自己，我哪還需要有人來照顧我，是不是活該一個人？」\u003cbr>\n                \u003cstrong>小華：\u003c/strong>「沒有，男生不愛生活白癡，你是生活天才，請看你媽，這麼可愛你怎麼捨得兇她。」\n            \u003c/div>\n            \u003cp>\u003cstrong>💡 潛台詞拆解：\u003c/strong>她在生日這天感嘆「是不是活該一個人」，渴望的是被肯定女性魅力與被呵護的需求；你卻開始理性論證「生活白癡 vs. 生活天才」，還把話題轉到她媽媽身上。\u003c/p>\n        \u003c/div>\n    \u003c/section>\n\n    \u003c!-- 維度三 & 四：權力邊界與雙向勸退 -->\n    \u003csection class=\"section-card\">\n        \u003cdiv class=\"section-title\">⚖️ 維度三＆四：隱性權力、邊界感與「雙向攤牌勸退」\u003c/div>\n        \u003cp style=\"margin-bottom: 1rem; color: var(--text-muted);\">這段關係之所以沒有硬闖進交往階段，是因為你們在深夜長聊中，誠實地把彼此的「感情底線與雷區」攤在陽光下，完成了理性的風險評估：\u003c/p>\n        \u003ctable>\n            \u003cthead>\n                \u003ctr>\n                    \u003cth style=\"width: 22%;\">交鋒議題\u003c/th>\n                    \u003cth style=\"width: 39%;\">張小華的立場（INTP 理性學者）\u003c/th>\n                    \u003cth style=\"width: 39%;\">馨婷的立場（ISFP 感性藝術家）\u003c/th>\n                \u003c/tr>\n            \u003c/thead>\n            \u003ctbody>\n                \u003ctr>\n                    \u003ctd>\u003cstrong>吵架與認錯機制\u003c/strong>\u003cbr>\u003cspan class=\"tag tag-rose\">核心衝突點\u003c/span>\u003c/td>\n                    \u003ctd>「我是死不認錯型，除非拿出鐵證、說理說得過我就服！」、「以前女友不能任性，我就啪啪啪打臉她，從不慣著別人。」(02/20)\u003c/td>\n                    \u003ctd>「有時候感情沒什麼道理對錯欸，有道理又如何？」、「女生講不贏惱羞，男生要哄啊、要讓女生，有時候女人越寵越可愛。」(02/20, 02/25)\u003c/td>\n                \u003c/tr>\n                \u003ctr>\n                    \u003ctd>\u003cstrong>訊息回覆與斷聯\u003c/strong>\u003cbr>\u003cspan class=\"tag tag-amber\">安全感落差\u003c/span>\u003c/td>\n                    \u003ctd>把現實優先度放得比通訊軟體高，「是我常忽視別人，克服不了自己的惰性」、「喜歡講電話勝過傳訊息」。(02/21)\u003c/td>\n                    \u003ctd>「很不 ok 啊！在講電話前的那段時間女生會亂想，會覺得不被重視，不哄我無視我的不悅就會開始小劇場、最後吵架。」(02/21)\u003c/td>\n                \u003c/tr>\n                \u003ctr>\n                    \u003ctd>\u003cstrong>擇偶決策模式\u003c/strong>\u003cbr>\u003cspan class=\"tag tag-blue\">心動 vs. 檢核表\u003c/span>\u003c/td>\n                    \u003ctd>「INTP 可能都不是心動型的，單純看相處舒不舒服…想像一個檢查表（Checklist）慢慢打勾。」、「不會考慮單親媽媽，我很勢利又嫌麻煩。」(02/17, 03/04)\u003c/td>\n                    \u003ctd>「我很重視感覺，第一要合眼緣，如果沒有喜歡，就比較不會想為了對方調整自己。」(03/04)\u003c/td>\n                \u003c/tr>\n                \u003ctr>\n                    \u003ctd>\u003cstrong>家務與潔癖邊界\u003c/strong>\u003cbr>\u003cspan class=\"tag tag-teal\">生活習慣\u003c/span>\u003c/td>\n                    \u003ctd>運動完回家會先打電動再洗澡、冬天不愛洗太多次澡、早上起床不洗臉直接出門、睡前才刷牙。(02/17, 03/02, 03/04)\u003c/td>\n                    \u003ctd>「沒換居家服不能坐家具、沒洗澡絕對不能碰床」、「早上沒洗臉髒髒欸」、「一間空房間被我當倉庫亂囤東西」。(02/27, 03/04)\u003c/td>\n                \u003c/tr>\n            \u003c/tbody>\n        \u003c/table>\n    \u003c/section>\n\n    \u003c!-- 二、自己的盲點 vs 對方的缺陷 -->\n    \u003cdiv class=\"grid-2\">\n        \u003csection class=\"section-card\" style=\"margin-bottom: 0;\">\n            \u003cdiv class=\"section-title\">🪞 你的 3 大盲點（自我檢視）\u003c/div>\n            \u003cul class=\"styled-list\">\n                \u003cli>\n                    \u003cstrong>1. 習慣性「放大檢視與吐槽」：\u003c/strong>\u003cbr>\n                    她拍打掃完的廚房求稱讚（02/15），你第一反應卻是抓包：「這張照片避開重要區域，像是水槽的碗一堆沒洗」；她聊飲食與身材，你常直男補刀：「少吃加工肉食品」、「螞蟻人」、「你的素食世界太狹窄」、「你家那麼小能屯成什麼樣」。雖是朋友互虧，但消解了曖昧的寵溺感。\n                \u003c/li>\n                \u003cli>\n                    \u003cstrong>2. 把曖昧當「邏輯辯論賽」：\u003c/strong>\u003cbr>\n                    當她撒嬌測試「爸爸我想要那個玩具，因為我比較愛你」（02/25），你直接回「您北可不是那麼好騙的，有條件的愛、物質！沒有人會愛你啦甲賽」。在感情話題上太追求邏輯完勝，容易讓感性型女生覺得踢到鐵板。\n                \u003c/li>\n                \u003cli>\n                    \u003cstrong>3. 「大實話」破壞浪漫氣氛：\u003c/strong>\u003cbr>\n                    你在 03/08 自曝前女友驚喜送健康餐盒，你卻直白跟對方說「自己先吃過東西、吃太飽吃不下」而踩雷。連馨婷都忍不住當場教你：「真的是不能直白說吃太飽，這是不解風情的行為…無論如何心意最重要。」\n                \u003c/li>\n            \u003c/ul>\n        \u003c/section>\n\n        \u003csection class=\"section-card\" style=\"margin-bottom: 0;\">\n            \u003cdiv class=\"section-title\">🥀 馨婷的 3 大缺陷與矛盾（客觀評估）\u003c/div>\n            \u003cul class=\"styled-list\">\n                \u003cli>\n                    \u003cstrong>1. 前任創傷導致的「防禦性退縮」：\u003c/strong>\u003cbr>\n                    剛結束一段與「離過婚有小孩的天菜壞男人」長達 28 個月斷斷續續的內耗關係（03/04, 03/07），讓她處於「想黏不敢黏」的狀態。常故意放出保護色（如：「什麼時候介紹男生給我」），既渴望陪伴又不敢真正投入。\n                \u003c/li>\n                \u003cli>\n                    \u003cstrong>2. 易爆脾氣與「被動攻擊（冷戰）」：\u003c/strong>\u003cbr>\n                    多次承認自己急性子、脾氣差：對媽媽改時間直接傳訊飆罵（03/08）；對女主管幫她做完工作選擇「生悶氣、故意已讀不回 10 分鐘冷戰」（02/29）；跟前任吵架也是「因為他生氣，我就反過來生氣他生氣」（02/23）。這與你追求的「情緒穩定」存在根本衝突。\n                \u003c/li>\n                \u003cli>\n                    \u003cstrong>3. 嚴重「知行矛盾」與拖延症：\u003c/strong>\u003cbr>\n                    嘴上天天焦慮「體脂高、肚肚胖、下巴長大膿包痘」，行為上卻是「一個月花 1700 喝手搖奶茶、愛吃素雞排與炸物、從清晨 4 點睡到下午 5 點（連睡 13 小時）」；工作上不喜歡的事會拖延好幾個月到最後一刻才面對。\n                \u003c/li>\n            \u003c/ul>\n        \u003c/section>\n    \u003c/div>\n\n    \u003c!-- 總結與洞察 -->\n    \u003csection class=\"section-card\" style=\"margin-top: 1.75rem; background: linear-gradient(to right, #eff6ff, #f8fafc);\">\n        \u003cdiv class=\"section-title\">💡 總結洞察：這段對話帶給你的真正價值\u003c/div>\n        \u003cp style=\"margin-bottom: 0.75rem;\">\n            回頭看這份 2024 年初的紀錄，兩人最終退回朋友位置，並非因為誰做錯了什麼，而是\u003cstrong>「INTP 的高度自律、講求邏輯公平」\u003c/strong>與\u003cstrong>「ISFP 的感性隨性、渴望無條件被寵」\u003c/strong>在深層價值觀上精準篩選後的必然結果。\n        \u003c/p>\n        \u003cp>\n            更關鍵的是，馨婷在對話中扮演了你感情修煉路上的\u003cstrong>「最佳陪練員」\u003c/strong>——她毫不藏私地用女性視角點破了你的直男盲點（如餐盒事件、斷聯小劇場、哄女生的邏輯）。而你在紀錄最末段（\u003cstrong>04/17 20:22\u003c/strong>）主動提到自己開始閱讀 \u003cstrong>NLP（察言觀色講對話的藝術、換框思考）\u003c/strong>與\u003cstrong>決策書籍（吵架前重要時刻訊號出現時，皮要繃緊講對話）\u003c/strong>，正是將這兩個月與她交手的實戰經驗，成功內化為你後續人際與感情進化的重要養分。\n        \u003c/p>\n    \u003c/section>\n\n    \u003cfooter>\n        Generated by AI Conversation Analyst ｜ 專注於時間差、回應落差與重複行為模式的深度解構\n    \u003c/footer>\n\u003c/div>\n\n\u003c/body>\n\u003c/html>\n"</script>
+<script type="application/json" id="doc-grok">"\u003c!doctype html>\u003chtml lang=\"zh-Hant-TW\">\u003chead>\u003cmeta charset=\"utf-8\">\u003cmeta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\u003ctitle>張小華 × 馨婷 LINE 對話客觀分析 v2\u003c/title>\u003cstyle>\n:root{--a:#2b7bb9;--b:#d9534f;--bg:#fafaf7;--card:#fff;--tx:#222;--mut:#666}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.7 -apple-system,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}\nmain{max-width:760px;margin:0 auto;padding:12px 14px 60px}\nh1{font-size:1.45em;line-height:1.35;margin:.6em 0 .2em}h2{font-size:1.2em;margin:0}h3{font-size:1.05em;margin:1.1em 0 .3em}\n.sub{color:var(--mut);font-size:.88em}\ndetails{background:var(--card);border-radius:14px;margin:14px 0;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}\nsummary{cursor:pointer;padding:14px 16px;font-weight:700;font-size:1.08em;list-style:none;position:relative;padding-right:40px}\nsummary::-webkit-details-marker{display:none}summary:after{content:\"＋\";position:absolute;right:16px;top:13px;color:#999}\ndetails[open]>summary:after{content:\"－\"}\n.body{padding:0 16px 16px}\n.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}\n.kpi{background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.07)}\n.kpi b{display:block;font-size:1.35em;line-height:1.3}.kpi span{font-size:.8em;color:var(--mut)}\n.a{color:var(--a)}.b{color:var(--b)}\nblockquote{margin:10px 0;padding:8px 12px;border-left:4px solid #ccc;background:#f6f6f3;border-radius:6px;font-size:.95em}\nblockquote.qa{border-color:var(--a)}blockquote.qb{border-color:var(--b)}\nblockquote .who{font-weight:700;margin-right:8px;font-size:.85em}blockquote.qa .who{color:var(--a)}blockquote.qb .who{color:var(--b)}\nblockquote .ts{color:#888;font-size:.8em}\nsvg{width:100%;height:auto;margin:8px 0;background:#fff}\nsvg .ct{font-size:12px;font-weight:700;fill:#333}svg .ax{font-size:10px;fill:#666}svg .val{font-size:10px;fill:#333}\nsvg .vw{font-size:10px;fill:#fff;font-weight:700}svg .grid{stroke:#e5e5e5}svg .sep{stroke:#bbb;stroke-dasharray:3 3}svg .stg{font-size:10px;fill:#999}\ntable{border-collapse:collapse;width:100%;font-size:.86em;margin:8px 0}td,th{border-bottom:1px solid #eee;padding:6px 4px;text-align:left;vertical-align:top}\nth{background:#f3f3ef}\n.note{font-size:.85em;color:var(--mut);background:#f3f3ef;padding:8px 10px;border-radius:8px;margin:8px 0}\n.tl{border-left:3px solid #ddd;margin-left:6px;padding-left:14px}\n.tl .ev{margin:0 0 16px;position:relative}.tl .ev:before{content:\"\";position:absolute;left:-21px;top:7px;width:11px;height:11px;border-radius:50%;background:#999}\n.tl .d{font-weight:700;font-size:.92em}\n.two{display:grid;grid-template-columns:1fr;gap:12px}\n.card{background:#fbfbf8;border:1px solid #eee;border-radius:10px;padding:10px 12px}\n.card h3{margin-top:0}\nul{padding-left:1.2em}li{margin:.25em 0}\n.tag{display:inline-block;font-size:.75em;padding:1px 7px;border-radius:9px;background:#eee;color:#555;margin-left:4px}\n@media(min-width:620px){.kpis{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1fr 1fr}}\n\u003c/style>\u003c/head>\u003cbody>\u003cmain>\n\u003ch1>張小華 × 馨婷 LINE 對話客觀分析｜Grok Bot 分析\u003c/h1>\n\u003cdiv class=\"sub\">唯一資料來源：\u003ccode>xinting_export.txt\u003c/code>（LINE 匯出，儲存日 2026-10-27）。資料區間 2024-02-14 至 2026-10-26（台北時間）。分析者未參考任何其他對話、報告或背景資料；兩人以相同指標檢視。所有引文均以程式比對原檔逐字確認（第三方以泛稱代替時會標示〔〕）。\u003c/div>\n\u003cdiv class=\"kpis\">\n\u003cdiv class=\"kpi\">\u003cb>91,957\u003c/b>\u003cspan>總訊息（\u003cspan class=\"a\">張 42,980\u003c/span>／\u003cspan class=\"b\">馨 48,977\u003c/span>）\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>1 : 1.50\u003c/b>\u003cspan>文字字數比 張:馨（31.8萬 : 47.6萬字）\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>1,102\u003c/b>\u003cspan>對話段落；開啟者 \u003cspan class=\"a\">張 449\u003c/span>／\u003cspan class=\"b\">馨 653\u003c/span>\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>542\u003c/b>\u003cspan>接通通話；撥出 \u003cspan class=\"a\">張 352\u003c/span>／\u003cspan class=\"b\">馨 190\u003c/span>\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>6,500 : 2,777\u003c/b>\u003cspan>通話分鐘（依撥出者 張:馨）\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>0–1 分\u003c/b>\u003cspan>雙方回覆延遲中位數（各階段皆同）\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>157 : 90\u003c/b>\u003cspan>收回訊息 張:馨（約七成兩分鐘內重發）\u003c/span>\u003c/div>\n\u003cdiv class=\"kpi\">\u003cb>99%\u003c/b>\u003cspan>S3–S4 有訊息的天數比例\u003c/span>\u003c/div>\n\u003c/div>\u003cdetails open>\u003csummary>① 核心結論（先看這裡）\u003c/summary>\u003cdiv class=\"body\">\n\u003col>\n\u003cli>\u003cb>主動的方式不同，而不是誰比較主動。\u003c/b>文字上馨婷開啟的對話段落較多（S4 佔 67%，每天第一則訊息 S4 有 72% 是她），字數也多約 1.5 倍；語音上張小華撥出的接通通話佔 65%、通話分鐘佔 70%。只看文字會低估張小華的投入，只看通話會低估馨婷的投入。\u003c/li>\n\u003cli>\u003cb>兩人基本都秒回\u003c/b>（回覆延遲中位數 0–1 分鐘）。差異在尾端：S4 白天問句中，張小華「>30 分鐘且超過自身基準 3 倍」的延遲佔 12.0%，馨婷 5.8%；張小華的單詞式回覆由 1.9% 升到 7.9%，馨婷維持 4–5%。\u003c/li>\n\u003cli>\u003cb>文字裡的親暱表達在後期明顯不對稱。\u003c/b>S3–S4 兩階段含「想你/愛你」的訊息：馨婷 140 則、張小華 16 則；「寶貝/親愛的」馨婷 142 則、張小華 15 則。張小華在 S1–S3 曾有一定的文字親暱表達，S4 幾近消失；但同期幾乎每天有通話，通話內容看不到。\u003c/li>\n\u003cli>\u003cb>最核心的未解議題是「關係的定義」。\u003c/b>2025-03-31 馨婷提出想「確定關係」，張小華回覆這是「人生大哉問」並延到隔天；2025-05-02 以「沒有被需要」「你一直在認識新對象」的形式再浮現。這兩次之後，文字中找不到雙方明確談定的紀錄（可能在見面或電話中談過，文字看不到）。\u003c/li>\n\u003cli>\u003cb>明顯的衝突在文字裡很少，常見的是間接訊號。\u003c/b>雙方都曾表達「覺得對方比較少理我」（2025-04-08 兩人同一段對話裡互相這樣說）；馨婷自述容易「不小心冷戰」，張小華自述「人不理我 我不理人」；最長靜默是 2025-02 的 12 天。\u003c/li>\n\u003cli>\u003cb>修復以「照常互動＋打電話」為主，很少道歉。\u003c/b>較大的情緒對話後，多半當晚就有長通話（例：2025-05-03 00:14 通話 1:01:23），隔天照常聊天；議題本身是否解決，文字看不出來。\u003c/li>\n\u003cli>\u003cb>情緒接球兩邊都偏弱、方式不同。\u003c/b>以自動分類粗估，對方表達疲累或不適後，明確關心/追問的比例：馨婷回應張小華約 21%，張小華回應馨婷約 14%；其餘多是接著聊別的。馨婷表達不適的次數較多（210 次，張小華 136 次）。張小華的回應較常是分析或建議，馨婷較常是撒嬌式的關心或調侃。\u003c/li>\n\u003cli>\u003cb>收回訊息多半是改字，看不出是在隱藏什麼。\u003c/b>約七成收回後兩分鐘內就重發，張小華的高峰出現在 2024-12 到 2025-01 的轉折期。\u003c/li>\n\u003c/ol>\n\u003cdiv class=\"note\">這些是根據文字紀錄整理的「觀察與提問」，不是對人的評價。電話、見面、語氣和表情都看不到，所以任何單一數字都不足以下結論。\u003c/div>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>② 關係階段（由資料本身切分）\u003c/summary>\u003cdiv class=\"body\">\n\u003cp>切分依據：每月訊息量與活躍天數、通話頻率、親暱詞出現、以及對話中的明確陳述（例如結束上一段關係、提出確定關係）。\u003c/p>\n\u003cdiv class=\"card\" style=\"margin:8px 0\">\u003ch3 style=\"margin:0\">S1｜重新聯絡・朋友/傾訴期\u003c/h3>\u003cdiv class=\"sub\">2024-02-14 ～ 2024-11-30（291 天）\u003c/div>\u003cdiv>每日 121 則、活躍 78% 天；有 24 次 >40 小時空白；通話 0.9 次/週；大量聊彼此過去的感情；親暱詞少。\u003c/div>\u003c/div>\u003cdiv class=\"card\" style=\"margin:8px 0\">\u003ch3 style=\"margin:0\">S2｜轉折期\u003c/h3>\u003cdiv class=\"sub\">2024-12-01 ～ 2025-02-28（90 天）\u003c/div>\u003cdiv>密度最高（每日 162 則）；馨婷處理上一段關係（2025-02-17 宣告結束）；2025-01 中出現肢體親近的跡象；張小華表示同時在認識其他人；2/5–2/17 靜默 12 天。收回訊息高峰（張 60 次）。\u003c/div>\u003c/div>\u003cdiv class=\"card\" style=\"margin:8px 0\">\u003ch3 style=\"margin:0\">S3｜親密但未定義期\u003c/h3>\u003cdiv class=\"sub\">2025-03-01 ～ 2025-10-31（245 天）\u003c/div>\u003cdiv>99% 天數都有訊息；通話升到 5.2 次/週；馨婷的親暱詞大增；3/31 提出確定關係、5/2 長談，是兩段主要張力事件。\u003c/div>\u003c/div>\u003cdiv class=\"card\" style=\"margin:8px 0\">\u003ch3 style=\"margin:0\">S4｜穩定日常・通話為主期\u003c/h3>\u003cdiv class=\"sub\">2025-11-01 ～ 2026-10-26（360 天）\u003c/div>\u003cdiv>文字降到每日 52 則（約 S3 的一半），通話 5.7 次/週；馨婷開啟 67% 段落；張小華的文字親暱詞幾乎消失；未見公開衝突。\u003c/div>\u003c/div>\n\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"每月訊息數（含貼圖/照片/收回）\">\u003ctext x=\"34\" y=\"14\" class=\"ct\">每月訊息數（含貼圖/照片/收回）\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"170.0\" y2=\"170.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"173.0\" class=\"ax\" text-anchor=\"end\">0\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"133.5\" y2=\"133.5\" class=\"grid\"/>\u003ctext x=\"30\" y=\"136.5\" class=\"ax\" text-anchor=\"end\">1195\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"97.0\" y2=\"97.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"100.0\" class=\"ax\" text-anchor=\"end\">2390\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"60.5\" y2=\"60.5\" class=\"grid\"/>\u003ctext x=\"30\" y=\"63.5\" class=\"ax\" text-anchor=\"end\">3586\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"24.0\" y2=\"24.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"27.0\" class=\"ax\" text-anchor=\"end\">4781\u003c/text>\u003ctext x=\"34.0\" y=\"188\" class=\"ax\" text-anchor=\"middle\">24/02\u003c/text>\u003ctext x=\"143.3\" y=\"188\" class=\"ax\" text-anchor=\"middle\">25/01\u003c/text>\u003ctext x=\"262.6\" y=\"188\" class=\"ax\" text-anchor=\"middle\">26/01\u003c/text>\u003ctext x=\"78.7\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S1\u003c/text>\u003cline x1=\"34.0\" x2=\"34.0\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"143.3\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S2\u003c/text>\u003cline x1=\"133.4\" x2=\"133.4\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"198.0\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S3\u003c/text>\u003cline x1=\"163.2\" x2=\"163.2\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"297.3\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"242.7\" x2=\"242.7\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003cpolyline points=\"34.0,89.0 43.9,126.7 53.9,144.2 63.8,140.3 73.8,137.9 83.7,133.6 93.6,43.8 103.6,98.4 113.5,127.6 123.4,144.7 133.4,59.6 143.3,82.5 153.2,130.8 163.2,111.4 173.1,116.2 183.1,118.3 193.0,123.6 202.9,143.7 212.9,140.1 222.8,140.2 232.8,139.0 242.7,155.7 252.6,147.2 262.6,143.2 272.5,153.4 282.4,151.4 292.4,148.5 302.3,149.5 312.2,147.7 322.2,147.9 332.1,150.5 342.1,158.8 352.0,152.2\" fill=\"none\" stroke=\"#2b7bb9\" stroke-width=\"2\"/>\u003cpolyline points=\"34.0,81.6 43.9,119.5 53.9,139.2 63.8,135.8 73.8,132.4 83.7,126.3 93.6,37.3 103.6,93.4 113.5,125.2 123.4,147.7 133.4,75.3 143.3,92.6 153.2,133.3 163.2,103.5 173.1,109.6 183.1,110.5 193.0,114.9 202.9,135.4 212.9,131.7 222.8,134.7 232.8,127.4 242.7,148.8 252.6,138.5 262.6,134.0 272.5,150.8 282.4,141.7 292.4,141.1 302.3,139.3 312.2,141.4 322.2,138.8 332.1,140.4 342.1,150.8 352.0,141.5\" fill=\"none\" stroke=\"#d9534f\" stroke-width=\"2\"/>\u003crect x=\"38\" y=\"192\" width=\"10\" height=\"6\" fill=\"#2b7bb9\"/>\u003ctext x=\"51\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"108\" y=\"192\" width=\"10\" height=\"6\" fill=\"#d9534f\"/>\u003ctext x=\"121\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\n\u003cp>對話的起點：\u003c/p>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2024-02-14 22:02\u003c/span>\u003cdiv>阿華華 推薦你一個好吃的東西\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-01-08 16:46\u003c/span>\u003cdiv>我記得我們也是差不多快過年時再聯絡\u003c/div>\u003c/blockquote>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>③ 維度一：節奏與非文字訊號\u003c/summary>\u003cdiv class=\"body\">\n\u003ch3>回覆延遲：先找出各自的基準\u003c/h3>\n\u003cp>只計算同一段落內（間隔 ≤6 小時）換人說話的回覆延遲。兩人每個階段、白天和深夜（23–04 時）的\u003cb>中位數都是 0–1 分鐘\u003c/b>，屬於即時聊天型態。因為基準太短，「3 倍基準」只有幾分鐘，所以額外加上「≥30 分鐘」的門檻，只把明顯偏離的延遲標出來。以下以「問句（含？／嗎／呢／要不要等）之後」對方的回覆為樣本：\u003c/p>\n\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"白天問句回覆 >30分鐘且>3×基準 的比例 %\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">白天問句回覆 >30分鐘且>3×基準 的比例 %\u003c/text>\u003crect x=\"40.5\" y=\"99.1\" width=\"27.4\" height=\"66.9\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"96.1\" class=\"val\" text-anchor=\"middle\">6.6\u003c/text>\u003crect x=\"70.6\" y=\"110.2\" width=\"27.4\" height=\"55.8\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"107.2\" class=\"val\" text-anchor=\"middle\">5.5\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"115.3\" width=\"27.4\" height=\"50.7\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"112.3\" class=\"val\" text-anchor=\"middle\">5.0\u003c/text>\u003crect x=\"151.1\" y=\"128.5\" width=\"27.4\" height=\"37.5\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"125.5\" class=\"val\" text-anchor=\"middle\">3.7\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"99.1\" width=\"27.4\" height=\"66.9\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"96.1\" class=\"val\" text-anchor=\"middle\">6.6\u003c/text>\u003crect x=\"231.6\" y=\"126.4\" width=\"27.4\" height=\"39.6\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"123.4\" class=\"val\" text-anchor=\"middle\">3.9\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"44.3\" width=\"27.4\" height=\"121.7\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"41.3\" class=\"val\" text-anchor=\"middle\">12.0\u003c/text>\u003crect x=\"312.1\" y=\"107.2\" width=\"27.4\" height=\"58.8\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"104.2\" class=\"val\" text-anchor=\"middle\">5.8\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\n\u003ctable>\u003ctr>\u003cth>\u003c/th>\u003cth>S4 白天 p75\u003c/th>\u003cth>S4 深夜 p75\u003c/th>\u003cth>S4 白天平均\u003c/th>\u003c/tr>\n\u003ctr>\u003ctd class=\"a\">張小華回覆\u003c/td>\u003ctd>7 分\u003c/td>\u003ctd>4 分\u003c/td>\u003ctd>19.8 分\u003c/td>\u003c/tr>\n\u003ctr>\u003ctd class=\"b\">馨婷回覆\u003c/td>\u003ctd>2 分\u003c/td>\u003ctd>15 分\u003c/td>\u003ctd>7.9 分\u003c/td>\u003c/tr>\u003c/table>\n\u003cp>解讀：S1–S3 兩人延遲分佈相近；S4 張小華白天的長延遲比例變成兩倍。可能和上班時段、改以電話聯絡有關，文字無法分辨原因。深夜的樣本數小（各約 20–30 則），參考價值有限。\u003c/p>\n\u003ch3>字數與單詞回覆\u003c/h3>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"文字總字數（千字）\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">文字總字數（千字）\u003c/text>\u003crect x=\"40.5\" y=\"76.8\" width=\"27.4\" height=\"89.2\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"73.8\" class=\"val\" text-anchor=\"middle\">140\u003c/text>\u003crect x=\"70.6\" y=\"42.5\" width=\"27.4\" height=\"123.5\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"39.5\" class=\"val\" text-anchor=\"middle\">194\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"133.6\" width=\"27.4\" height=\"32.4\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"130.6\" class=\"val\" text-anchor=\"middle\">51\u003c/text>\u003crect x=\"151.1\" y=\"132.4\" width=\"27.4\" height=\"33.6\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"129.4\" class=\"val\" text-anchor=\"middle\">53\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"121.2\" width=\"27.4\" height=\"44.8\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"118.2\" class=\"val\" text-anchor=\"middle\">70\u003c/text>\u003crect x=\"231.6\" y=\"85.0\" width=\"27.4\" height=\"81.0\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"82.0\" class=\"val\" text-anchor=\"middle\">127\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"130.2\" width=\"27.4\" height=\"35.8\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"127.2\" class=\"val\" text-anchor=\"middle\">56\u003c/text>\u003crect x=\"312.1\" y=\"101.3\" width=\"27.4\" height=\"64.7\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"98.3\" class=\"val\" text-anchor=\"middle\">102\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"單詞式回覆佔文字訊息 %（嗯/喔/好/哈…）\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">單詞式回覆佔文字訊息 %（嗯/喔/好/哈…）\u003c/text>\u003crect x=\"40.5\" y=\"139.0\" width=\"27.4\" height=\"27.0\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"136.0\" class=\"val\" text-anchor=\"middle\">1.9\u003c/text>\u003crect x=\"70.6\" y=\"96.4\" width=\"27.4\" height=\"69.6\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"93.4\" class=\"val\" text-anchor=\"middle\">4.9\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"109.2\" width=\"27.4\" height=\"56.8\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"106.2\" class=\"val\" text-anchor=\"middle\">4.0\u003c/text>\u003crect x=\"151.1\" y=\"66.6\" width=\"27.4\" height=\"99.4\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"63.6\" class=\"val\" text-anchor=\"middle\">7.0\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"83.6\" width=\"27.4\" height=\"82.4\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"80.6\" class=\"val\" text-anchor=\"middle\">5.8\u003c/text>\u003crect x=\"231.6\" y=\"103.5\" width=\"27.4\" height=\"62.5\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"100.5\" class=\"val\" text-anchor=\"middle\">4.4\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"53.8\" width=\"27.4\" height=\"112.2\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"50.8\" class=\"val\" text-anchor=\"middle\">7.9\u003c/text>\u003crect x=\"312.1\" y=\"104.9\" width=\"27.4\" height=\"61.1\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"101.9\" class=\"val\" text-anchor=\"middle\">4.3\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\n\u003cp>S2 兩人字數幾乎相等（1:1.04），S3 起馨婷約為張小華的 1.8 倍。張小華的文字中位長度由 8 字降到 5 字，單詞回覆比例上升；S3 起他常以「yo」開場（S3 31 次、S4 85 次）。馨婷有幾次直接說出這種感受：\u003c/p>\n\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-07-29 23:47\u003c/span>\u003cdiv>有點敷衍的感覺～～明明也算晚了(嘟嘴)\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-07-29 23:56\u003c/span>\u003cdiv>☎ 通話時間7:56\u003c/div>\u003c/blockquote>\n\u003cp class=\"sub\">↑ 被說敷衍後 9 分鐘，張小華撥出電話（屬於用行動回應，而不是用文字解釋）。\u003c/p>\n\u003ch3>收回訊息（只看得到標記）\u003c/h3>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"收回訊息次數\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">收回訊息次數\u003c/text>\u003crect x=\"40.5\" y=\"73.4\" width=\"27.4\" height=\"92.6\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"70.4\" class=\"val\" text-anchor=\"middle\">45\u003c/text>\u003crect x=\"70.6\" y=\"96.0\" width=\"27.4\" height=\"70.0\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"93.0\" class=\"val\" text-anchor=\"middle\">34\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"42.5\" width=\"27.4\" height=\"123.5\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"39.5\" class=\"val\" text-anchor=\"middle\">60\u003c/text>\u003crect x=\"151.1\" y=\"147.5\" width=\"27.4\" height=\"18.5\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"144.5\" class=\"val\" text-anchor=\"middle\">9\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"96.0\" width=\"27.4\" height=\"70.0\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"93.0\" class=\"val\" text-anchor=\"middle\">34\u003c/text>\u003crect x=\"231.6\" y=\"116.6\" width=\"27.4\" height=\"49.4\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"113.6\" class=\"val\" text-anchor=\"middle\">24\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"129.0\" width=\"27.4\" height=\"37.0\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"126.0\" class=\"val\" text-anchor=\"middle\">18\u003c/text>\u003crect x=\"312.1\" y=\"118.7\" width=\"27.4\" height=\"47.3\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"115.7\" class=\"val\" text-anchor=\"middle\">23\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\n\u003cp>張小華 157 次、馨婷 90 次；兩人都約 70% 在兩分鐘內重發（張 110/157，馨 64/90），看起來主要是改字或改說法。張小華在 2024-12～2025-01 共 56 次，集中在 S2 轉折期、討論對方感情狀況的對話中。馨婷 2024-12-14 一天收回 4 次，都是傳舊照片之後（她自己說「太醜了 收回來」）。由於看不到被收回的內容，\u003cb>不應推論動機\u003c/b>。\u003c/p>\n\u003ch3>時段\u003c/h3>\u003cp>深夜（23–04 時）訊息佔比由 S1 約 35% 降到 S4 約 10%（兩人幾乎一樣），同期深夜通話增加，可能是睡前改以通話代替打字。\u003c/p>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>④ 維度二：情緒接球率\u003c/summary>\u003cdiv class=\"body\">\n\u003cp>方法：找出一方描述自己疲累、不適、煩躁、難過、焦慮等的短訊息（≤80 字，排除在講第三人的句子），再看對方 3 小時內的前三則回覆，用關鍵字粗分。\u003cb>這是趨勢指標，誤差很大\u003c/b>（例如「接續其他話題」裡也有不少其實是正常延續），請搭配下方實例閱讀。\u003c/p>\n\u003csvg viewBox=\"0 0 360 149\" role=\"img\" aria-label=\"表達疲累/不適/心情差後，對方的第一波回應（自動分類，粗略）\">\u003ctext x=\"4\" y=\"14\" class=\"ct\">表達疲累/不適/心情差後，對方的第一波回應（自動分類，粗略）\u003c/text>\u003ctext x=\"4\" y=\"38\" class=\"ax\">張小華表達不適 → 馨婷回應（n=136）\u003c/text>\u003crect x=\"4.0\" y=\"42\" width=\"75.1\" height=\"18\" fill=\"#3c9a5f\"/>\u003ctext x=\"41.5\" y=\"55\" class=\"vw\" text-anchor=\"middle\">21%\u003c/text>\u003crect x=\"79.1\" y=\"42\" width=\"23.3\" height=\"18\" fill=\"#8bb6d6\"/>\u003ctext x=\"90.7\" y=\"55\" class=\"vw\" text-anchor=\"middle\">7%\u003c/text>\u003crect x=\"102.4\" y=\"42\" width=\"25.9\" height=\"18\" fill=\"#e3a33b\"/>\u003ctext x=\"115.3\" y=\"55\" class=\"vw\" text-anchor=\"middle\">7%\u003c/text>\u003crect x=\"128.2\" y=\"42\" width=\"194.1\" height=\"18\" fill=\"#b9b9b9\"/>\u003ctext x=\"225.3\" y=\"55\" class=\"vw\" text-anchor=\"middle\">55%\u003c/text>\u003crect x=\"322.4\" y=\"42\" width=\"10.4\" height=\"18\" fill=\"#c9a0dc\"/>\u003crect x=\"332.7\" y=\"42\" width=\"23.3\" height=\"18\" fill=\"#555\"/>\u003ctext x=\"344.4\" y=\"55\" class=\"vw\" text-anchor=\"middle\">7%\u003c/text>\u003ctext x=\"4\" y=\"82\" class=\"ax\">馨婷表達不適 → 張小華回應（n=210）\u003c/text>\u003crect x=\"4.0\" y=\"86\" width=\"48.6\" height=\"18\" fill=\"#3c9a5f\"/>\u003ctext x=\"28.3\" y=\"99\" class=\"vw\" text-anchor=\"middle\">14%\u003c/text>\u003crect x=\"52.6\" y=\"86\" width=\"8.4\" height=\"18\" fill=\"#8bb6d6\"/>\u003crect x=\"61.0\" y=\"86\" width=\"21.8\" height=\"18\" fill=\"#e3a33b\"/>\u003crect x=\"82.8\" y=\"86\" width=\"229.6\" height=\"18\" fill=\"#b9b9b9\"/>\u003ctext x=\"197.6\" y=\"99\" class=\"vw\" text-anchor=\"middle\">65%\u003c/text>\u003crect x=\"312.4\" y=\"86\" width=\"16.8\" height=\"18\" fill=\"#c9a0dc\"/>\u003crect x=\"329.2\" y=\"86\" width=\"26.8\" height=\"18\" fill=\"#555\"/>\u003ctext x=\"342.6\" y=\"99\" class=\"vw\" text-anchor=\"middle\">8%\u003c/text>\u003crect x=\"4\" y=\"122\" width=\"9\" height=\"9\" fill=\"#3c9a5f\"/>\u003ctext x=\"16\" y=\"130\" class=\"ax\">關心/追問\u003c/text>\u003crect x=\"81\" y=\"122\" width=\"9\" height=\"9\" fill=\"#8bb6d6\"/>\u003ctext x=\"93\" y=\"130\" class=\"ax\">建議\u003c/text>\u003crect x=\"125\" y=\"122\" width=\"9\" height=\"9\" fill=\"#e3a33b\"/>\u003ctext x=\"137\" y=\"130\" class=\"ax\">玩笑/調侃\u003c/text>\u003crect x=\"202\" y=\"122\" width=\"9\" height=\"9\" fill=\"#b9b9b9\"/>\u003ctext x=\"214\" y=\"130\" class=\"ax\">接續其他話題\u003c/text>\u003crect x=\"290\" y=\"122\" width=\"9\" height=\"9\" fill=\"#c9a0dc\"/>\u003ctext x=\"302\" y=\"130\" class=\"ax\">僅貼圖/通話\u003c/text>\u003crect x=\"4\" y=\"135\" width=\"9\" height=\"9\" fill=\"#555\"/>\u003ctext x=\"16\" y=\"143\" class=\"ax\">3小時內未回\u003c/text>\u003c/svg>\n\u003cp>兩人共同點：明確的安慰字眼（抱抱、辛苦了、秀秀）都不多；最常見的是接著聊下去。差異：馨婷表達不適的次數較多（210:136）。張小華的回應較常是分析或建議，偶爾會輕描淡寫；馨婷較常用撒嬌式的關心，也會調侃。\u003c/p>\n\u003ch3>張小華接住的例子\u003c/h3>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-03-20 15:09\u003c/span>\u003cdiv>只是心情很煩躁\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-03-20 15:10\u003c/span>\u003cdiv>晚上幫你頭部按摩\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-04-20 11:45\u003c/span>\u003cdiv>怎麼了\u003c/div>\u003c/blockquote>\n\u003cp class=\"sub\">（2026-04-20 馨婷說膝蓋痛，張小華先問「怎麼了」，後來回「先休息吧」）\u003c/p>\n\u003ch3>張小華沒接住或轉開的例子\u003c/h3>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-05-11 13:17\u003c/span>\u003cdiv>剛剛跟〔同事〕鬧了一下矛盾\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-05-11 14:02\u003c/span>\u003cdiv>你的鍵盤好炫\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-05-11 14:08\u003c/span>\u003cdiv>不開心要說出來\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-05-11 14:08\u003c/span>\u003cdiv>不想說\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-04-23 17:46\u003c/span>\u003cdiv>哈 好小的事情\u003c/div>\u003c/blockquote>\n\u003ch3>馨婷接住的例子\u003c/h3>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-11-16 00:06\u003c/span>\u003cdiv>累死了\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-11-16 00:10\u003c/span>\u003cdiv>呼呼秀秀\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-10-13 16:27\u003c/span>\u003cdiv>我好苦 這週六要比賽\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-10-13 17:15\u003c/span>\u003cdiv>要抱抱嗎~\u003c/div>\u003c/blockquote>\n\u003ch3>馨婷以調侃回應的例子\u003c/h3>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-28 10:18\u003c/span>\u003cdiv>我好累哦\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-28 10:19\u003c/span>\u003cdiv>你還說你累 \u003cbr>累還能到3點~~\u003c/div>\u003c/blockquote>\n\u003ch3>深度脆弱時刻：2025-01-03\u003c/h3>\n\u003cp>前一晚 01:04 有一通 1 小時 47 分的通話（馨婷撥出），內容看不到。隔天早上的文字：\u003c/p>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-01-03 10:55\u003c/span>\u003cdiv>你昨天哭得蠻大聲的\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-01-03 10:58\u003c/span>\u003cdiv>真是拍謝啦\u003cbr>一打給你就讓你聽到哭不停\u003c/div>\u003c/blockquote>\n\u003cp>接下來張小華的回應以分析和直接建議為主（例如前一天說「凡有怪異點 一律放手」），也有玩笑。另一個例子（2025-01-04）：\u003c/p>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-01-04 21:21\u003c/span>\u003cdiv>我只怕我最近太過於負能量\u003cbr>讓你覺得反感\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-01-04 21:22\u003c/span>\u003cdiv>你有沒有看過一部片\u003c/div>\u003c/blockquote>\n\u003cp class=\"sub\">張小華沒有直接回應「怕你反感」，而是邀她一起看電影；可以解讀為轉移話題，也可以解讀為用陪伴回應。文字無法分辨是哪一種。\u003c/p>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑤ 維度三：隱性權力與配合度\u003c/summary>\u003cdiv class=\"body\">\n\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"對話段落（>6小時間隔）由誰開啟 %\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">對話段落（>6小時間隔）由誰開啟 %\u003c/text>\u003crect x=\"40.5\" y=\"80.8\" width=\"27.4\" height=\"85.2\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"77.8\" class=\"val\" text-anchor=\"middle\">48%\u003c/text>\u003crect x=\"70.6\" y=\"73.7\" width=\"27.4\" height=\"92.3\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"70.7\" class=\"val\" text-anchor=\"middle\">52%\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"82.6\" width=\"27.4\" height=\"83.4\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"79.6\" class=\"val\" text-anchor=\"middle\">47%\u003c/text>\u003crect x=\"151.1\" y=\"71.9\" width=\"27.4\" height=\"94.1\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"68.9\" class=\"val\" text-anchor=\"middle\">53%\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"89.7\" width=\"27.4\" height=\"76.3\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"86.7\" class=\"val\" text-anchor=\"middle\">43%\u003c/text>\u003crect x=\"231.6\" y=\"64.8\" width=\"27.4\" height=\"101.2\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"61.8\" class=\"val\" text-anchor=\"middle\">57%\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"107.4\" width=\"27.4\" height=\"58.6\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"104.4\" class=\"val\" text-anchor=\"middle\">33%\u003c/text>\u003crect x=\"312.1\" y=\"47.1\" width=\"27.4\" height=\"118.9\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"44.1\" class=\"val\" text-anchor=\"middle\">67%\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"接通通話次數（依撥出者）\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">接通通話次數（依撥出者）\u003c/text>\u003crect x=\"40.5\" y=\"148.0\" width=\"27.4\" height=\"18.0\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"145.0\" class=\"val\" text-anchor=\"middle\">27\u003c/text>\u003crect x=\"70.6\" y=\"159.3\" width=\"27.4\" height=\"6.7\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"156.3\" class=\"val\" text-anchor=\"middle\">10\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"148.0\" width=\"27.4\" height=\"18.0\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"145.0\" class=\"val\" text-anchor=\"middle\">27\u003c/text>\u003crect x=\"151.1\" y=\"162.7\" width=\"27.4\" height=\"3.3\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"159.7\" class=\"val\" text-anchor=\"middle\">5\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"90.6\" width=\"27.4\" height=\"75.4\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"87.6\" class=\"val\" text-anchor=\"middle\">113\u003c/text>\u003crect x=\"231.6\" y=\"119.9\" width=\"27.4\" height=\"46.1\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"116.9\" class=\"val\" text-anchor=\"middle\">69\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"42.5\" width=\"27.4\" height=\"123.5\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"39.5\" class=\"val\" text-anchor=\"middle\">185\u003c/text>\u003crect x=\"312.1\" y=\"95.3\" width=\"27.4\" height=\"70.7\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"92.3\" class=\"val\" text-anchor=\"middle\">106\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"每月接通通話分鐘（依撥出者）\">\u003ctext x=\"34\" y=\"14\" class=\"ct\">每月接通通話分鐘（依撥出者）\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"170.0\" y2=\"170.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"173.0\" class=\"ax\" text-anchor=\"end\">0\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"133.5\" y2=\"133.5\" class=\"grid\"/>\u003ctext x=\"30\" y=\"136.5\" class=\"ax\" text-anchor=\"end\">123\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"97.0\" y2=\"97.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"100.0\" class=\"ax\" text-anchor=\"end\">246\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"60.5\" y2=\"60.5\" class=\"grid\"/>\u003ctext x=\"30\" y=\"63.5\" class=\"ax\" text-anchor=\"end\">369\u003c/text>\u003cline x1=\"34\" x2=\"352\" y1=\"24.0\" y2=\"24.0\" class=\"grid\"/>\u003ctext x=\"30\" y=\"27.0\" class=\"ax\" text-anchor=\"end\">492\u003c/text>\u003ctext x=\"34.0\" y=\"188\" class=\"ax\" text-anchor=\"middle\">24/02\u003c/text>\u003ctext x=\"143.3\" y=\"188\" class=\"ax\" text-anchor=\"middle\">25/01\u003c/text>\u003ctext x=\"262.6\" y=\"188\" class=\"ax\" text-anchor=\"middle\">26/01\u003c/text>\u003ctext x=\"78.7\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S1\u003c/text>\u003cline x1=\"34.0\" x2=\"34.0\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"143.3\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S2\u003c/text>\u003cline x1=\"133.4\" x2=\"133.4\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"198.0\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S3\u003c/text>\u003cline x1=\"163.2\" x2=\"163.2\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003ctext x=\"297.3\" y=\"34\" class=\"stg\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"242.7\" x2=\"242.7\" y1=\"24\" y2=\"170\" class=\"sep\"/>\u003cpolyline points=\"34.0,170.0 43.9,166.1 53.9,169.5 63.8,170.0 73.8,120.8 83.7,124.8 93.6,63.6 103.6,163.5 113.5,121.1 123.4,170.0 133.4,144.5 143.3,113.8 153.2,136.4 163.2,96.5 173.1,97.3 183.1,86.7 193.0,42.9 202.9,86.1 212.9,126.7 222.8,118.1 232.8,130.0 242.7,69.7 252.6,117.9 262.6,50.0 272.5,106.5 282.4,92.4 292.4,52.9 302.3,123.2 312.2,83.5 322.2,37.3 332.1,98.8 342.1,87.0 352.0,143.8\" fill=\"none\" stroke=\"#2b7bb9\" stroke-width=\"2\"/>\u003cpolyline points=\"34.0,170.0 43.9,170.0 53.9,170.0 63.8,170.0 73.8,170.0 83.7,169.9 93.6,133.9 103.6,169.6 113.5,161.6 123.4,170.0 133.4,170.0 143.3,118.3 153.2,170.0 163.2,58.4 173.1,155.2 183.1,125.1 193.0,138.3 202.9,159.0 212.9,163.4 222.8,138.7 232.8,136.4 242.7,151.2 252.6,152.0 262.6,143.7 272.5,118.6 282.4,127.0 292.4,112.6 302.3,87.8 312.2,95.4 322.2,166.8 332.1,144.0 342.1,152.8 352.0,146.4\" fill=\"none\" stroke=\"#d9534f\" stroke-width=\"2\"/>\u003crect x=\"38\" y=\"192\" width=\"10\" height=\"6\" fill=\"#2b7bb9\"/>\u003ctext x=\"51\" y=\"198\" class=\"ax\">張撥出\u003c/text>\u003crect x=\"108\" y=\"192\" width=\"10\" height=\"6\" fill=\"#d9534f\"/>\u003ctext x=\"121\" y=\"198\" class=\"ax\">馨撥出\u003c/text>\u003c/svg>\n\u003cp>\u003cb>開啟對話\u003c/b>：S1–S2 兩人各半；S3 起馨婷較常開啟，S4 達 2:1。\u003cb>撥電話\u003c/b>：每個階段都是張小華撥出較多，且他撥出的通話中位長度較長（S4 約 14 分 vs 5 分）。未接通的部分：張小華撥出未接通約 68 次（取消/無人接聽）；馨婷撥出、張小華未接 33 次（另有 6 次取消）。\u003c/p>\n\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"提出見面/邀約字句（趨勢指標）\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">提出見面/邀約字句（趨勢指標）\u003c/text>\u003crect x=\"40.5\" y=\"98.5\" width=\"27.4\" height=\"67.5\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"95.5\" class=\"val\" text-anchor=\"middle\">47\u003c/text>\u003crect x=\"70.6\" y=\"97.1\" width=\"27.4\" height=\"68.9\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"94.1\" class=\"val\" text-anchor=\"middle\">48\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"122.9\" width=\"27.4\" height=\"43.1\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"119.9\" class=\"val\" text-anchor=\"middle\">30\u003c/text>\u003crect x=\"151.1\" y=\"135.8\" width=\"27.4\" height=\"30.2\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"132.8\" class=\"val\" text-anchor=\"middle\">21\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"84.2\" width=\"27.4\" height=\"81.8\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"81.2\" class=\"val\" text-anchor=\"middle\">57\u003c/text>\u003crect x=\"231.6\" y=\"74.1\" width=\"27.4\" height=\"91.9\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"71.1\" class=\"val\" text-anchor=\"middle\">64\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"42.5\" width=\"27.4\" height=\"123.5\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"39.5\" class=\"val\" text-anchor=\"middle\">86\u003c/text>\u003crect x=\"312.1\" y=\"108.6\" width=\"27.4\" height=\"57.4\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"105.6\" class=\"val\" text-anchor=\"middle\">40\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\u003csvg viewBox=\"0 0 360 200\" role=\"img\" aria-label=\"「看你/都可以/你決定」類字句（趨勢指標）\">\u003ctext x=\"30\" y=\"14\" class=\"ct\">「看你/都可以/你決定」類字句（趨勢指標）\u003c/text>\u003crect x=\"40.5\" y=\"42.5\" width=\"27.4\" height=\"123.5\" fill=\"#2b7bb9\"/>\u003ctext x=\"54.2\" y=\"39.5\" class=\"val\" text-anchor=\"middle\">56\u003c/text>\u003crect x=\"70.6\" y=\"58.0\" width=\"27.4\" height=\"108.0\" fill=\"#d9534f\"/>\u003ctext x=\"84.3\" y=\"55.0\" class=\"val\" text-anchor=\"middle\">49\u003c/text>\u003ctext x=\"70.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S1\u003c/text>\u003crect x=\"121.0\" y=\"132.9\" width=\"27.4\" height=\"33.1\" fill=\"#2b7bb9\"/>\u003ctext x=\"134.7\" y=\"129.9\" class=\"val\" text-anchor=\"middle\">15\u003c/text>\u003crect x=\"151.1\" y=\"132.9\" width=\"27.4\" height=\"33.1\" fill=\"#d9534f\"/>\u003ctext x=\"164.8\" y=\"129.9\" class=\"val\" text-anchor=\"middle\">15\u003c/text>\u003ctext x=\"150.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S2\u003c/text>\u003crect x=\"201.5\" y=\"99.9\" width=\"27.4\" height=\"66.1\" fill=\"#2b7bb9\"/>\u003ctext x=\"215.2\" y=\"96.9\" class=\"val\" text-anchor=\"middle\">30\u003c/text>\u003crect x=\"231.6\" y=\"77.8\" width=\"27.4\" height=\"88.2\" fill=\"#d9534f\"/>\u003ctext x=\"245.3\" y=\"74.8\" class=\"val\" text-anchor=\"middle\">40\u003c/text>\u003ctext x=\"231.2\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S3\u003c/text>\u003crect x=\"282.0\" y=\"124.1\" width=\"27.4\" height=\"41.9\" fill=\"#2b7bb9\"/>\u003ctext x=\"295.6\" y=\"121.1\" class=\"val\" text-anchor=\"middle\">19\u003c/text>\u003crect x=\"312.1\" y=\"91.0\" width=\"27.4\" height=\"75.0\" fill=\"#d9534f\"/>\u003ctext x=\"325.8\" y=\"88.0\" class=\"val\" text-anchor=\"middle\">34\u003c/text>\u003ctext x=\"311.8\" y=\"180\" class=\"ax\" text-anchor=\"middle\">S4\u003c/text>\u003cline x1=\"30\" x2=\"352\" y1=\"166\" y2=\"166\" class=\"grid\"/>\u003crect x=\"30\" y=\"191\" width=\"10\" height=\"7\" fill=\"#2b7bb9\"/>\u003ctext x=\"43\" y=\"198\" class=\"ax\">張小華\u003c/text>\u003crect x=\"110\" y=\"191\" width=\"10\" height=\"7\" fill=\"#d9534f\"/>\u003ctext x=\"123\" y=\"198\" class=\"ax\">馨婷\u003c/text>\u003c/svg>\n\u003cp>\u003cb>邀約與配合（關鍵字趨勢）\u003c/b>：S4 張小華提出見面字句較多（86:40），且常是「我去找你」「我下班就去你家囉」這種由他移動；馨婷較常說「看你/都可以」（S3–S4 共 74:49），也比較常說「改天/下次」（全期 45:23）。可以看成雙向分工：他提出、她配合時間；也可以看成她在見面安排上比較被動。光看關鍵字無法判斷是哪一種。\u003c/p>\n\u003cp>2024-09 兩人互相把「主動約」推給對方：\u003c/p>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2024-09-25 17:01\u003c/span>\u003cdiv>我暗示那麼多次你都不約我\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2024-09-25 17:01\u003c/span>\u003cdiv>你幹麻不直接自己約我\u003c/div>\u003c/blockquote>\n\u003cp>在關係定義上，主動提出的一方是馨婷（3/31），決定權則落在回覆「還沒有答案」的張小華手上（見衝突段）。\u003c/p>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑥ 維度四：衝突與防禦機制\u003c/summary>\u003cdiv class=\"body\">\n\u003cp>方法：用關鍵字（生氣、不理我、你都不、敷衍、冷戰等）找出候選日期，再逐段讀上下文，排除討論第三人的情況。真正發生在兩人之間的張力不多，主要有以下幾種模式：\u003c/p>\n\u003ch3>自述的衝突傾向（雙方對稱）\u003c/h3>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2024-09-19 14:19\u003c/span>\u003cdiv>但我確實是很容易不小心冷戰\u003cbr>可是其實我超不愛\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-02-04 14:14\u003c/span>\u003cdiv>人不理我 我不理人\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-01-03 11:04\u003c/span>\u003cdiv>第一條 不準冷戰\u003c/div>\u003c/blockquote>\n\u003ch3>觸發點一：與其他人的互動／關係排他性\u003c/h3>\n\u003cp>2025-02-04，張小華提到正在認識其他人，隔天說晚上和別人有約。馨婷回應：\u003c/p>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-02-04 14:20\u003c/span>\u003cdiv>我現在積極約其他妹子聊天\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-02-04 14:20\u003c/span>\u003cdiv>難怪沒空理我\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-02-05 09:34\u003c/span>\u003cdiv>想說怕你覺得我一直唬爛你說要一起去哪\u003cbr>結果一直推拖下雨或很冷\u003c/div>\u003c/blockquote>\n\u003cp>之後雙方靜默 12 天（2/5 09:46 → 2/17 21:20），全期最長，由張小華打破。\u003c/p>\n\u003ch3>觸發點二：關係定義（2025-03-31）\u003c/h3>\n\u003cp>深夜聊天時馨婷表示擔心兩人的關係只剩身體上的親密，接著說：\u003c/p>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-03-31 01:49\u003c/span>\u003cdiv>我不想是這樣\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-03-31 01:54\u003c/span>\u003cdiv>我想套牢你\u003cbr>確定關係～\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-03-31 01:54\u003c/span>\u003cdiv>但又不想是強要來的\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-03-31 02:06\u003c/span>\u003cdiv>比較像是自己未來想要怎麼樣的生活的人生大哉問\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-03-31 02:15\u003c/span>\u003cdiv>我們明天再聊這個話題\u003c/div>\u003c/blockquote>\n\u003cp>隔天的文字恢復日常，沒有接續這個話題（可能在見面時談過）。\u003c/p>\n\u003ch3>觸發點三：互相覺得對方比較少理自己（2025-04-08）\u003c/h3>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-04-08 16:56\u003c/span>\u003cdiv>你最近都沒主動跟我說話餒\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-04-08 16:57\u003c/span>\u003cdiv>因為我覺得我跟你說話\u003cbr>你都不太理我...\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-04-08 16:59\u003c/span>\u003cdiv>那你知道我傳最多的是給你\u003c/div>\u003c/blockquote>\n\u003ch3>防禦方式（雙方都有）\u003c/h3>\n\u003cul>\u003cli>\u003cb>張小華\u003c/b>：用幽默或「假生氣」包裝需求（2024-09-25「我生氣了」）；遇到沉重話題時延後或縮短（「明天再聊」「我要準備出發了」）；也會主動提出退後一步（5/2「慢慢推開放手」）。\u003c/li>\n\u003cli>\u003cb>馨婷\u003c/b>：先沉默觀察（5/2 她說「所以我沈默了」）；用「我太兇了嗎」先確認對方有沒有不高興；把需求說得比較軟或自我否定（「又好像不該要求你要滿足我」）。\u003c/li>\u003c/ul>\n\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-03-24 15:01\u003c/span>\u003cdiv>我太兇了嗎~\u003cbr>就不理我了\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-03-24 15:15\u003c/span>\u003cdiv>完全沒有\u003c/div>\u003c/blockquote>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑦ 維度五：修復嘗試\u003c/summary>\u003cdiv class=\"body\">\n\u003ctable>\u003ctr>\u003cth>事件\u003c/th>\u003cth>誰先回來\u003c/th>\u003cth>方式\u003c/th>\u003cth>議題是否在文字中解決\u003c/th>\u003c/tr>\n\u003ctr>\u003ctd>2025-02 靜默 12 天\u003c/td>\u003ctd class=\"a\">張小華\u003c/td>\u003ctd>針對她的貼文問候\u003c/td>\u003ctd>部分：馨婷說「跟你也句點了啊」，張回「是逗點」，之後恢復互動；排他性問題沒有直接談\u003c/td>\u003c/tr>\n\u003ctr>\u003ctd>2025-03-31 確定關係\u003c/td>\u003ctd class=\"a\">張小華延後\u003c/td>\u003ctd>「明天再聊」，隔天照常互動\u003c/td>\u003ctd>文字中未見結論\u003c/td>\u003c/tr>\n\u003ctr>\u003ctd>2025-04-08 互覺冷落\u003c/td>\u003ctd>同一段對話中處理\u003c/td>\u003ctd>澄清（「我傳最多的是給你」）\u003c/td>\u003ctd>當下緩和\u003c/td>\u003c/tr>\n\u003ctr>\u003ctd>2025-05-02 長談\u003c/td>\u003ctd>雙方都有留下來談\u003c/td>\u003ctd>文字長談後，當晚張撥出約 1 小時電話；隔天照常聊\u003c/td>\u003ctd>情緒緩和；關係定義仍未在文字中談定\u003c/td>\u003c/tr>\n\u003ctr>\u003ctd>2026-10-01 近三天空白\u003c/td>\u003ctd class=\"b\">馨婷\u003c/td>\u003ctd>傳笑話開場，再點出「消失那麼久」\u003c/td>\u003ctd>張說明自己喉嚨發炎，馨婷問「還好嗎~」，當下化解\u003c/td>\u003c/tr>\u003c/table>\n\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-02-17 21:20\u003c/span>\u003cdiv>誒 妳po \u003cbr>the end\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-02-17 22:23\u003c/span>\u003cdiv>跟你也句點了啊\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-02-17 22:24\u003c/span>\u003cdiv>是逗點\u003c/div>\u003c/blockquote>\n\u003ch3>2025-05-02：最完整的一次修復對話\u003c/h3>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-02 16:38\u003c/span>\u003cdiv>有點好像沒有被需要的感覺了\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-02 16:45\u003c/span>\u003cdiv>加上你一直在認識新對象\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-02 16:40\u003c/span>\u003cdiv>被冷落後 想東想西\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-02 16:51\u003c/span>\u003cdiv>是不是就這樣慢慢推開放手\u003cbr>才是真的對你好\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-02 16:52\u003c/span>\u003cdiv>我不想啊\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-02 17:02\u003c/span>\u003cdiv>喜歡你沒什麼條件與前提\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-02 17:06\u003c/span>\u003cdiv>但我們之間的關係，又好像不該要求你要滿足我\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-02 17:10\u003c/span>\u003cdiv>總之 記得去看書\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-05-02 17:13\u003c/span>\u003cdiv>其實我是開心的\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-05-03 00:14\u003c/span>\u003cdiv>☎ 通話時間1:01:23\u003c/div>\u003c/blockquote>\n\u003cp>觀察：張小華在這段對話裡有命名對方的感受（「被冷落後 想東想西」），也表達了沒有條件的喜歡；但他同時提出「放手」作為選項，最後用推薦一本書收尾。馨婷清楚說出需求，但隨即降低自己的要求。\u003c/p>\n\u003ch3>道歉\u003c/h3>\u003cp>含道歉字眼的訊息全期 張 44／馨 53，S4 只有 4／7，而且多半是小事。例如馨婷喉嚨發炎時張小華說「對不起！」，馨婷回「幹嘛道歉～」。這段關係的修復主要靠照常互動和通話，很少靠明確道歉。\u003c/p>\n\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-10-01 20:22\u003c/span>\u003cdiv>消失那麼久~一出現就是懶散照!\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2026-10-01 20:22\u003c/span>\u003cdiv>我喉嚨又發炎惹\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2026-10-01 20:23\u003c/span>\u003cdiv>還好嗎~\u003c/div>\u003c/blockquote>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑧ 關鍵事件時間軸\u003c/summary>\u003cdiv class=\"body\">\u003cdiv class=\"tl\">\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2024-02-14｜開始\u003c/div>馨婷傳美食推薦，當月 5,548 則，是第二高峰。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2024-08｜量能最高月（8,479 則）\u003c/div>深夜長聊，大量談論過去的感情。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2024-09-21｜第一次觸及「交往」假設\u003c/div>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2024-09-21 19:57\u003c/span>\u003cdiv>好像如果不能保證不分手的話\u003cbr>最好是別跟你交往，不然就等於變成是失去一個朋友\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2024-09-21 20:03\u003c/span>\u003cdiv>有心要推動關係的伴侶\u003cbr>是不會不耐煩 一起成長的\u003c/div>\u003c/blockquote>\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-01-03｜深夜 1 小時 47 分通話\u003c/div>馨婷撥出、哭著談上一段關係；張小華隔天回應。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-01-13～14｜親近升溫\u003c/div>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-01-14 09:34\u003c/span>\u003cdiv>你現在很會甜言蜜語\u003c/div>\u003c/blockquote>\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-02-05～17｜12 天靜默\u003c/div>前一天張小華提到在認識其他人；2/17 馨婷宣告結束上一段關係，張小華打破靜默。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-03-31｜提出確定關係\u003c/div>張小華：「人生大哉問」「明天再聊」。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-04-08｜互相覺得對方比較少理自己\u003c/div>\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-05-02｜長談「沒有被需要」\u003c/div>張小華提出「放手」作選項；當晚約 1 小時通話。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-08-04｜期待落差\u003c/div>\u003cblockquote class=\"qb\">\u003cspan class=\"who\">馨婷\u003c/span>\u003cspan class=\"ts\">2025-08-04 10:51\u003c/span>\u003cdiv>不然感覺你每次都給我打預防針\u003cbr>要我別期望太高\u003c/div>\u003c/blockquote>\u003cblockquote class=\"qa\">\u003cspan class=\"who\">張小華\u003c/span>\u003cspan class=\"ts\">2025-08-04 10:52\u003c/span>\u003cdiv>有問題也是我的問題\u003c/div>\u003c/blockquote>\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2025-11 起｜通話為主\u003c/div>文字量減半，通話約每週 5.7 次；馨婷固定說晚安，例如「寶貝 love you 啾啾」（2026-09-28）。\u003c/div>\n\u003cdiv class=\"ev\">\u003cdiv class=\"d\">2026-10-01｜近三天空白後被說「敷衍」\u003c/div>見修復表。\u003c/div>\n\u003c/div>\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑨ 對兩人的觀察（同一套框架、對稱撰寫）\u003c/summary>\u003cdiv class=\"body\">\u003cdiv class=\"two\">\n\u003cdiv class=\"card\">\u003ch3 class=\"a\">張小華\u003c/h3>\n\u003cp>\u003cb>優勢訊號\u003c/b>\u003c/p>\u003cul>\n\u003cli>回覆速度快（中位數 0–1 分）；用電話維持連結，撥出的通話和分鐘數都較多。\u003c/li>\n\u003cli>見面時常是他移動（「去找你」），S4 提出見面的字句較多。\u003c/li>\n\u003cli>能說出對方的感受（「被冷落後 想東想西」），也會主動澄清（「我傳最多的是給你」）。\u003c/li>\n\u003cli>修復時常主動（打破 2 月靜默、5/2 當晚撥出長通話）。\u003c/li>\u003c/ul>\n\u003cp>\u003cb>可留意的模式\u003c/b>\u003c/p>\u003cul>\n\u003cli>S4 文字變短、單詞回覆增加、白天長延遲比例變兩倍；文字親暱表達幾乎消失。\u003c/li>\n\u003cli>面對關係定義時傾向延後（「明天再聊」）或提出退後（「放手」），文字中沒有給出明確答案。\u003c/li>\n\u003cli>對方表達不適時，較常給分析或建議，偶爾會輕描淡寫（「好小的事情」）。\u003c/li>\n\u003cli>用玩笑或「假生氣」表達需求，真正的需求容易被當成玩笑看待。\u003c/li>\u003c/ul>\u003c/div>\n\u003cdiv class=\"card\">\u003ch3 class=\"b\">馨婷\u003c/h3>\n\u003cp>\u003cb>優勢訊號\u003c/b>\u003c/p>\u003cul>\n\u003cli>文字開啟、早安晚安和日常分享都較多；親暱表達穩定且直接。\u003c/li>\n\u003cli>能清楚說出自己的需求和感受（「確定關係」「沒有被需要的感覺」）。\u003c/li>\n\u003cli>對方疲累時常有撒嬌式的關心（「呼呼秀秀」「要抱抱嗎」）。\u003c/li>\n\u003cli>空白之後也會主動回來（2026-10-01），並直接點出感受。\u003c/li>\u003c/ul>\n\u003cp>\u003cb>可留意的模式\u003c/b>\u003c/p>\u003cul>\n\u003cli>說出需求後常馬上自我降低（「又好像不該要求你」「不想是強要來的」），也會先確認自己有沒有太兇。\u003c/li>\n\u003cli>自述容易冷戰；不舒服時傾向先沉默（「所以我沈默了」），讓對方去猜。\u003c/li>\n\u003cli>被問「不開心要說出來」時回答「不想說」，想要被理解，但又不太開口說明。\u003c/li>\n\u003cli>回應對方的疲累時有時是調侃（「你還說你累」），可能沒被當成關心。\u003c/li>\u003c/ul>\u003c/div>\n\u003c/div>\n\u003cdiv class=\"note\">兩人共通：明確道歉很少；議題常用「照常互動」帶過；重要對話多半移到電話裡，文字只看得到開頭和結尾。\u003c/div>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑩ 反思問題與建議\u003c/summary>\u003cdiv class=\"body\">\n\u003ch3>給兩人共同\u003c/h3>\u003cul>\n\u003cli>2025-03-31「確定關係」的問題，雙方現在各自的答案是什麼？有沒有在電話裡講清楚，還是一直默默延後？\u003c/li>\n\u003cli>文字主要由一方開啟、電話主要由另一方撥出。你們各自比較習慣用哪種方式感受到「被在乎」？對方知道嗎？\u003c/li>\n\u003cli>可以約定一個「不舒服時」的固定說法，代替沉默或玩笑（2024-09 張小華自己也提過「設定一個停止避免冷戰的關鍵字」）。\u003c/li>\u003c/ul>\n\u003ch3 class=\"a\">給張小華\u003c/h3>\u003cul>\n\u003cli>當對方說「沒有被需要」時，你提出「放手」是想保護對方，還是保護自己？對方聽到的是哪一種？\u003c/li>\n\u003cli>S4 的文字變短，是因為改用電話，還是興趣或精力下降？可以讓對方知道原因。\u003c/li>\n\u003cli>對方表達不適時，試試先用一句承接（「聽起來很煩」），再給建議。\u003c/li>\u003c/ul>\n\u003ch3 class=\"b\">給馨婷\u003c/h3>\u003cul>\n\u003cli>說出需求後馬上補一句「不該要求」，是因為擔心給對方壓力嗎？如果不補這一句，你真正想要的是什麼？\u003c/li>\n\u003cli>當你選擇沉默時，希望對方怎麼做？可以事先告訴對方。\u003c/li>\n\u003cli>「不想說」的時候，能不能改成「現在不想說，晚上電話說」，讓對方知道門沒有關上？\u003c/li>\u003c/ul>\n\u003c/div>\u003c/details>\u003cdetails>\u003csummary>⑪ 方法與限制\u003c/summary>\u003cdiv class=\"body\">\n\u003cul>\n\u003cli>\u003cb>解析\u003c/b>：Python 解析 LINE 手機匯出檔，處理上午/下午 12 小時制、跨行雙引號訊息與內含的跳脫引號；共解析 91,959 行訊息，其中 2 則為系統訊息（相簿改名、公告）已排除。收回標記「您已收回訊息」依匯出者視角歸給張小華，「馨婷已收回訊息」歸給馨婷。\u003c/li>\n\u003cli>\u003cb>段落\u003c/b>：相鄰訊息間隔超過 6 小時就算新段落，共 1,102 段。\u003cb>延遲\u003c/b>：同段落內換人說話的時間差，以分鐘計（原檔只精確到分鐘，所以大量是 0）。\u003c/li>\n\u003cli>\u003cb>通話\u003c/b>：「☎ 通話時間」列在撥出者名下；「未接來電」是馨婷撥出、張小華未接；「取消通話／無人接聽」是撥出方未接通。\u003cb>通話內容完全看不到\u003c/b>，而 S3–S4 大量溝通很可能發生在電話中。\u003c/li>\n\u003cli>\u003cb>關鍵字計數\u003c/b>（親暱詞、邀約、道歉、情緒接球分類等）都只是\u003cb>趨勢指標\u003c/b>，會有誤判（例如「神奇寶貝」、聊第三人的句子）；結論都已用逐段閱讀的實例佐證。\u003c/li>\n\u003cli>\u003cb>階段切分\u003c/b>是分析者依資料特徵做的操作定義，不代表兩人自己對關係的定義。\u003c/li>\n\u003cli>\u003cb>隱私\u003c/b>：已省略地址、帳號與金額細節；第三方以泛稱表示；明確的親密內容不引用，只描述成「身體上的親密」。\u003c/li>\n\u003cli>\u003cb>獨立性\u003c/b>：只讀了這一份檔案，沒有參考其他對話、報告或背景資料。\u003c/li>\n\u003cli>本報告是\u003cb>反思用的提示，不是判決\u003c/b>。文字紀錄只是關係的一部分，看不到語氣、見面時的互動，也看不到電話內容。\u003c/li>\n\u003c/ul>\u003c/div>\u003c/details>\n\u003cp class=\"sub\" style=\"text-align:center\">產生時間 2026-11-01（台北時間）・單檔離線 HTML\u003c/p>\n\u003c/main>\u003c/body>\u003c/html>"</script>
+<script>
+(function () {
+  var order = ["gemini", "grok"];
+  function frame(name) { return document.getElementById("pane-" + name); }
+  function fit(el) {
+    var doc = el.contentDocument;
+    if (!doc || !doc.documentElement) return;
+    var h = Math.max(doc.documentElement.scrollHeight || 0, doc.body ? doc.body.scrollHeight : 0);
+    el.style.height = (h + 8) + "px";
+  }
+  function mount(name) {
+    var el = frame(name);
+    el.srcdoc = JSON.parse(document.getElementById("doc-" + name).textContent);
+    el.addEventListener("load", function () {
+      fit(el);
+      var doc = el.contentDocument;
+      if (!doc) return;
+      doc.addEventListener("toggle", function () { requestAnimationFrame(function () { fit(el); }); }, true);
+      doc.addEventListener("click", function () { setTimeout(function () { fit(el); }, 40); });
+    });
+  }
+  function select(name) {
+    order.forEach(function (key) {
+      var on = key === name;
+      document.getElementById("tab-" + key).setAttribute("aria-selected", on ? "true" : "false");
+      frame(key).classList.toggle("is-active", on);
+    });
+    requestAnimationFrame(function () { fit(frame(name)); });
+  }
+  order.forEach(mount);
+  document.getElementById("tab-gemini").addEventListener("click", function () { select("gemini"); });
+  document.getElementById("tab-grok").addEventListener("click", function () { select("grok"); });
+  var start = (location.hash || "").replace("#", "");
+  if (order.indexOf(start) === -1) start = "gemini";
+  select(start);
+  window.addEventListener("resize", function () {
+    order.forEach(function (name) { fit(frame(name)); });
+  });
+})();
+</script>
 </body>
 </html>
