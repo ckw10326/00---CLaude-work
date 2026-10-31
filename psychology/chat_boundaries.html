@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天界線與曖昧互動｜十全實戰視覺化知識庫 (10 Core Scenarios Edition)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 20%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.78);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(148, 163, 184, 0.3);
+            box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+        }
+        .mermaid-box {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #f472b6 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Toast Notification for Copy Action -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 border border-emerald-400/40">
+            <span class="text-lg">✅</span>
+            <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-emerald-100">已複製到剪貼簿</div>
+                <div id="toast-text" class="text-sm font-medium line-clamp-1 max-w-xs">話術已複製！</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Header Banner -->
+    <header class="relative overflow-hidden border-b border-slate-800 bg-slate-900/90 py-10 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+                <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-3">
+                    <span>⚡ 原直播 4 大經典 ＋ 擴充 6 大高頻實戰</span>
+                    <span>•</span>
+                    <span>Mermaid 決策樹與博弈因果圖</span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                    聊天界線與曖昧互動 <span class="gradient-text">十全實戰視覺化知識庫</span>
+                </h1>
+                <p class="text-slate-400 mt-2.5 text-sm sm:text-base max-w-3xl leading-relaxed">
+                    完整貫徹「高位篩選者框架」：拒絕低位討好與自證清白，透過<strong class="text-slate-200">「提要求篩選、故意曲解、踢回皮球、重心拉回自己＋給台階邀約」</strong>四大核心武器，破解曖昧期十種最棘手的對話考驗。
+                </p>
+            </div>
+
+            <!-- Black Jargon Quick Decoder -->
+            <div class="glass-card rounded-xl p-4 text-xs space-y-2 w-full lg:w-auto lg:min-w-[300px] border-l-4 border-l-amber-400 shrink-0">
+                <div class="font-bold text-amber-300 flex items-center justify-between">
+                    <span>🔑 直播防審核黑話 & 術語解碼</span>
+                    <span class="text-[10px] bg-amber-500/20 text-amber-200 px-2 py-0.5 rounded">必讀基礎</span>
+                </div>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-slate-300 pt-1">
+                    <div><span class="text-slate-400">愛和妹：</span>曖昧拉扯</div>
+                    <div><span class="text-slate-400">廢策：</span>廢物/服從性測試</div>
+                    <div><span class="text-slate-400">雙向門戶：</span>雙向奔赴投入</div>
+                    <div><span class="text-slate-400">米 / 摳搜：</span>金錢 / 小氣</div>
+                    <div><span class="text-slate-400">舔汪汪：</span>無底線討好工具人</div>
+                    <div><span class="text-slate-400">知體積處：</span>肢體接觸升溫</div>
+                    <div><span class="text-slate-400">ASD防禦：</span>反蕩婦防禦機制</div>
+                    <div><span class="text-slate-400">高位框架：</span>篩選者無所謂心態</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-12">
+
+        <!-- SECTION 1: Global Mindmap & Core Causal Loop -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Left: Mindmap -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                            <span class="text-2xl">🧠</span> 1. 十全實戰全局心智圖 (Mindmap)
+                        </h2>
+                        <span class="text-xs px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 font-medium">四大維度 × 10大情境</span>
+                    </div>
+                    <p class="text-slate-400 text-xs sm:text-sm mb-4">
+                        將所有零散的聊天情境歸納為四大博弈維度：物質測試、關係試探、情緒拉扯、邀約推進。
+                    </p>
+                </div>
+                <div class="mermaid-box my-auto">
+                    <pre class="mermaid">
+mindmap
+  root((曖昧互動<br/>十全實戰系統))
+    底層心態框架
+      無所謂心態：放下佔有慾、破除單一匱乏
+      供需法則：隱藏需求感、拒絕無條件買單
+      思維差異：男直線求結果 vs 女圓形享曖昧
+    物質與框架測試
+      01 想喝奶茶：提要求等價交換篩選
+      09 前任與名牌暗示：無視比較＋設立高門檻
+    關係與安全感試探
+      03 你喜歡我嗎：踢回皮球、反問意圖
+      05 感覺你很渣：拒絕自證＋曲解誇獎反框
+    情緒與日常拉扯
+      02 我去洗澡囉：曲解為「主動報備」
+      04 上班好累喔：重心拉回自己＋順勢邀約
+      06 忙完晚回訊：展示豐富重心＋幽默小懲罰
+      08 生理痛感冒：情緒共情＋霸氣指令換大餐
+    邀約與推進阻力
+      07 週末忙軟釘子：後撤保框架＋給台階測誠意
+      10 這麼晚去你家：破解ASD防禦＋安全感台階
+                    </pre>
+                </div>
+            </div>
+
+            <!-- Right: Core Causal Diagram -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                            <span class="text-2xl">⚖️</span> 2. 供需失衡與雙向奔赴因果圖 (Causal Loop)
+                        </h2>
+                        <span class="text-xs px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 font-medium">底層博弈邏輯</span>
+                    </div>
+                    <p class="text-slate-400 text-xs sm:text-sm mb-4">
+                        為什麼「老實買單、秒回哄她、急著表白、發誓不渣」會加速出局？一眼看懂高低位轉換因果鏈。
+                    </p>
+                </div>
+                <div class="mermaid-box my-auto">
+                    <pre class="mermaid">
+flowchart TD
+    subgraph 低位死局["❌ 低位討好與自證迴圈（工具人死路）"]
+        direction TB
+        A1[認識基數太少<br/>患得患失怕錯過] --> A2[有求必應買單 / 急著表白<br/>被質疑就發誓自證清白]
+        A2 --> A3[底牌與需求感100%暴露<br/>失去探索空間與神秘感]
+        A3 --> A4[女方啟動「高位審視框架」<br/>胃口變大、測試變本加厲]
+        A4 --> A5[沉沒成本極大化<br/>結局：你人很好但沒心動感]
+    end
+
+    subgraph 高位破局["✅ 高位篩選與拉扯迴圈（雙向奔赴路）"]
+        direction TB
+        B1[建立豐富生活與選擇權<br/>擁有「無所謂」底氣] --> B2[敢提要求做篩選<br/>曲解報備 / 踢回皮球不表態]
+        B2 --> B3[隱藏需求感、維持曖昧張力<br/>給予合理台階卸下防備]
+        B3 --> B4[觸發女方「圓形思維」<br/>反覆猜測心意、主動投入成本]
+        B4 --> B5[篩掉白嫖撈女<br/>與同頻對象水到渠成確認關係]
+    end
+
+    style 低位死局 fill:#fff1f2,stroke:#f43f5e,stroke-width:2px,color:#881337
+    style 高位破局 fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#064e3b
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Interactive Filter & Quick Navigation Control Bar -->
+        <section class="glass-card rounded-2xl p-5 sm:p-6 sticky top-3 z-40 shadow-2xl border border-slate-700/80">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold text-slate-400 mr-1 uppercase tracking-wider">📂 篩選情境：</span>
+                    <button onclick="filterScenarios('all', this)" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+                        全部情境 (10)
+                    </button>
+                    <button onclick="filterScenarios('original', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition">
+                        🔥 原直播經典 (4)
+                    </button>
+                    <button onclick="filterScenarios('extended', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition">
+                        🚀 擴充高頻實戰 (6)
+                    </button>
+                    <button onclick="filterScenarios('test', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-amber-300 border border-amber-500/30 hover:bg-slate-700 transition">
+                        💎 提要求篩選類
+                    </button>
+                    <button onclick="filterScenarios('pullpush', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-pink-300 border border-pink-500/30 hover:bg-slate-700 transition">
+                        🎭 曲解與踢皮球類
+                    </button>
+                    <button onclick="filterScenarios('invite', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-emerald-300 border border-emerald-500/30 hover:bg-slate-700 transition">
+                        🥂 邀約與推進類
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative w-full md:w-64">
+                    <input 
+                        type="text" 
+                        id="scenarioSearch" 
+                        oninput="searchScenarios(this.value)"
+                        placeholder="搜尋關鍵字（如：洗澡、渣男、前任）..." 
+                        class="w-full bg-slate-900/90 border border-slate-700 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    >
+                    <span class="absolute left-3 top-2 text-slate-500 text-xs">🔍</span>
+                </div>
+            </div>
+
+            <!-- Quick Jump Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pt-3 mt-3 border-t border-slate-800/80 text-xs pb-1">
+                <span class="text-slate-500 shrink-0 mr-1">快速跳轉：</span>
+                <a href="#sc01" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-indigo-600 text-slate-300 hover:text-white transition">01.喝奶茶</a>
+                <a href="#sc02" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-indigo-600 text-slate-300 hover:text-white transition">02.去洗澡</a>
+                <a href="#sc03" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-indigo-600 text-slate-300 hover:text-white transition">03.喜歡我嗎</a>
+                <a href="#sc04" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-indigo-600 text-slate-300 hover:text-white transition">04.上班好累</a>
+                <a href="#sc05" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-pink-600 text-pink-200 hover:text-white transition">05.感覺你很渣</a>
+                <a href="#sc06" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-pink-600 text-pink-200 hover:text-white transition">06.忙完晚回訊</a>
+                <a href="#sc07" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-emerald-600 text-emerald-200 hover:text-white transition">07.週末軟釘子</a>
+                <a href="#sc08" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-amber-600 text-amber-200 hover:text-white transition">08.生理痛感冒</a>
+                <a href="#sc09" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-amber-600 text-amber-200 hover:text-white transition">09.前任與名牌</a>
+                <a href="#sc10" class="shrink-0 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-emerald-600 text-emerald-200 hover:text-white transition">10.太晚去你家</a>
+            </div>
+        </section>
+
+        <!-- SECTION 3: 10 Core Scenarios Grid -->
+        <section id="scenariosGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- ================= SCENARIO 01 (Original) ================= -->
+            <article id="sc01" data-tags="original test" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-amber-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-300 text-xs font-bold">情境 01｜原直播經典</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">物質與服從測試</span>
+                        </div>
+                        <span class="text-xs font-semibold text-amber-400">🎯 核心武器：提要求篩選</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「哥哥，我好想喝杯奶茶喔～」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-amber-400">🔍 潛台詞與人性拆解：</strong>她自己買得起，身邊也有小張小李願意買，卻故意發給你，這叫<strong>「廢物測試（服從性測試）」</strong>。看你好不好說話、有沒有當 ATM 提款機的潛質。一旦無條件買單，今天奶茶、明天外送、後天借錢，最後送你一句「你人真好但沒感覺」。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S1["女方：好想喝杯奶茶喔"] --> C1{"你的應對策略？"}
+    C1 -->|"無條件買單（低位討好）"| Bad1["❌ 淪為ATM提款機<br/>沉沒成本與女方胃口越來越大<br/>最後領好人卡出局"]
+    C1 -->|"鋼鐵直男（槓精聊死）"| Bad2["❌ 「自己買 / 我去廁所給你做一杯」<br/>破壞氣氛、毫無調情張力"]
+    C1 -->|"高位破局：先提要求交換"| Good1["✅ 啟動「等價交換」篩選機制<br/>她滿足你的要求，才給她獎勵"]
+    Good1 --> R1{"觀察女方反應"}
+    R1 -->|"配合撒嬌 / 來接下班 / 互點"| Win1["🎉 雙向奔赴：關係自然升溫"]
+    R1 -->|"惱羞罵你摳搜小氣男"| Win2["🗑️ 篩出白嫖撈女：果斷放生換下一個"]
+
+    style Bad1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good1 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style Win1 fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style Win2 fill:#f3e8ff,stroke:#a855f7,color:#581c87
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與提要求話術（點擊可複製）</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-amber-400 font-bold">1. 情緒交換：</span>「可以啊，那你先語音撒個嬌我考慮考慮～」</div>
+                            <button onclick="copyText('可以啊，那你先語音撒個嬌我考慮考慮～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-amber-400 font-bold">2. 轉為邀約：</span>「我今天加班呢，要不你來接我下班，我請你喝？」</div>
+                            <button onclick="copyText('我今天加班呢，要不你來接我下班，我請你喝？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-amber-400 font-bold">3. 對等盲盒：</span>「有意思的相處是互相給小驚喜，要不咱們互相幫對方點個奶茶盲盒？」</div>
+                            <button onclick="copyText('有意思的相處是互相給小驚喜，要不咱們互相幫對方點個奶茶盲盒？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 02 (Original) ================= -->
+            <article id="sc02" data-tags="original pullpush" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-sky-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 text-xs font-bold">情境 02｜原直播經典</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">日常中斷與離場收尾</span>
+                        </div>
+                        <span class="text-xs font-semibold text-sky-400">🎯 核心武器：故意曲解為報備</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「哥哥先不聊了，我去洗澡／睡覺囉」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-sky-400">🔍 潛台詞與尺度拆解：</strong>太老實回「好、晚安」換不來喜歡；回「洗完記得找我」暴露苦等的需求感；而超出關係階段回「開視訊給我看／我幫你把風防偷看」則叫<strong>猥瑣飢渴</strong>。高段位做法是<strong>針對她「主動告知」的行為曲解為「報備」</strong>，製造專屬默契。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S2["女方：先不聊了，我去洗澡囉"] --> C2{"聊天尺度光譜"}
+    C2 -->|"太老實 / 暴露等待"| B2_1["❌ 「好的去吧 / 洗完再聊喔」<br/>無聊死板，或暴露在原地苦等她的需求感"]
+    C2 -->|"太飢渴（超出關係階段）"| B2_2["❌ 「開直播給我看 / 不會洗問我」<br/>算盤珠子崩臉上＝猥瑣油膩，瞬間掉價"]
+    C2 -->|"黃金尺度：故意曲解"| G2["✅ 不聊「洗澡本身」，聚焦「主動告知行為」<br/>將其定義為【向你主動報備】"]
+    G2 --> G2_Res["✨ 形成兩人曖昧小默契<br/>高位自然收尾，她洗完反而想接話"]
+
+    style B2_1 fill:#f1f5f9,stroke:#64748b,color:#334155
+    style B2_2 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style G2 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style G2_Res fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局話術（曲解報備法）</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-sky-400 font-bold">1. 計分調侃：</span>「收到你的主動報備了，小本本上給你加一分📝」</div>
+                            <button onclick="copyText('收到你的主動報備了，小本本上給你加一分📝')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-sky-400 font-bold">2. 地位升格：</span>「不錯嘛，洗澡還專門跟我說一聲，看來我在你心裡地位挺高的嘛～」</div>
+                            <button onclick="copyText('不錯嘛，洗澡還專門跟我說一聲，看來我在你心裡地位挺高的嘛～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-sky-400 font-bold">3. 上位審批：</span>「可以啊主動報備，看來我在你這待遇不低，今天的洗澡申請通過了！」</div>
+                            <button onclick="copyText('可以啊主動報備，看來我在你這待遇不低，今天的洗澡申請通過了！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 03 (Original) ================= -->
+            <article id="sc03" data-tags="original pullpush" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-pink-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-pink-500/20 text-pink-300 text-xs font-bold">情境 03｜原直播經典</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">關係試探與逼問底牌</span>
+                        </div>
+                        <span class="text-xs font-semibold text-pink-400">🎯 核心武器：踢回皮球、絕不表白</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「哥哥，你到底是不是喜歡我呀？」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-pink-400">🔍 潛台詞與博弈拆解：</strong>無論明示或暗示表白（「等你這句話好久了」），一旦給出確定答案，女方立刻從「好奇仰望你」轉為「高位考察你」。女性是圓形思維，最迷戀「不確定你是否真喜歡她」的徘徊感。<strong>把皮球踢回去</strong>，讓她自己去琢磨！
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor W as 👩 女方（拋出底牌圈套）
+    actor M as 👨 男方（高位太極框架）
+    W->>M: 哥哥，你到底是不是喜歡我呀？
+    Note over M: ❌ 死路1：承認喜歡/表白 ➔ 淪為被審視考核對象<br/>❌ 死路2：666少自戀了 ➔ 過度打壓把鴨子整飛
+    M->>W: 踢回皮球：「那你是希望我喜歡你，還是不喜歡你呢？」
+    W-->>M: 心癢難耐、摸不透底牌（陷入圓形思維琢磨）
+    M->>W: 反客為主：「突然問這個，你該不會對我圖謀不軌吧？」
+    Note over W,M: ✨ 維持曖昧推拉張力，激發女方好奇心與征服欲
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局話術（線上與見面）</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-pink-400 font-bold">1. 踢回皮球：</span>「那你是想讓我喜歡你呢，還是想讓我不喜歡你？」</div>
+                            <button onclick="copyText('那你是想讓我喜歡你呢，還是想讓我不喜歡你？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-pink-400 font-bold">2. 反咬意圖：</span>「今天突然問我這個問題，你該不會對我圖謀不軌吧？」</div>
+                            <button onclick="copyText('今天突然問我這個問題，你該不會對我圖謀不軌吧？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-pink-400 font-bold">3. 見面升溫：</span>「喜不喜歡這種事要互相感受才知道，來，把眼睛閉起來感受一下（順勢牽手）。」</div>
+                            <button onclick="copyText('喜不喜歡這種事要互相感受才知道，來，把眼睛閉起來感受一下')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 04 (Original) ================= -->
+            <article id="sc04" data-tags="original invite" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-emerald-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-xs font-bold">情境 04｜原直播經典</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">情緒抱怨與價值轉換</span>
+                        </div>
+                        <span class="text-xs font-semibold text-emerald-400">🎯 核心武器：轉移重心＋給台階邀約</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「好煩喔，今天上班累死了，壓力好大」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-emerald-400">🔍 潛台詞與重心拆解：</strong>她的潛台詞是「來哄哄我、給我情緒價值」，但若你只會說教（「去睡覺、多喝熱水」）或低姿態討好（「我幫你捏捏按摩」），不是聊死就是變成情緒垃圾桶。必須<strong>先簡短共情 ➔ 把重心拉回自己並展示價值 ➔ 順勢模糊邀約</strong>！
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart LR
+    A["女方：今天上班累死了"] --> B{"應對路徑選擇"}
+    B -->|"直男說教"| E1["❌ 「累了就去睡覺/多喝熱水」<br/>瞬間熄火、毫無共情"]
+    B -->|"低位討好"| E2["❌ 「來我家幫你按摩捏捏」<br/>目的性太強、圍著她團團轉"]
+    B -->|"高位三步法"| S1["① 簡短同步狀態<br/>「我最近上班也挺累」"]
+    S1 --> S2["② 重心拉回自己＋展示價值<br/>「今晚準備下廚做頓好料的」"]
+    S2 --> S3["③ 給台階順勢邀約<br/>「要不，一起？」"]
+
+    style E1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style E2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style S1 fill:#e0e7ff,stroke:#6366f1,color:#1e1b4b
+    style S2 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style S3 fill:#fae8ff,stroke:#d946ef,color:#4a044e
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局話術（一箭三雕邀約法）</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-emerald-400 font-bold">1. 私廚台階局：</span>「我最近上班也挺累的，今晚準備做個拿手好菜犒賞自己，要不一起？」</div>
+                            <button onclick="copyText('我最近上班也挺累的，今晚準備做個拿手好菜犒賞自己，要不一起？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-emerald-400 font-bold">2. 週末露營局：</span>「剛好我這週也累得要死，週末準備出去露營烤肉放鬆一下，要不一起？」</div>
+                            <button onclick="copyText('剛好我這週也累得要死，週末準備出去露營烤肉放鬆一下，要不一起？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-emerald-400 font-bold">3. 微醺放鬆局：</span>「看來我們今天是難兄難妹，我知道一家很安靜的小酒館，下班去喝一杯喘口氣？」</div>
+                            <button onclick="copyText('看來我們今天是難兄難妹，我知道一家很安靜的小酒館，下班去喝一杯喘口氣？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 05 (Extended) ================= -->
+            <article id="sc05" data-tags="extended pullpush test" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-purple-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-purple-500/20 text-purple-300 text-xs font-bold">情境 05｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">安全感與海王廢物測試</span>
+                        </div>
+                        <span class="text-xs font-semibold text-purple-400">🎯 核心武器：拒絕自證＋反向框定</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「你跟每個女生都這麼會聊嗎？感覺你很渣欸」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-purple-400">🔍 潛台詞與陷阱拆解：</strong>當你學會推拉調侃後，90% 女生都會拋出這題！表面嫌你渣，潛台詞其實是<strong>「承認你有魅力，但怕自己不是你的唯一」</strong>。最忌諱急著發毒誓自證清白（「我超專一從不跟別人聊」＝瞬間變回無趣老實人）。應該<strong>曲解為她在誇你＋把鍋甩給她（是因為你特別）＋提要求測試</strong>。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S5["女方：你跟每個女生都這麼會聊嗎？感覺很渣"] --> C5{"你的應對框架？"}
+    C5 -->|"低位自證清白（最慘死路）"| Bad5_1["❌ 「沒有啦我超老實，只跟妳一個人聊！」<br/>落入審判框架，魅力與神秘感瞬間歸零"]
+    C5 -->|"直男認真反駁"| Bad5_2["❌ 「講話好聽就叫渣喔？妳偏見很深欸」<br/>變成辯論賽，破壞曖昧推拉氣氛"]
+    C5 -->|"高位破局：曲解誇獎＋反向框定"| Good5["✅ 1. 大方承認幽默 / 曲解她在吃醋<br/>✅ 2. 反框「是因為遇到妳才打開話匣子」"]
+    Good5 --> Test5["💎 順勢提要求測試：「怕我被搶走，那妳還不看緊一點？」"]
+
+    style Bad5_1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad5_2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good5 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style Test5 fill:#f3e8ff,stroke:#a855f7,color:#581c87
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與提要求話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-purple-400 font-bold">1. 曲解吃醋＋提要求：</span>「怎麼剛認識沒多久就開始吃醋查勤啦？怕我跟別人聊，那你還不把我看緊一點～」</div>
+                            <button onclick="copyText('怎麼剛認識沒多久就開始吃醋查勤啦？怕我跟別人聊，那你還不把我看緊一點～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-purple-400 font-bold">2. 反向框定她：</span>「我平常挺高冷的，還不是因為你太有趣才把我的話匣子打開，這鍋你得背一半！」</div>
+                            <button onclick="copyText('我平常挺高冷的，還不是因為你太有趣才把我的話匣子打開，這鍋你得背一半！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-purple-400 font-bold">3. 曲解誇獎：</span>「謝謝誇獎啊～不過我對沒興趣的人通常只回『嗯、喔、去洗澡』，看來你待遇很特殊喔。」</div>
+                            <button onclick="copyText('謝謝誇獎啊～不過我對沒興趣的人通常只回『嗯、喔、去洗澡』，看來你待遇很特殊喔。')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 06 (Extended) ================= -->
+            <article id="sc06" data-tags="extended pullpush test" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-indigo-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 text-xs font-bold">情境 06｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">冷淡與優先級測試</span>
+                        </div>
+                        <span class="text-xs font-semibold text-indigo-400">🎯 核心武器：無所謂心態＋小懲罰提要求</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方（隔數小時或隔天）：「抱歉剛剛在忙，現在才看到訊息」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-indigo-400">🔍 潛台詞與心態拆解：</strong>她在測試你的「情緒穩定度」與「需求感」。若你怨婦式質問（「忙什麼忙一整天？」）會顯得佔有慾過強；若你秒回「沒關係啦快休息」又顯得毫無底線一直在等她。必須展現<strong>「無所謂心態（我也剛忙完精彩生活）」＋「幽默設立小懲罰提要求」</strong>。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S6["女方隔很久才回：抱歉剛剛在忙，現在才看到"] --> C6{"你的反應與心態？"}
+    C6 -->|"怨婦質問（暴露患得患失）"| Bad6_1["❌ 「忙什麼能忙8小時？是不想理我吧」<br/>暴露極度匱乏與控制慾，女方直接冷掉"]
+    C6 -->|"卑微秒回（無底線討好）"| Bad6_2["❌ 1秒內回：「沒關係啦！妳忙完就好～」<br/>證明你整天守著手機等她，徹底淪為低位"]
+    C6 -->|"高位破局：無所謂＋幽默小懲罰"| Good6["✅ 放慢節奏回覆，展示自己也在忙正事/娛樂<br/>✅ 調侃她的遲到，順勢提出小要求補償"]
+    Good6 --> Win6["🎉 既立下界線框架，又延續輕鬆曖昧感"]
+
+    style Bad6_1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad6_2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good6 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style Win6 fill:#e0e7ff,stroke:#6366f1,color:#1e1b4b
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與提要求話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-indigo-400 font-bold">1. 展示重心＋提要求：</span>「巧了，我也剛從健身房出來～不過遲到這麼久，下次見面得罰你請我喝杯咖啡抵罪了☕」</div>
+                            <button onclick="copyText('巧了，我也剛從健身房出來～不過遲到這麼久，下次見面得罰你請我喝杯咖啡抵罪了☕')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-indigo-400 font-bold">2. 幽默曲解調侃：</span>「我還以為你被外星人抓去做實驗了，正猶豫要不要報警呢，安全回來就好～」</div>
+                            <button onclick="copyText('我還以為你被外星人抓去做實驗了，正猶豫要不要報警呢，安全回來就好～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-indigo-400 font-bold">3. 小本本記帳法：</span>「小本本先記上一筆『失蹤人口回歸』，說吧，今天忙什麼大專案這麼拼？」</div>
+                            <button onclick="copyText('小本本先記上一筆『失蹤人口回歸』，說吧，今天忙什麼大專案這麼拼？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 07 (Extended) ================= -->
+            <article id="sc07" data-tags="extended invite test" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-teal-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-teal-500/20 text-teal-300 text-xs font-bold">情境 07｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">邀約軟釘子與阻力測試</span>
+                        </div>
+                        <span class="text-xs font-semibold text-teal-400">🎯 核心武器：以退為進＋測試改期誠意</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「這週末可能不行欸，我最近比較忙／再看看」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-teal-400">🔍 潛台詞與篩選拆解：</strong>邀約遇到軟釘子，可能是真忙，也可能是「吸引度還不夠（60分猶豫期）」。切忌死纏爛打（「那下週一二三呢？吃一頓飯很快啦」）或賭氣翻臉。高段位做法是<strong>瀟灑後撤（保住無所謂高位）＋製造錯過可惜感＋拋出「下次你請客/你約我」來測試誠意</strong>。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S7["女方：這週末可能不行欸，最近比較忙"] --> C7{"邀約受阻的應對？"}
+    C7 -->|"死纏爛打（低位乞討）"| Bad7_1["❌ 「那週日晚上呢？下週一呢？只吃1小時！」<br/>需求感爆棚，給女方極大壓力直接封鎖"]
+    C7 -->|"玻璃心賭氣"| Bad7_2["❌ 「算了，這麼難約以後不約了」<br/>顯得氣度狹小、輸不起"]
+    C7 -->|"高位後撤＋誠意篩選"| Good7["✅ 1. 瀟灑收場（那我剛好去跟朋友聚餐）<br/>✅ 2. 製造損失感＋把下次主導權交給她"]
+    Good7 --> R7{"女方後續反應（篩選器）"}
+    R7 -->|"主動提議改約其他時間"| Win7_1["🎉 真忙但對你有好感：順利敲定約會"]
+    R7 -->|"打哈哈敷衍無下文"| Win7_2["🛑 吸引度不足或無意願：冷凍換人，不浪費時間"]
+
+    style Bad7_1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad7_2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good7 fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style Win7_1 fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style Win7_2 fill:#f1f5f9,stroke:#64748b,color:#334155
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與誠意測試話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-teal-400 font-bold">1. 製造損失＋提要求：</span>「好吧，那你先忙，本來想帶你去吃一家超讚的私房料理，看來只能下次換你請我囉～」</div>
+                            <button onclick="copyText('好吧，那你先忙，本來想帶你去吃一家超讚的私房料理，看來只能下次換你請我囉～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-teal-400 font-bold">2. 瀟灑後撤保框架：</span>「行，工作要緊，那我週末剛好跟朋友去衝浪/露營，等你忙完這陣子再一起出來透透氣。」</div>
+                            <button onclick="copyText('行，工作要緊，那我週末剛好跟朋友去衝浪/露營，等你忙完這陣子再一起出來透透氣。')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-teal-400 font-bold">3. 踢回邀約球：</span>「看來大忙人檔期很滿啊，那這次先記著，等你哪天有空了再主動向我申請約會吧！」</div>
+                            <button onclick="copyText('看來大忙人檔期很滿啊，那這次先記著，等你哪天有空了再主動向我申請約會吧！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 08 (Extended) ================= -->
+            <article id="sc08" data-tags="extended test pullpush" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-rose-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-300 text-xs font-bold">情境 08｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">生理脆弱與關懷測試</span>
+                        </div>
+                        <span class="text-xs font-semibold text-rose-400">🎯 核心武器：霸氣微指令＋交換條件</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「我那個來了肚子好痛／感冒頭好暈喔😣」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-rose-400">🔍 潛台詞與分寸拆解：</strong>女生在脆弱時找你，需要的是「被依靠的帶領感與心疼」。直男回「多喝熱水」必死；但還沒在一起就「跨區跑腿送藥當免費看護」，又容易感動自己卻淪為工具人。正確解法是<strong>「溫柔共情＋霸氣微指令（像哄小孩一樣帶領她）＋設立雙向交換約定」</strong>。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart LR
+    S8["女方：肚子好痛 / 感冒頭好暈"] --> C8{"你的關懷模式？"}
+    C8 -->|"敷衍直男"| Bad8_1["❌ 「多喝熱水、吃止痛藥啊」<br/>比Siri還冷血，直接扣分"]
+    C8 -->|"低位免費看護"| Bad8_2["❌ 還沒曖昧深就跨城跑腿送粥站崗<br/>過度付出自我感動，變成隨傳隨到工具人"]
+    C8 -->|"高位帶領＋預約交換"| Good8["✅ ① 寵溺心疼＋霸氣微指令（去熱敷/蓋好被子）<br/>✅ ② 設立雙向約定（快好起來補償我/帶妳吃好的）"]
+
+    style Bad8_1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad8_2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good8 fill:#dcfce7,stroke:#22c55e,color:#14532d
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與提要求話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-rose-400 font-bold">1. 霸氣指令＋未來邀約：</span>「怎麼這麼不小心像個小朋友一樣～現在立刻放下手機去熱敷休息，等你滿血復活我再帶你去喝熱湯補補！」</div>
+                            <button onclick="copyText('怎麼這麼不小心像個小朋友一樣～現在立刻放下手機去熱敷休息，等你滿血復活我再帶你去喝熱湯補補！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-rose-400 font-bold">2. 外送關懷＋提交換要求：</span>「看你這麼可憐，破例幫你點了杯熱紅糖薑茶過去。不過沒有白喝的喔，等你好了得請我看場電影抵帳！」</div>
+                            <button onclick="copyText('看你這麼可憐，破例幫你點了杯熱紅糖薑茶過去。不過沒有白喝的喔，等你好了得請我看場電影抵帳！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-rose-400 font-bold">3. 語音哄睡拉扯：</span>「乖，先把藥吃了鑽進被窩，要是痛到睡不著，勉強開放特權讓你聽我聲音哄你睡覺 5 分鐘。」</div>
+                            <button onclick="copyText('乖，先把藥吃了鑽進被窩，要是痛到睡不著，勉強開放特權讓你聽我聲音哄你睡覺 5 分鐘。')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 09 (Extended) ================= -->
+            <article id="sc09" data-tags="extended test" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-orange-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-orange-500/20 text-orange-300 text-xs font-bold">情境 09｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">高價暗示與前任比較廢測</span>
+                        </div>
+                        <span class="text-xs font-semibold text-orange-400">🎯 核心武器：挑明小心思＋設立高門檻</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「你看這個包包／高級餐廳好讚喔，前任以前都會買給我」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-orange-400">🔍 潛台詞與框架拆解：</strong>這是進階版的「複合廢物測試」！用前任或別人來激將你，看你會不會因為自卑或好勝心而腦衝掏錢證明自己。若你酸言酸語（「那你去找前任啊」）顯得沒自信；若你立刻買單則成為最大冤大頭。必須<strong>微笑看穿她的小算盤＋設立你的高價值考核門檻</strong>！
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+flowchart TD
+    S9["女方：這包包/餐廳好讚，前任以前都會帶我去"] --> C9{"面對比較與暗示的反應？"}
+    C9 -->|"中計腦衝（冤大頭）"| Bad9_1["❌ 「這有什麼，我也買給妳！」<br/>被激將法輕鬆拿捏，淪為高價提款機"]
+    C9 -->|"破防吃醋（低價值自卑）"| Bad9_2["❌ 「前任這麼好妳幹嘛分手？去找他啊」<br/>情緒失控、暴露自卑感"]
+    C9 -->|"高位破局：看穿把戲＋立規矩"| Good9["✅ 1. 幽默拆穿她的激將法小心思<br/>✅ 2. 立下高位框架：「那是給女朋友的待遇，看妳表現囉」"]
+
+    style Bad9_1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Bad9_2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style Good9 fill:#dcfce7,stroke:#22c55e,color:#14532d
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與立框架話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-orange-400 font-bold">1. 拆穿激將＋立考核：</span>「哈哈，想用激將法套路我啊？這招對我沒用喔，這種待遇我只留給未來的乖女友，看你後續表現囉～」</div>
+                            <button onclick="copyText('哈哈，想用激將法套路我啊？這招對我沒用喔，這種待遇我只留給未來的乖女友，看你後續表現囉～')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-orange-400 font-bold">2. 反向提要求交換：</span>「眼光不錯嘛！那如果你拿到這個包，準備拿什麼等價的大禮來回敬我呢？」</div>
+                            <button onclick="copyText('眼光不錯嘛！那如果你拿到這個包，準備拿什麼等價的大禮來回敬我呢？')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-orange-400 font-bold">3. 雲淡風輕破前任局：</span>「看來他品味還可以，不過最後還不是把這麼好的你弄丟了？以後跟我混，帶你體驗點真正有意思的。」</div>
+                            <button onclick="copyText('看來他品味還可以，不過最後還不是把這麼好的你弄丟了？以後跟我混，帶你體驗點真正有意思的。')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ================= SCENARIO 10 (Extended) ================= -->
+            <article id="sc10" data-tags="extended invite pullpush" class="scenario-card glass-card rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-fuchsia-500">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-fuchsia-500/20 text-fuchsia-300 text-xs font-bold">情境 10｜高頻實戰擴充</span>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">私密空間邀約與 ASD 防禦</span>
+                        </div>
+                        <span class="text-xs font-semibold text-fuchsia-400">🎯 核心武器：曲解反將一軍＋安全台階</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">女方：「這麼晚去你家／微醺續攤不好吧，你是不是想對我幹嘛？」</h3>
+                    <div class="text-slate-300 text-sm mb-4 bg-slate-800/75 p-3.5 rounded-xl border border-slate-700/80 leading-relaxed">
+                        <strong class="text-fuchsia-400">🔍 潛台詞與 ASD 拆解：</strong>當約會氣氛很好、準備轉場私密空間時，女生常會啟動<strong>「反蕩婦防禦機制 (ASD)」</strong>——她內心其實願意跟妳走，但不能讓自己顯得「很隨便」，需要你給她一個<strong>合理的無害台階</strong>！切忌發誓「我絕對不碰你」（到時候碰了叫騙子，不碰叫柳下惠），也別飢渴承認。要<strong>曲解是她腦袋色色的＋給出正當理由台階</strong>。
+                    </div>
+
+                    <div class="mermaid-box mb-4">
+                        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor W as 👩 女方（啟動ASD防禦機制）
+    actor M as 👨 男方（曲解＋給合理台階）
+    W->>M: 這麼晚去你家不好吧，你是不是想對我幹嘛？
+    Note over M: ❌ 錯誤1：我發誓絕對不碰妳！（把路堵死或顯得虛偽）<br/>❌ 錯誤2：嘿嘿被妳發現了（太飢渴嚇跑對方）
+    M->>W: 曲解反將一軍：「喂，妳腦袋裡都在想什麼色色的事？我好害怕喔～」
+    M->>W: 給予安全台階：「我只是想讓妳嚐嚐我剛入手的梅酒，喝完就送妳回去。」
+    W-->>M: 獲得「我是為了喝梅酒才去，不是隨便女生」的合理台階
+    Note over W,M: ✨ 卸下心理防備，自然進入私密空間升溫
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">💬 實戰破局與安全台階話術</span>
+                        <span class="text-[11px] text-slate-500">點擊右側按鈕複製</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-fuchsia-400 font-bold">1. 反咬色色＋給台階：</span>「喂～你小腦袋瓜裡都在想什麼少兒不宜的事？我只是想讓你試試我珍藏的梅酒，待會你要是敢對我動手動腳我可是會喊救命的喔！」</div>
+                            <button onclick="copyText('喂～你小腦袋瓜裡都在想什麼少兒不宜的事？我只是想讓你試試我珍藏的梅酒，待會你要是敢對我動手動腳我可是會喊救命的喔！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-fuchsia-400 font-bold">2. 限制時間卸防備：</span>「想得美，本少爺賣藝不賣身好嗎～上去坐 20 分鐘聽首黑膠唱片就送你回家，走啦！」</div>
+                            <button onclick="copyText('想得美，本少爺賣藝不賣身好嗎～上去坐 20 分鐘聽首黑膠唱片就送你回家，走啦！')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 bg-slate-800/60 p-2.5 rounded-lg hover:bg-slate-800 transition">
+                            <div><span class="text-fuchsia-400 font-bold">3. 寵物/美食合理化：</span>「你想哪去了，我是看你今天心情不好，帶你去看看我家那隻會後空翻的貓療癒一下，順便幫我評鑑一下新買的甜點。」</div>
+                            <button onclick="copyText('你想哪去了，我是看你今天心情不好，帶你去看看我家那隻會後空翻的貓療癒一下，順便幫我評鑑一下新買的甜點。')" class="shrink-0 px-2.5 py-1 rounded bg-slate-700 hover:bg-indigo-600 text-xs text-slate-200 transition">複製</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- SECTION 4: Complete 10-Scenario Quick Comparison Cheat Sheet Table -->
+        <section class="glass-card rounded-2xl p-5 sm:p-6 overflow-hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span>⚡</span> 4. 十全情境一秒速查總表：低位舔狗 vs. 鋼鐵直男 vs. 高位篩選者
+                </h2>
+                <span class="text-xs text-slate-400">建議截圖收藏，實戰聊天前快速檢索</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700 bg-slate-800/90 text-slate-200">
+                            <th class="py-3.5 px-3 font-bold whitespace-nowrap"># 情境出題</th>
+                            <th class="py-3.5 px-3 font-bold whitespace-nowrap text-indigo-300">測試屬性</th>
+                            <th class="py-3.5 px-3 font-bold text-rose-400">❌ 低位討好 / 自證 / 飢渴（必死區）</th>
+                            <th class="py-3.5 px-3 font-bold text-amber-400">❌ 鋼鐵直男 / 情緒失控（聊死區）</th>
+                            <th class="py-3.5 px-3 font-bold text-emerald-400">✅ 高位篩選者破局與測試（得分區）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-200">
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-amber-300 whitespace-nowrap">01. 想喝奶茶</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">服從與ATM測試</td>
+                            <td class="py-3 px-3 text-slate-400">秒點外送、轉帳紅包（「用我的錢更安心」）</td>
+                            <td class="py-3 px-3 text-slate-400">「自己買啊 / 去廁所給你做一杯」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">提要求篩選：「撒個嬌考慮下 / 來接我下班請你喝 / 互點盲盒」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-sky-300 whitespace-nowrap">02. 去洗澡了</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">離場與尺度測試</td>
+                            <td class="py-3 px-3 text-slate-400">「開視訊給我看 / 洗完記得找我喔（傻等）」</td>
+                            <td class="py-3 px-3 text-slate-400">「喔好，去吧，晚安」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">曲解為報備：「收到主動報備，小本本加一分，洗澡申請通過！」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-pink-300 whitespace-nowrap">03. 喜歡我嗎</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">底牌與關係試探</td>
+                            <td class="py-3 px-3 text-slate-400">「對啊超喜歡你，等你這句話好久了（表白）」</td>
+                            <td class="py-3 px-3 text-slate-400">「666 你別太自戀了」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">踢回皮球：「你希望我喜歡還是不喜歡？/ 你對我圖謀不軌吧」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-emerald-300 whitespace-nowrap">04. 上班好累</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">情緒價值索取</td>
+                            <td class="py-3 px-3 text-slate-400">「心疼死我了，我馬上過去幫你捏捏按摩」</td>
+                            <td class="py-3 px-3 text-slate-400">「累了就早點睡、多喝熱水」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">重心拉回＋邀約：「我也挺累，今晚準備下廚做頓好料的，一起？」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-purple-300 whitespace-nowrap">05. 感覺你很渣</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">安全感與海王廢測</td>
+                            <td class="py-3 px-3 text-slate-400">發誓自證：「我超老實專一，只跟妳一個人聊」</td>
+                            <td class="py-3 px-3 text-slate-400">「會聊天就叫渣？你偏見太深了吧」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">曲解吃醋＋反框：「這麼快就吃醋查勤啦？怕我被搶還不看緊點」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-indigo-300 whitespace-nowrap">06. 忙完晚回訊</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">優先級與需求測試</td>
+                            <td class="py-3 px-3 text-slate-400">1秒內秒回：「沒關係啦！你忙完就好～」</td>
+                            <td class="py-3 px-3 text-slate-400">怨婦質問：「忙什麼能忙一整天不回？」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">展示重心＋小懲罰：「我也剛健身完，遲到這麼久下次罰你請咖啡」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-teal-300 whitespace-nowrap">07. 週末軟釘子</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">邀約阻力測試</td>
+                            <td class="py-3 px-3 text-slate-400">死纏爛打：「那下週一二呢？吃一頓飯很快啦」</td>
+                            <td class="py-3 px-3 text-slate-400">賭氣翻臉：「算了這麼難約以後不約了」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">瀟灑後撤＋測誠意：「行那我跟朋友去露營，私房菜下次換你請我」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-rose-300 whitespace-nowrap">08. 生理痛感冒</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">脆弱關懷測試</td>
+                            <td class="py-3 px-3 text-slate-400">關係未到就跨區跑腿送藥站崗當免費看護</td>
+                            <td class="py-3 px-3 text-slate-400">「多喝熱水、吃止痛藥早點睡」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">霸氣指令＋交換：「像個小朋友一樣，快去熱敷，病好請我看電影」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-orange-300 whitespace-nowrap">09. 前任與名牌</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">高價激將比較測試</td>
+                            <td class="py-3 px-3 text-slate-400">中計腦衝：「這有什麼，我也買給你證明真心！」</td>
+                            <td class="py-3 px-3 text-slate-400">破防吃醋：「前任這麼好你去找他啊」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">拆穿激將＋立門檻：「激將法沒用喔，這是未來女友待遇，看你表現」</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3 px-3 font-bold text-fuchsia-300 whitespace-nowrap">10. 太晚去你家</td>
+                            <td class="py-3 px-3 text-slate-400 whitespace-nowrap">ASD反蕩婦防禦</td>
+                            <td class="py-3 px-3 text-slate-400">飢渴承認：「嘿嘿被你發現了，走啦！」</td>
+                            <td class="py-3 px-3 text-slate-400">發毒誓：「我發誓絕對不碰你一根寒毛」</td>
+                            <td class="py-3 px-3 text-emerald-300 font-medium">反咬色色＋安全台階：「你腦袋想什麼色色的事？只是試喝梅酒20分鐘」</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Risk Calibration & 9:1 Rule Practical Guide -->
+        <section class="glass-card rounded-2xl p-6 border-l-4 border-l-indigo-500 bg-gradient-to-r from-slate-900/95 to-indigo-950/30">
+            <h2 class="text-lg sm:text-xl font-bold text-indigo-300 mb-3 flex items-center gap-2">
+                <span>🛡️</span> 5. 高手心法校準：如何避免把「高位框架」玩成「油膩套路」？
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300">
+                <div class="bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+                    <div class="font-bold text-amber-300 mb-1.5">⚖️ 法則一：9:1 正常與調侃配比</div>
+                    <p class="text-slate-400 leading-relaxed text-xs sm:text-sm">
+                        直播主強調：「十次裡面可以九次正常說晚安，但最起碼來一次不一樣的。」若句句都在曲解、句句都在提要求，會讓人覺得你無法正常溝通。<strong>平時 80~90% 保持真誠有趣的日常分享，在關鍵轉折點（上述 10 大情境）才亮出高位武器</strong>。
+                    </p>
+                </div>
+                <div class="bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+                    <div class="font-bold text-pink-300 mb-1.5">🎯 法則二：看懂「真誠度」做分流</div>
+                    <p class="text-slate-400 leading-relaxed text-xs sm:text-sm">
+                        「提要求篩選」是一面照妖鏡。如果一個女生從頭到尾只會討奶茶、討紅包，你一提小要求她就翻臉，請直接淘汰；反之，如果女生已經主動請你喝飲料、主動報備行程、主動約你，代表她已通過篩選，這時就要<strong>給予正向獎勵與安全感</strong>，別再過度推拉把人推開。
+                    </p>
+                </div>
+                <div class="bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+                    <div class="font-bold text-emerald-300 mb-1.5">🌱 法則三：「無所謂」來自真實底氣</div>
+                    <p class="text-slate-400 leading-relaxed text-xs sm:text-sm">
+                        真正的「無所謂心態」不是裝高冷，而是你真的擁有豐富的工作、運動、廚藝、社交圈與認識異性的管道。當你自身價值充實、不把單一對象當成救命稻草時，你講出上述話術才會自然迷人，而不是硬背台詞。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-500">
+        <p>聊天界線與曖昧互動｜十全實戰視覺化知識庫 • 整合自情感直播逐字稿與行為心理學高頻擴充模型</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            fontFamily: 'Noto Sans TC, sans-serif'
+        });
+
+        // Filter Scenarios Function
+        function filterScenarios(category, btnElement) {
+            // Update active button styling
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+
+            // Clear search box
+            document.getElementById('scenarioSearch').value = '';
+
+            // Show/Hide Cards
+            const cards = document.querySelectorAll('.scenario-card');
+            cards.forEach(card => {
+                const tags = card.getAttribute('data-tags') || '';
+                if (category === 'all' || tags.includes(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Search Scenarios Function
+        function searchScenarios(query) {
+            const cleanQuery = query.trim().toLowerCase();
+            const cards = document.querySelectorAll('.scenario-card');
+
+            // Reset filter buttons if searching
+            if (cleanQuery.length > 0) {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            }
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(cleanQuery)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Copy Script to Clipboard with Fallback & Toast
+        let toastTimeout;
+        function copyText(text) {
+            try {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast(text);
+            } catch (err) {
+                console.error('Copy failed', err);
+            }
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = text;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2600);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1122 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow, noarchive"><title>我與小莉的聊天對話分析｜Grok 分析</title><style>
+:root{--paper:#f7f3eb;--card:#fffdf8;--ink:#233d37;--muted:#68716b;--line:#dedfd4;--green:#dfe9df;--rose:#f2e2d9;--gold:#946a39;--soft:#f1ead9}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;font-size:16px;line-height:1.85}a{color:inherit;text-decoration-color:#a6b9a6;text-underline-offset:4px}button,input{font:inherit}button{cursor:pointer}button,a,input,summary{outline-offset:5px}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #5b7b69}button{border:1px solid var(--line);border-radius:99px;background:transparent;padding:8px 17px;color:var(--ink)}button:hover{background:#e8ecdf}.shell{max-width:1080px;margin:auto;padding:0 30px}.top{padding:22px 0 0}.brand{font-size:13px;letter-spacing:.15em;color:var(--muted)}.nav{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line)}.nav button[aria-selected=true]{background:var(--ink);color:white;border-color:var(--ink)}.eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}h1,h2,h3,p{margin-top:0}h1{font-family:Georgia,"SimSun",serif;line-height:1.35;font-weight:500;font-size:46px;margin-bottom:22px}h2{font-family:Georgia,"SimSun",serif;line-height:1.4;font-size:28px;font-weight:500}h3{font-size:21px;line-height:1.5;font-weight:600}p{margin-bottom:14px}.hero{padding:58px 0 32px;max-width:780px}.hero .intro{font-size:19px;max-width:630px;color:#53665b}.hero-quote{padding:18px 0 10px;border-top:1px solid var(--line);margin-top:30px}.hero-quote blockquote{font-family:Georgia,"SimSun",serif;font-size:22px;margin:0 0 5px}.hero-quote .stamp{font-size:12px}.portraits{display:grid;grid-template-columns:1fr 1fr;gap:24px}.portrait{padding:30px;border-radius:18px;border:1px solid #d7ded2}.portrait.zhang{background:#e4ebe1}.portrait.li{background:#f0e4db}.portrait h2{font-size:36px;margin:12px 0 8px}.portrait h3{font-size:18px;margin:0 0 22px;font-weight:500}.leads{font-size:16px}.leads p{margin-bottom:16px}.lead-ref{font-size:12px;white-space:nowrap;color:#647367}.solid{margin-top:12px;background:var(--ink);border-color:var(--ink);color:white}.solid:hover{background:#395a4b}.solid span{margin-left:14px}.relation-preview{padding:52px 0 34px}.relation-preview>p{color:var(--muted);max-width:680px}.bubbles{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:25px 0 10px}.bubble{background:var(--card);padding:24px;border-radius:14px;border:1px solid var(--line)}.bubble span{font-size:12px;color:var(--muted)}.bubble blockquote{margin:15px 0 0;font-size:20px;line-height:1.6}.bubble.li{border-left:4px solid #c99582}.bubble.zhang{border-left:4px solid #85a08a}.relationship-note{font-size:13px!important;color:var(--muted)}.blanks{padding:30px 0 45px}.blank-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.blank-card{display:flex;flex-direction:column;gap:10px;text-decoration:none;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:14px}.blank-card b{font-size:17px}.blank-card span{flex:1;color:#59685d}.blank-card i{font-style:normal;font-size:12px;color:var(--gold)}.toolbar{position:sticky;top:0;z-index:4;background:#f7f3ebf5;backdrop-filter:blur(8px);padding:12px 0;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;align-items:center}.toolbar[hidden]{display:none}.toolbar button{font-size:14px;padding:6px 14px}.toolbar button.active{background:#e0e9dd;border-color:#adbda8}.toolbar input{flex:1;min-width:200px;width:100%;border:1px solid var(--line);border-radius:99px;padding:7px 16px;background:var(--card);color:var(--ink);font-size:14px}.counter{font-size:12px;color:var(--muted)}.doc-intro{padding:45px 0 24px;max-width:780px}.doc-intro h1{margin:10px 0 8px}.doc-subtitle{font-size:23px;font-family:Georgia,"SimSun",serif}.doc-intro>p:not(.doc-subtitle){color:var(--muted)}.filelink{font-size:13px}.chapter{max-width:850px;margin:20px auto 40px}.chapter>h2{font-size:22px;letter-spacing:.08em;margin:35px 0 18px}.claim{position:relative;padding:26px 30px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:18px;scroll-margin-top:85px}.claim:target,.claim.focus{border-color:#a1774b;box-shadow:0 0 0 2px #cdb58e44}.claim-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}.category{color:#62785d;font-size:12px}.certainty{font-size:11px;background:#ecf0e8;color:#54654f;border-radius:50px;padding:1px 9px}.certainty.amber{background:#f4ead4;color:#806134}.claim h3{font-size:21px;margin-bottom:13px}.permalink{text-decoration:none}.claim>p{max-width:720px;font-size:16px;line-height:1.95}.limit{font-size:13px!important;background:#f7f3e9;padding:10px 13px;border-radius:8px;color:#6e6b5d}.record-id{position:absolute;right:15px;top:12px;font-size:10px;color:#a1a69a}.proof{margin-top:18px;border-top:1px solid #e7e7dd;padding-top:13px}.proof>summary{font-size:13px;color:#526954;cursor:pointer}.proof>summary span{font-size:11px;margin-left:10px;color:var(--muted)}.evidence-item{padding:18px 0;border-bottom:1px dashed #dedfd4}.evidence-item:last-child{border:0}.stamp{font-size:12px;letter-spacing:.015em;color:var(--muted)}blockquote{white-space:pre-wrap;overflow-wrap:anywhere}.evidence-item blockquote{margin:12px 0;padding-left:16px;border-left:2px solid #c9ba9e;line-height:1.8;color:#384940}.source-meta{font-size:11px;color:#777d70}.audio{margin-top:10px}.audio summary{font-size:12px;color:#7b6346;cursor:pointer}.audio audio{display:block;width:100%;max-width:440px;margin:10px 0}.audio small{display:block;color:var(--muted);font-size:11px}.endnote{font-size:13px;color:var(--muted);max-width:850px;margin:15px auto 45px}.method-panel{padding:45px 0;max-width:860px;margin:auto}.method-panel>h3{margin-top:35px}.method-panel p{font-size:15px;color:#56665c}.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:30px 0}.method-grid>div{background:var(--card);border:1px solid var(--line);padding:20px;border-radius:12px}.method-grid h3{font-size:17px}.method-grid p{font-size:13px}.closing{margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}footer{margin-top:28px;padding:25px 0 40px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:20px}.panel[hidden],.claim[hidden],.chapter[hidden]{display:none}.empty-result{padding:30px 0;color:var(--muted);text-align:center}@media(max-width:700px){.shell{padding:0 18px}h1{font-size:34px}.hero{padding-top:34px}.portraits,.bubbles,.method-grid{grid-template-columns:1fr}.portrait{padding:24px}.blank-grid{grid-template-columns:1fr 1fr}.claim{padding:23px 20px}.claim h3{font-size:19px}.nav{gap:6px}.nav button{font-size:13px;padding:7px 12px}.toolbar input{flex-basis:100%;order:3}.counter{margin-left:auto}.hero-quote blockquote{font-size:19px}}@media print{.top,.toolbar,footer,.filelink,.audio{display:none!important}.shell{max-width:none;padding:0}.claim{break-inside:avoid}.claim[hidden],.chapter[hidden]{display:block!important}.panel[hidden]{display:none!important}body{background:white;font-size:12pt}.proof{display:block}h1{font-size:25pt}}
+</style></head><body><div class="shell"><header class="top"><div class="brand">一段聊天視窗 · 2026.10.09 — 10.23</div><nav class="nav" aria-label="閱讀章節"><button data-tab="home" aria-selected="true">先看這頁</button><button data-tab="zhang" aria-selected="false">張小華</button><button data-tab="li" aria-selected="false">小莉</button><button data-tab="relationship" aria-selected="false">他們之間</button><button data-tab="method" aria-selected="false">依據與空白</button></nav></header>
+<div class="toolbar" hidden><button data-mode="quick" class="active">先讀重點</button><button data-mode="full">讀完整檔案</button><input id="search" type="search" aria-label="搜尋當前檔案" placeholder="在當前檔案內找一句話、一個時間或主題…"><span class="counter" aria-live="polite"></span></div>
+<main><section id="panel-home" class="panel"><div class="hero"><span class="eyebrow">先看到人，再翻開證據</span><h1>我與小莉的聊天對話分析｜Grok 分析</h1><p class="intro">這裡從一句話、一個場景開始讀。每個觀察旁邊，都留著原話、時間，以及還不能確定的地方。</p><div class="hero-quote"><blockquote>“重要的其實不是口條吧，我覺得是認真交流的心。”</blockquote><div class="stamp">小莉 · 2026-10-19 11:02:52 · <a href="#R10" data-jump="R10">文字原話 C1275</a></div></div></div>
+<div class="portraits"><article class="portrait zhang"><span class="eyebrow">人物速寫 · 依據均可展開</span><h2>張小華</h2><h3>他把關心做成一件可以執行的事</h3><div class="leads"><p>白天，他需要把方案、規範和事情的難處講清楚。 <a href="#Z01" data-jump="Z01" class="lead-ref">原話 ↗</a></p><p>生活裡，運動、畫畫和研究工具反覆出現。 <a href="#Z06" data-jump="Z06" class="lead-ref">原話 ↗</a></p><p>靠近小莉時，他常把關心落到通話、路線和實際安排。 <a href="#Z17" data-jump="Z17" class="lead-ref">原話 ↗</a></p><p>他也會擔心：自己有沒有給出同樣多的回應。 <a href="#Z19" data-jump="Z19" class="lead-ref">原話 ↗</a></p></div><button data-tab="zhang" class="solid">開啟這份檔案 <span>↗</span></button></article><article class="portrait li"><span class="eyebrow">人物速寫 · 依據均可展開</span><h2>小莉</h2><h3>她想把生活一點一點拿回來</h3><div class="leads"><p>她介紹自己時說，自己本來就是老師。 <a href="#L06" data-jump="L06" class="lead-ref">原話 ↗</a></p><p>面對喜歡的課，她可以從緊張變成主動爭取的人。 <a href="#L04" data-jump="L04" class="lead-ref">原話 ↗</a></p><p>她自稱感性，遇到現實難題又會認真追問原因。 <a href="#L11" data-jump="L11" class="lead-ref">原話 ↗</a></p><p>長期不舒服的經歷，讓她更想要穩定、真誠的連結。 <a href="#L17" data-jump="L17" class="lead-ref">原話 ↗</a></p><p>她也開始把想去的地方，寫進康復後的生活清單。 <a href="#L24" data-jump="L24" class="lead-ref">原話 ↗</a></p></div><button data-tab="li" class="solid">開啟這份檔案 <span>↗</span></button></article></div><section class="relation-preview"><span class="eyebrow">關係中的一個場景</span><h2>同一次安靜，兩個意思。</h2><p>把這兩句放在一起，才能讀到他們各自怎樣理解了那次聯絡變少。</p><div class="bubbles"><div class="bubble li"><span>小莉 · 2026-10-11 04:09:37</span><blockquote>其實…我以為是你不想理我了</blockquote></div><div class="bubble zhang"><span>張小華 · 2026-10-11 18:05:51</span><blockquote>我就想說 你不是感冒 是不是不要打擾你 讓你覺得煩心</blockquote></div></div><p class="relationship-note">原話與解釋出自不同訊息時間；上面的並置是閱讀編排，並非兩條相鄰訊息。<a href="#R02" data-jump="R02">展開完整依據 ↗</a></p><button data-tab="relationship">讀他們之間的故事 ↗</button></section><section class="blanks"><h2>有些地方，先留空。</h2><div class="blank-grid"><a class="blank-card" href="#Z05" data-jump="Z05"><b>學歷</b><span>出現大學、畢業的說法，仍不能補出學校、科系或最高學位。</span><i>看依據 ↗</i></a><a class="blank-card" href="#L16" data-jump="L16"><b>健康</b><span>有症狀和就醫敘述，病名與病因不由聊天確認。</span><i>看依據 ↗</i></a><a class="blank-card" href="#R22" data-jump="R22"><b>關係</b><span>有約會與親近表達，正式關係名稱仍未確認。</span><i>看依據 ↗</i></a><a class="blank-card" href="#R20" data-jump="R20"><b>以後</b><span>一起想過的事，按計劃保存，尚未發生的不寫成回憶。</span><i>看依據 ↗</i></a></div></section></section>
+<section id="panel-zhang" class="panel docpanel" data-key="zhang" hidden><div class="doc-intro"><span class="eyebrow">人物檔案</span><h1>張小華</h1><p class="doc-subtitle">他把關心做成一件可以執行的事</p><p>從組織活動、研究工具到安排一條輕鬆的路，看看他在這段聊天裡怎樣生活。</p><a class="filelink" href="%E5%BC%A0%E5%B0%8F%E5%8D%8E_%E4%BA%BA%E7%89%A9%E6%A1%A3%E6%A1%88.md" download>儲存完整文字版 ↓</a></div><section class="chapter"><h2>生活的一面</h2><article class="claim" id="Z01" data-featured="1">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#Z01">白天的他，要把事情寫清楚</a></h3>
+       <p>他有公司／辦公室工作的自述；錄音還提到寫規範、計劃書，以及把方案的難處和預算差異講給別人聽。可以記錄這些工作內容，尚不能確定他的職稱、行業或任職單位。</p><p class="limit"><b>保留的空白</b>　工作具體內容部分來自自動轉寫，需核聽；“公司”是他的稱呼，不據此推斷私企、公職或學校任職。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 09:27:08 · 張小華</div>
+      <blockquote>剛到公司就劈里啪啦的一堆事 估計這一整週都這樣</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0125" target="_blank" rel="noopener">C0125 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 125 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-18 10:30:48 · 張小華 · 音內 00:00:07—00:00:12</div>
+      <blockquote>因為我平常工作就是要寫規範、寫計畫書的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V240" target="_blank" rel="noopener">V240 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_103048_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 7 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_103048_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=7,12"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-15 11:16:55 · 張小華 · 音內 00:00:28—00:00:31</div>
+      <blockquote>預算的差異在哪裡</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V077" target="_blank" rel="noopener">V077 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_111655_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 13 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_111655_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=28,31"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z01</div></article><article class="claim" id="Z02" data-featured="0">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">自述＋情境觀察</span></div>
+       <h3><a class="permalink" href="#Z02">活動現場出了狀況，他記住的是同伴的幫忙</a></h3>
+       <p>他在文字中說要辦羽球比賽；錄音敘述了場地溝通出錯、同仁及時協調的過程。敘述中，他多次稱這些同事為“小天使”。這支持他參與組織活動，不能直接推斷他是公司主管。</p><p class="limit"><b>保留的空白</b>　活動經過來自未核聽轉寫；管理職務與權限沒有證據。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-14 23:02:53 · 張小華</div>
+      <blockquote>我這該死的記憶力都忘記我禮拜六要辦羽球比賽</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0347" target="_blank" rel="noopener">C0347 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 347 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 13:23:14 · 張小華 · 音內 00:00:00—00:01:11</div>
+      <blockquote>總算是結束了
+最滿的活動之一
+今天早上還有個小插曲
+就是我們租借的場地
+他並沒有做到通知景味
+說這個場地有被誰借走
+然後呢他就不讓我們進去
+好尷尬因為很多
+會有很多的那種不同單位的長官來
+但是我一直覺得還好我們有個同仁
+平常很會打關係
+幾乎所有單位的高層的那種
+就是所有單位的打預求的都認識
+然後他們的管理階級啊
+還有場地官員也都認識
+他就馬上處理了各種事情
+真的好險有他
+所以這樣不是我們的問題
+因為我們早就租借場地
+是他們內部溝通的問題
+還好就是各種事情
+像他要什麼證明啊
+然後我各個同事啊朋友
+都能夠馬上處理
+真的是一群天使同事</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V146" target="_blank" rel="noopener">V146 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-17_132314_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-17_132314_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,71"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z02</div></article><article class="claim" id="Z03" data-featured="0">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">明確表達的工作觀</span></div>
+       <h3><a class="permalink" href="#Z03">理想團隊，是他不在也能運作</a></h3>
+       <p>他明確欣賞能夠理解大綱、自行執行、各司其職的團隊；希望成員請假時，組織仍能繼續運作。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 15:32:21 · 張小華</div>
+      <blockquote>我寫大綱的計劃表都沒有跟他們解釋 他們甚至會自己動起來，自動執行計劃</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0895" target="_blank" rel="noopener">C0895 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 895 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:32:30 · 張小華</div>
+      <blockquote>這就是我心目中最完美的一種團隊概念</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0896" target="_blank" rel="noopener">C0896 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 896 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:33:17 · 張小華</div>
+      <blockquote>各司其職 各自執行 全自動化<br>就算你哪一天我突然請假生病 也不影響組織的運作</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0897" target="_blank" rel="noopener">C0897 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 897 行</a></div></div></details>
+       <div class="record-id">Z03</div></article><article class="claim" id="Z04" data-featured="0">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#Z04">他還在上水彩課，也願意把作品拿出來</a></h3>
+       <p>畫畫是持續出現的學習活動：他分享當天畫作，也轉述老師對畫中石頭的評語。這裡有練習和反饋，但沒有美術學歷或專業畫家身份的依據。</p><p class="limit"><b>保留的空白</b>　水彩課的學校、課程體系和學習年數未說明。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 23:39:29 · 張小華</div>
+      <blockquote>要跟你分享的是今天的畫作 <br>最近才會發在ig上</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0540" target="_blank" rel="noopener">C0540 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 540 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 22:05:55 · 張小華</div>
+      <blockquote>我的石頭上的不好，老師說：“真是可惜了，原本很好看”</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1926" target="_blank" rel="noopener">C1926 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1926 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 17:58:59 · 張小華 · 音內 00:00:00—00:00:03</div>
+      <blockquote>水彩當然還是要去上的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V098" target="_blank" rel="noopener">V098 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_175859_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_175859_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,3"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z04</div></article><article class="claim" id="Z05" data-featured="0">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty amber">待確認／更正</span></div>
+       <h3><a class="permalink" href="#Z05">他的正式學歷，仍留著空白</a></h3>
+       <p>他在錄音裡提到大學時期，並另一次說“從我畢業吧”；但沒有說明哪一階段畢業。之前把“無限期延畢”寫成他的學經歷不成立：那句話緊接小莉談康復遲遲沒有進展的語音，應撤回歸屬。</p><p class="limit"><b>保留的空白</b>　沒有可靠依據補出學校、科系、最高學歷或延畢事實。V119 的引用以轉寫實際文字為準。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 00:34:18 · 張小華 · 音內 00:00:44—00:00:50</div>
+      <blockquote>從小到高
+大學都沒有那種
+很像談戀愛的衝動</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V278" target="_blank" rel="noopener">V278 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_003418_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 21 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_003418_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=44,50"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-22 00:14:58 · 張小華 · 音內 00:00:09—00:00:16</div>
+      <blockquote>其實我已經從我畢業吧</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V356" target="_blank" rel="noopener">V356 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-22_001458_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 7 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-22_001458_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=9,16"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-16 00:20:04 · 張小華</div>
+      <blockquote>大家都畢業了 自己無限期延畢</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0601" target="_blank" rel="noopener">C0601 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 601 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 00:17:51 · 小莉 · 音內 00:00:33—00:00:36</div>
+      <blockquote>然後就看到身邊的人一個一個康復了</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V119" target="_blank" rel="noopener">V119 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_001751_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 19 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_001751_%E5%B0%8F%E8%8E%89.m4a#t=33,36"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z05</div></article><article class="claim" id="Z06" data-featured="1">
+       <div class="claim-top"><span class="category">日常生活與興趣</span><span class="certainty ">重複出現的生活活動</span></div>
+       <h3><a class="permalink" href="#Z06">運動在他的日程裡，有固定的位置</a></h3>
+       <p>羽球、社團聚會、伸展和棒式反覆出現在記錄中；他也會在公司空閒的地方伸展。能看見運動習慣，頻次和強度不據聊天估算。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 08:26:16 · 張小華</div>
+      <blockquote>打球 去忙嘿</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0778" target="_blank" rel="noopener">C0778 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 778 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:11:50 · 張小華</div>
+      <blockquote>等等羽球社團的聚會 我負責拿飲料</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1354" target="_blank" rel="noopener">C1354 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1354 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 10:15:25 · 張小華</div>
+      <blockquote>我們公司有一個沒有人用的空間 那我如果比較閑的時候就會跑下來做做伸展</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1406" target="_blank" rel="noopener">C1406 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1406 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 15:17:48 · 張小華</div>
+      <blockquote>害我不得不做個5分鐘棒式</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1579" target="_blank" rel="noopener">C1579 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1579 行</a></div></div></details>
+       <div class="record-id">Z06</div></article><article class="claim" id="Z26" data-featured="0">
+       <div class="claim-top"><span class="category">基本背景</span><span class="certainty amber">待確認／資訊邊界</span></div>
+       <h3><a class="permalink" href="#Z26">名字之外，還有尚未給出的基本資訊</a></h3>
+       <p>本文使用匯出名“張小華”。別人說他顯年輕，不能用來倒推年齡；他提到住家裡，也不能據此確定完整住址或房產情況。出生年月、明確年齡和法律姓名均未在本次材料中核實。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-14 23:08:39 · 小莉</div>
+      <blockquote>感覺比實際年齡年少很多</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0364" target="_blank" rel="noopener">C0364 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 364 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:24:37 · 張小華</div>
+      <blockquote>住家裡吃 家裡還有個家人喜歡到處串我門子</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0866" target="_blank" rel="noopener">C0866 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 866 行</a></div></div></details>
+       <div class="record-id">Z26</div></article></section><section class="chapter"><h2>從哪裡來</h2><article class="claim" id="Z08" data-featured="0">
+       <div class="claim-top"><span class="category">重要閱歷與轉折</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#Z08">旅行和看展，是他不斷拿來分享的素材</a></h3>
+       <p>他談到去日本的飲食體驗、與姐姐旅行後待整理的照片，也講過用 AI 輔助看博物館展覽的經歷。可見這些是他投入的興趣；完整旅行史未知。</p><p class="limit"><b>保留的空白</b>　以上語音經歷均待核聽；不據旅行地點判斷籍貫或學歷。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 22:02:01 · 張小華 · 音內 00:00:00—00:00:21</div>
+      <blockquote>我這一次去日本啊
+我都覺得他們的冰淇淋
+牛奶都好好吃
+比臺灣的好吃好多好多好多
+然後呢我喝我會喝咖啡
+然後有個拿鐵也是
+真的是讓我魂牽夢眼
+嗯
+我就覺得去日本
+要好好地吃各種冰淇淋</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V131" target="_blank" rel="noopener">V131 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_220201_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_220201_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,21"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-21 23:51:42 · 張小華 · 音內 00:00:04—00:00:27</div>
+      <blockquote>就是我姐姐我們去旅遊的時候嘛
+拍了好多照片
+好多照片都是重複的
+類似的
+甚至還有拍影片
+但我每次遇到這種東西我就很困擾
+因為東西太多了
+我又難得一張一張挑
+我覺得
+我覺得我的精神的一個主力力會被耗掉
+所以呢我現在
+在做的工作就是想使用GPT的Codex</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V334" target="_blank" rel="noopener">V334 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-21_235142_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 7 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-21_235142_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=4,27"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-19 00:03:56 · 張小華 · 音內 00:00:00—00:00:07</div>
+      <blockquote>我印象使用比較有趣的案子是我去臺南的奇美博物館</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V261" target="_blank" rel="noopener">V261 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_000356_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_000356_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,7"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z08</div></article><article class="claim" id="Z09" data-featured="0">
+       <div class="claim-top"><span class="category">家庭與成長</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#Z09">母親和姐姐，出現在日常生活裡</a></h3>
+       <p>他提到住家裡吃飯，也說自己和姐姐在家健身時會互相檢查動作。家人是他當下生活的一部分。</p><p class="limit"><b>保留的空白</b>　家庭成員全貌、同住安排的細節沒有完整說明。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 15:24:37 · 張小華</div>
+      <blockquote>住家裡吃 家裡還有個家人喜歡到處串我門子</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0866" target="_blank" rel="noopener">C0866 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 866 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 00:06:09 · 張小華</div>
+      <blockquote>像我在家裡做健身 我和我姐我們都會彼此幫忙看一下 那有明顯的作錯或代償就會互相提醒</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1697" target="_blank" rel="noopener">C1697 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1697 行</a></div></div></details>
+       <div class="record-id">Z09</div></article><article class="claim" id="Z10" data-featured="0">
+       <div class="claim-top"><span class="category">家庭與成長</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#Z10">關於父親與家計，有一段需要認真核聽的回憶</a></h3>
+       <p>一段錄音轉寫提到父親去世，以及母親設法支持孩子、自己小時候理解家計壓力的經歷。它補充了家庭背景，但僅有自動轉寫支持，暫存為待核聽經歷。</p><p class="limit"><b>保留的空白</b>　父親去世時間、當時家庭財務狀況與人物指代不作補寫。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 23:53:34 · 張小華 · 音內 00:00:13—00:00:35</div>
+      <blockquote>雖然我父親他去世的時候
+真的是一瓶如洗空空如夜
+但是我媽媽她從來沒有給我過
+給我過不一樣的
+結果她一直都給我充分的資源</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V305" target="_blank" rel="noopener">V305 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_235334_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 8 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_235334_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=13,35"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-19 23:53:34 · 張小華 · 音內 00:00:51—00:01:03</div>
+      <blockquote>我在我小三的時候吧
+我媽媽就
+打電話給哥哥
+以前可能我爸有借錢給別人嗎
+然後去要錢
+說一我要繳孩子的學費</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V305" target="_blank" rel="noopener">V305 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_235334_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 18 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_235334_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=51,63"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z10</div></article><article class="claim" id="Z11" data-featured="0">
+       <div class="claim-top"><span class="category">家庭與成長</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#Z11">他記住了母親沒有懲罰坦白的那一次</a></h3>
+       <p>他回憶小時候逃補習去網咖，向母親坦白後沒有受到預想中的責罰；他把這段經歷理解為“做錯事也可以直接說”。這是他對母子相處的解釋。</p><p class="limit"><b>保留的空白</b>　轉寫把“講實話”誤成“講10號”等字樣；不把故事擴展成完整教養史。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 10:33:08 · 張小華 · 音內 00:00:18—00:02:01</div>
+      <blockquote>然後有一次我就敲課 去打那種網咖
+網咖就是隻有一種場所你目前用他們的電腦打遊戲
+結果那一次呢
+我原本預計打算玩一個小時了
+一個小時之後
+雨下的世界無敵大 根本就出不去
+所以我一直玩
+在網咖裡面一直呆著 呆到雨堤
+也差不多是下課的時間
+然後我回去之後心裡就很坦克不安
+想說完了 要怎麼跟我媽講
+我去打網咖沒有去補習
+然後他是不是知道
+我就有點蝶蝶的那種心態
+然後我媽後來就簡單的問
+你去做
+那這時候我就不知道怎麼講
+我不知道哪根筋不斷就跟他講
+我去打網咖
+我預期 預期應該是會被打吧
+因為畢竟做了自己不該做的事
+結果我媽就說
+喔 這樣喔 好
+我當時有點聖經驗
+像被你雷打到一樣
+但是我以後就去想很多
+我想 欸 為什麼
+為什麼我講10號 沒有事
+然後難道
+難道我媽是比起做錯事
+他覺得講10號很重要嗎
+所以我就當時可能就覺得
+覺得我跟我媽之間是可以坦承的
+但是可以用
+不用多多常常
+做錯事也可以直接跟他講的那樣的人</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V244" target="_blank" rel="noopener">V244 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_103308_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 10 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_103308_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=18,121"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z11</div></article><article class="claim" id="Z23" data-featured="0">
+       <div class="claim-top"><span class="category">重要閱歷與轉折</span><span class="certainty amber">對方轉述／細節待確認</span></div>
+       <h3><a class="permalink" href="#Z23">當兵是被提及的往事，細節沒有展開</a></h3>
+       <p>小莉說他講的“羽球、公司、當兵”都很有意思。這隻能記為對方轉述他曾分享過的經歷，服役時間、單位及內容均未確認。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 11:02:40 · 小莉</div>
+      <blockquote>不要這麼想~~我覺得你很會講故事，羽球，公司，當兵，都很有意思</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1274" target="_blank" rel="noopener">C1274 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1274 行</a></div></div></details>
+       <div class="record-id">Z23</div></article></section><section class="chapter"><h2>怎樣靠近別人</h2><article class="claim" id="Z12" data-featured="0">
+       <div class="claim-top"><span class="category">友情與社交</span><span class="certainty ">明確表達的社交經驗</span></div>
+       <h3><a class="permalink" href="#Z12">他的親近，比較依靠日常接觸</a></h3>
+       <p>他自己說，與要好的人平時多接觸才容易維持，少接觸就會淡。這是他的友情經驗，不等於他不能維持異地關係。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 15:22:17 · 張小華</div>
+      <blockquote>跟我很要好的 幾乎都要平時有在多接觸才會維持</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0855" target="_blank" rel="noopener">C0855 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 855 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:22:26 · 張小華</div>
+      <blockquote>否則的話 馬上就淡掉了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0856" target="_blank" rel="noopener">C0856 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 856 行</a></div></div></details>
+       <div class="record-id">Z12</div></article><article class="claim" id="Z16" data-featured="0">
+       <div class="claim-top"><span class="category">親密關係</span><span class="certainty amber">明確表達的擇偶觀／語音待核聽</span></div>
+       <h3><a class="permalink" href="#Z16">理想伴侶，是能放心交出後背的人</a></h3>
+       <p>當小莉追問擇偶期待時，他解釋“一起搶銀行”只是比喻，意思是可以信賴、把後背交給對方；隨後把“有智慧”與考慮整體、懂得讓利聯繫起來。</p><p class="limit"><b>保留的空白</b>　不把玩笑當作犯罪意圖，也不把“智慧”擴寫成學歷、收入或外貌門檻。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 10:22:47 · 張小華 · 音內 00:00:02—00:00:14</div>
+      <blockquote>只是個比喻
+比喻說就是
+還在做很多事情的時候
+可以放心把後背交給
+交給對方的那一種人</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V232" target="_blank" rel="noopener">V232 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_102247_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 6 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_102247_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=2,14"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-18 10:24:05 · 張小華 · 音內 00:00:02—00:00:10</div>
+      <blockquote>有智慧的
+不是說聰明
+是有智慧的那種
+的人會吸引我</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V233" target="_blank" rel="noopener">V233 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_102405_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 6 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_102405_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=2,10"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-18 10:29:01 · 張小華 · 音內 00:00:29—00:00:55</div>
+      <blockquote>但是呢 如果他不懂的
+在商場之間讓利
+就是說 他只想拿全部的好處
+那就是
+不夠有智慧啊
+我覺得智慧的話就是可能
+他的思想能夠更方方面面
+更
+可能會考量到整個系統的整個生態的平衡吧</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V238" target="_blank" rel="noopener">V238 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_102901_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 12 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_102901_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=29,55"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z16</div></article><article class="claim" id="Z17" data-featured="1">
+       <div class="claim-top"><span class="category">親密關係</span><span class="certainty ">互動觀察</span></div>
+       <h3><a class="permalink" href="#Z17">他把不少關心變成具體安排</a></h3>
+       <p>記錄裡，他提議電話聯絡，討論路線時考慮她的行走負擔，並表達想給她擁抱。這裡能看到關心和接近的表達；不能把所有提議都算成已經履行的照顧。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 18:07:13 · 張小華</div>
+      <blockquote>要不我們來每天講電話</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0066" target="_blank" rel="noopener">C0066 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 66 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 14:39:14 · 張小華</div>
+      <blockquote>專找簡簡單單的路 咻一下就到的那種</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1319" target="_blank" rel="noopener">C1319 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1319 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 13:59:50 · 張小華</div>
+      <blockquote>想給你抱抱</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1793" target="_blank" rel="noopener">C1793 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1793 行</a></div></div></details>
+       <div class="record-id">Z17</div></article></section><section class="chapter"><h2>怎樣理解和照顧自己</h2><article class="claim" id="Z07" data-featured="0">
+       <div class="claim-top"><span class="category">身心狀態與照顧</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#Z07">他也談過運動帶來的傷</a></h3>
+       <p>他自述因打羽球出現網球肘，錄音裡還談到背部不適及自己的處理經驗。可以記錄這些自述；聊天中的病因解釋和治療意見不等於醫學確認。</p><p class="limit"><b>保留的空白</b>　不據此建立診斷，也沒有他具備醫療資格的證據。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 01:33:27 · 張小華</div>
+      <blockquote>是打羽球產生的網球肘（一種運動傷害）</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1056" target="_blank" rel="noopener">C1056 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1056 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-18 01:29:59 · 張小華 · 音內 00:00:00—00:00:02</div>
+      <blockquote>我之前的背部的一天纖維化</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V203" target="_blank" rel="noopener">V203 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_012959_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_012959_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,2"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z07</div></article><article class="claim" id="Z13" data-featured="0">
+       <div class="claim-top"><span class="category">金錢與生活責任</span><span class="certainty ">自述＋過程記錄</span></div>
+       <h3><a class="permalink" href="#Z13">會研究投資，也會顧慮借款的風險</a></h3>
+       <p>他明確說買過許多股票；另一組錄音先談同事借錢讓他為難，後來表示拒絕再次借款。記錄呈現的是有顧慮、會設界限的過程，資產、收益和具體金額均不據此確認。</p><p class="limit"><b>保留的空白</b>　借款細節未核聽；同事的債務與家庭問題不是張小華本人的經歷。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 11:13:26 · 張小華</div>
+      <blockquote>btw 我買過很多股票，跟著不同的公司一起經歷過市場起伏，大眾嘲笑，但是呢金子遲早會發光。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0638" target="_blank" rel="noopener">C0638 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 638 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 11:14:07 · 張小華 · 音內 00:00:00—00:00:08</div>
+      <blockquote>現在最讓我心煩意亂的
+是有一個
+之前跟我借錢的同事</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V073" target="_blank" rel="noopener">V073 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_111407_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_111407_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,8"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-15 23:53:50 · 張小華 · 音內 00:00:00—00:00:25</div>
+      <blockquote>我後來拒絕了那位朋友的借款
+我給她的回覆是說我覺得
+我再借她
+她壓力一定會更大
+因為我是一定會把錢逃到逃回來的那一種人
+所以我覺得
+我給她留言是請她還是跟家人或女友
+伸出援助吧</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V107" target="_blank" rel="noopener">V107 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_235350_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_235350_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,25"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z13</div></article><article class="claim" id="Z14" data-featured="0">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty ">明確表達的價值觀</span></div>
+       <h3><a class="permalink" href="#Z14">重大決定，需要先和伴侶討論</a></h3>
+       <p>在討論別人隱瞞借貸的故事時，他明確表示，做重大決定不經討論會碰到底線。這支持他重視伴侶間的商量，不能據此認定他自己的婚姻或債務狀況。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 13:35:25 · 張小華</div>
+      <blockquote>你那個借300萬的故事</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0446" target="_blank" rel="noopener">C0446 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 446 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:36:11 · 張小華</div>
+      <blockquote>做重大決定不經討論</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0449" target="_blank" rel="noopener">C0449 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 449 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:36:46 · 張小華</div>
+      <blockquote>真的是會碰到底線</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0450" target="_blank" rel="noopener">C0450 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 450 行</a></div></div></details>
+       <div class="record-id">Z14</div></article><article class="claim" id="Z15" data-featured="1">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty ">自我描述與個人觀點</span></div>
+       <h3><a class="permalink" href="#Z15">“內心豐滿”是他理解自己的一個詞</a></h3>
+       <p>他形容自己家並不有錢，但內心一直豐滿，並說一路以來多是自己摸索。這是他的自我理解；他同時提出過較強調慾望管理的貧窮觀，不把這一觀點當成社會事實。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-20 00:03:05 · 張小華</div>
+      <blockquote>會有這樣的起因 是因為雖然我知道我家不有錢 但是我的內心卻從來都是豐滿的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1373" target="_blank" rel="noopener">C1373 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1373 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 00:04:49 · 張小華</div>
+      <blockquote>雖然比別人少了些體驗，少了些機遇，少了些指引，但是不影響一個人的成長</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1375" target="_blank" rel="noopener">C1375 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1375 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 00:07:24 · 張小華</div>
+      <blockquote>畢竟我這一路上都是自己摸索的嘛</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1379" target="_blank" rel="noopener">C1379 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1379 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 00:02:32 · 張小華</div>
+      <blockquote>如果要我來辦理這個展覽的話，我應該不會以貧窮為主題吧<br><br>在我現在的眼中臺灣並沒有真的貧窮，真正的貧窮是指基本生存都受到限制 沒辦法得到溫飽，然而呢現況有基本工資大家都還是過活的下去～<br><br>所以如今的社會大眾真正需要的應該是永續的概念，如何管理好自己無盡擴張的慾望，讓內心得到平靜。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1372" target="_blank" rel="noopener">C1372 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1372 行</a></div></div></details>
+       <div class="record-id">Z15</div></article><article class="claim" id="Z18" data-featured="0">
+       <div class="claim-top"><span class="category">自我認識與行為</span><span class="certainty ">本人解釋＋情境記錄</span></div>
+       <h3><a class="permalink" href="#Z18">安靜，有時是在等；消失，有時是在別的場合</a></h3>
+       <p>他解釋減少聯絡是想讓生病的她安心休息；錄音也說在外面不容易一直看手機。另一次坦言維持聊天頻率很難、會盡量改進。這是他的解釋，不能直接替代小莉受到的感受。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 18:05:51 · 張小華</div>
+      <blockquote>我就想說 你不是感冒 是不是不要打擾你 讓你覺得煩心</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0065" target="_blank" rel="noopener">C0065 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 65 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:24:38 · 張小華</div>
+      <blockquote>我自己會這樣的  安心的休養<br>沒想到妳完全不一樣</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0072" target="_blank" rel="noopener">C0072 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 72 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 13:44:22 · 張小華 · 音內 00:00:31—00:00:42</div>
+      <blockquote>要維持聊天的頻率
+始終對我是一件很難的事情
+不過我盡量改進囉</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V013" target="_blank" rel="noopener">V013 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-11_134422_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 12 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-11_134422_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=31,42"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-11 13:47:52 · 張小華 · 音內 00:00:46—00:00:52</div>
+      <blockquote>在外面的場合
+拿開手機 一直看 一直聽 一直怎麼樣的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V015" target="_blank" rel="noopener">V015 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-11_134752_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 16 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-11_134752_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=46,52"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z18</div></article><article class="claim" id="Z19" data-featured="1">
+       <div class="claim-top"><span class="category">自我認識與行為</span><span class="certainty ">互動觀察</span></div>
+       <h3><a class="permalink" href="#Z19">他也會擔心自己給得不夠</a></h3>
+       <p>小莉講述往事時，他說喜歡她的故事，也擔心自己沒有給出同等回饋。他並非只在分析別人，也會在這段關係裡表達不確定。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 11:01:03 · 張小華</div>
+      <blockquote>喜歡妳的故事 在我眼中可是寶藏</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1267" target="_blank" rel="noopener">C1267 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1267 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:01:39 · 張小華</div>
+      <blockquote>會擔心我卻沒能給你同等的回饋</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1269" target="_blank" rel="noopener">C1269 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1269 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 22:24:03 · 張小華</div>
+      <blockquote>每次你這麼認真的回復我 我都有點不好意思</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1478" target="_blank" rel="noopener">C1478 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1478 行</a></div></div></details>
+       <div class="record-id">Z19</div></article><article class="claim" id="Z20" data-featured="0">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty amber">語音互動觀察／待核聽</span></div>
+       <h3><a class="permalink" href="#Z20">他會回頭修改自己的說法</a></h3>
+       <p>一段錄音中，他先把“讓人舒服”和智慧聯繫起來，接著用反例修正，最後強調很難片面看待一個人。可以觀察到他在這次談話中的修正過程，不把它推成任何場合都能如此。</p><p class="limit"><b>保留的空白</b>　V247 的表述本身可能有漏字或錯字，保留反例與後續修正共同閱讀。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 10:39:27 · 張小華 · 音內 00:00:00—00:00:04</div>
+      <blockquote>對,所以我讓別人不舒服的都是沒有智慧的人</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V247" target="_blank" rel="noopener">V247 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_103927_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_103927_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,4"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-18 10:39:50 · 張小華 · 音內 00:00:00—00:00:02</div>
+      <blockquote>他好像也不是這樣</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V249" target="_blank" rel="noopener">V249 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_103950_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_103950_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,2"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-18 10:41:06 · 張小華 · 音內 00:00:48—00:01:08</div>
+      <blockquote>我覺得每個人都是很深層的
+然後又好難去
+好難去
+單方面的片段
+很片面的去看待一個人</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V250" target="_blank" rel="noopener">V250 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_104106_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 21 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_104106_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=48,68"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z20</div></article><article class="claim" id="Z24" data-featured="0">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#Z24">幫助人，是他講過的理由</a></h3>
+       <p>錄音中他自述畢業後曾長期捐血，並說“能夠幫助人，有一天也會需要別人幫助”。這可以保存為他的自述；年限、暫停原因和醫療細節尚未核聽。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-22 00:14:58 · 張小華 · 音內 00:00:16—00:00:31</div>
+      <blockquote>我每年都捐血只要有時間到
+三個月到兩個月到就去捐血
+持續捐了十年以上
+因為我覺得能夠幫助人
+有一天也會說要別人幫助</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V356" target="_blank" rel="noopener">V356 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-22_001458_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 8 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-22_001458_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=16,31"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z24</div></article><article class="claim" id="Z27" data-featured="0">
+       <div class="claim-top"><span class="category">自我認識與行為</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#Z27">他回看小時候，也會看見自己在變</a></h3>
+       <p>錄音中，他回憶自己帶同學去網咖，隨後說年紀越大、想得越多，感覺越內向。可以記作他在這次聊天中的今昔比較，不把自動轉寫中的童年形容固定成現在的人格。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 00:35:22 · 張小華 · 音內 00:00:27—00:00:32</div>
+      <blockquote>我還記得以前都是我帶
+我帶領大家去打網咖的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V279" target="_blank" rel="noopener">V279 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_003522_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 14 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_003522_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=27,32"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-19 00:31:39 · 張小華 · 音內 00:00:23—00:00:30</div>
+      <blockquote>可能到年紀越大
+想著越多就越來越
+越來越內向</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V274" target="_blank" rel="noopener">V274 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_003139_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 15 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_003139_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=23,30"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z27</div></article></section><section class="chapter"><h2>還在展開的未來</h2><article class="claim" id="Z21" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty amber">未來願望／部分語音待核聽</span></div>
+       <h3><a class="permalink" href="#Z21">他想成為能給後輩遮蔭的人</a></h3>
+       <p>他問過“要是我有小朋友，我會怎麼給予”；語音裡也用“大樹”比喻希望為子孫提供支持。這是面向未來的想法，沒有據此認定他已經有孩子或已有生育安排。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-20 00:07:15 · 張小華</div>
+      <blockquote>有時會去想啊 要是我有小朋友 我會怎麼去給予，要去給予什麼</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1378" target="_blank" rel="noopener">C1378 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1378 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 23:48:18 · 張小華 · 音內 00:00:59—00:01:11</div>
+      <blockquote>我會期許啊
+不像我自己會期許自己能夠成為一個
+像大樹一樣吧
+能夠為子孫批應
+成為他們的堅保</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V303" target="_blank" rel="noopener">V303 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_234818_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 26 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_234818_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=59,71"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z21</div></article><article class="claim" id="Z22" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty ">願望與嘗試</span></div>
+       <h3><a class="permalink" href="#Z22">工具變好，想做的事也跟著變多</a></h3>
+       <p>他表達過想畫出眼前天空，也持續探索怎樣用 AI 整理照片、減少重複操作。這些是正在嘗試或想實現的生活目標，尚不是確定的職業轉型計劃。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 17:58:06 · 張小華</div>
+      <blockquote>要是有一天可以畫出來就好了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0170" target="_blank" rel="noopener">C0170 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 170 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 10:07:13 · 張小華</div>
+      <blockquote>最近在整理有關閱讀的ai功能 我用一下覺得厲害，但還沒什麼測試</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1734" target="_blank" rel="noopener">C1734 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1734 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 23:51:42 · 張小華 · 音內 00:00:29—00:00:31</div>
+      <blockquote>那我現在在規劃任務階段</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V334" target="_blank" rel="noopener">V334 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-21_235142_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 20 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-21_235142_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=29,31"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z22</div></article><article class="claim" id="Z25" data-featured="0">
+       <div class="claim-top"><span class="category">未解問題與變化</span><span class="certainty ">語境澄清</span></div>
+       <h3><a class="permalink" href="#Z25">“張老闆”和三個員工，指的是 AI 玩笑</a></h3>
+       <p>相關文字接著的是 A/B/C 合作和檢查任務的討論，錄音也解釋為三個 AI 員工。不能把“張老闆”當成他擁有企業或僱員的職業事實。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-21 00:14:30 · 小莉</div>
+      <blockquote>太有趣了，這就是你之前提到過的abc合作，d檢查</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1483" target="_blank" rel="noopener">C1483 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1483 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 00:14:57 · 小莉</div>
+      <blockquote>好酷啊，那你就是老闆了張老闆，現在就是有三個新員工，要想怎麼樣安排他們？</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1484" target="_blank" rel="noopener">C1484 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1484 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 00:30:18 · 張小華</div>
+      <blockquote>哪有那麼多工作做<br>就剛好手頭上有一些陳年沒做的事翻出來吧</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1489" target="_blank" rel="noopener">C1489 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1489 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 23:53:51 · 張小華 · 音內 00:00:57—00:01:01</div>
+      <blockquote>我顧了三個AI的員工</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V310" target="_blank" rel="noopener">V310 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-20_235351_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 27 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-20_235351_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=57,61"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">Z25</div></article></section><p class="endnote">讀到這裡就可以停一下。沒有看完，也不會漏掉必需的步驟；原話和空白會一直留在這裡。</p></section><section id="panel-li" class="panel docpanel" data-key="li" hidden><div class="doc-intro"><span class="eyebrow">人物檔案</span><h1>小莉</h1><p class="doc-subtitle">她想把生活一點一點拿回來</p><p>從求學和授課，到給未來寫清單；也保留她會猶豫、會較真、會開玩笑的部分。</p><a class="filelink" href="%E5%B0%8F%E8%8E%89_%E4%BA%BA%E7%89%A9%E6%A1%A3%E6%A1%88.md" download>儲存完整文字版 ↓</a></div><section class="chapter"><h2>生活的一面</h2><article class="claim" id="L01" data-featured="1">
+       <div class="claim-top"><span class="category">基本背景</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L01">她說自己三十歲，仍對世界滿懷信任</a></h3>
+       <p>她在這段聊天裡明確說“我30了”，並追問自己為何仍滿懷信任。年齡按她在該時點的自述記錄，不由此推算生日或出生日期。</p><p class="limit"><b>保留的空白</b>　這是當時的自述，不是證件核驗。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-21 00:50:41 · 小莉</div>
+      <blockquote>我只是在想為什麼我30了還對這個世界滿懷信任</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1508" target="_blank" rel="noopener">C1508 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1508 行</a></div></div></details>
+       <div class="record-id">L01</div></article><article class="claim" id="L03" data-featured="0">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L03">她經歷過換城市，也提到大學生活</a></h3>
+       <p>她說小學、初中在不同城市，大學同學畢業後各奔東西；另一次提到大學時沒有交男朋友。可確認她講過大學經歷，學校、科系和最高學位仍未明確。</p><p class="limit"><b>保留的空白</b>　沒有把“提到大學”升級為已取得某學位。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 15:23:15 · 小莉</div>
+      <blockquote>可是大陸人好像都是這樣的，我小學初中就在不同城市，大學同學畢業也各奔東西</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0860" target="_blank" rel="noopener">C0860 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 860 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 23:25:44 · 小莉</div>
+      <blockquote>我不是跟你講我大學沒交過男朋友嘛</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0504" target="_blank" rel="noopener">C0504 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 504 行</a></div></div></details>
+       <div class="record-id">L03</div></article><article class="claim" id="L04" data-featured="1">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty ">自述＋場景觀察</span></div>
+       <h3><a class="permalink" href="#L04">她會為了喜歡的課，留下來爭取</a></h3>
+       <p>一門課不允許她旁聽時，她沒有立刻離開，而是等課間與老師商量；她接受沒有學分，仍希望繼續聽課。這個場景支持她在有強烈學習動機時會主動爭取。</p><p class="limit"><b>保留的空白</b>　不據旁聽經歷認定她是該校正式在籍學生。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 16:37:20 · 小莉</div>
+      <blockquote>那時候有點難過，但是我後來沒有走（厚臉皮）跑去和老師聊了下</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0658" target="_blank" rel="noopener">C0658 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 658 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 16:42:15 · 小莉</div>
+      <blockquote>結果她說感覺到我非常渴望，可以考慮一下和助教商量，但是呢不會給我學分。我說沒有關係我學分我不要</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0674" target="_blank" rel="noopener">C0674 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 674 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 16:44:25 · 小莉</div>
+      <blockquote>我就說好的，謝謝老師，我下週會過來的，不管最後結果是什麼我都接受下一週來聽你的安排</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0681" target="_blank" rel="noopener">C0681 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 681 行</a></div></div></details>
+       <div class="record-id">L04</div></article><article class="claim" id="L05" data-featured="0">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty ">明確學習內容與願望</span></div>
+       <h3><a class="permalink" href="#L05">心理學與社會學，是正在接觸的方向</a></h3>
+       <p>她說平日上課當學生，談過社會學中的階層與流動，也說六年前就想念心理學。可以記錄興趣和課程內容，尚不能寫成心理或社會學專業身份。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-14 16:35:12 · 小莉</div>
+      <blockquote>平日上課當學生</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0314" target="_blank" rel="noopener">C0314 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 314 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 16:46:56 · 小莉</div>
+      <blockquote>有興趣，很有興趣，剛剛覺得迷茫，就是覺得我好想去唸心理啊，6年前我就這樣想了。。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0691" target="_blank" rel="noopener">C0691 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 691 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:07:57 · 小莉</div>
+      <blockquote>社會學，今天是社會階層，階級流動</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1343" target="_blank" rel="noopener">C1343 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1343 行</a></div></div></details>
+       <div class="record-id">L05</div></article><article class="claim" id="L06" data-featured="1">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L06">她介紹自己時說：“我本來就是老師呀”</a></h3>
+       <p>她明確自述教師身份，並說以前在上海上講臺教學。原句寫“教國和高中”，其中另一學段有缺字或筆誤，不能直接補寫；錄音另有帶高中學生的敘述，見 L08。</p><p class="limit"><b>保留的空白</b>　學校、科目、教師資格和任職性質未明；原話照錄。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 20:52:24 · 小莉</div>
+      <blockquote>噢 ⏎ 我本來就是老師呀</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0233" target="_blank" rel="noopener">C0233 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 233 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-12 20:53:25 · 小莉</div>
+      <blockquote>以前在上海的時候就是上講臺講，不過是教國和高中</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0236" target="_blank" rel="noopener">C0236 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 236 行</a></div></div></details>
+       <div class="record-id">L06</div></article><article class="claim" id="L07" data-featured="0">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L07">週末授課，電腦上還有 PPT 和板書</a></h3>
+       <p>她說週末上課工作、平日上課當學生；也明確提到電腦、騰訊會議、PPT 和板書。這支持她目前至少有線上授課活動，不能由此認定全部工作都在線上。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-14 16:35:03 · 小莉</div>
+      <blockquote>我週末上課工作</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0313" target="_blank" rel="noopener">C0313 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 313 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-14 16:35:12 · 小莉</div>
+      <blockquote>平日上課當學生</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0314" target="_blank" rel="noopener">C0314 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 314 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:31:19 · 小莉</div>
+      <blockquote>電腦，騰訊會議</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1819" target="_blank" rel="noopener">C1819 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1819 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:32:11 · 小莉</div>
+      <blockquote>得用電腦，放PPT，要寫板書什麼的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1821" target="_blank" rel="noopener">C1821 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1821 行</a></div></div></details>
+       <div class="record-id">L07</div></article><article class="claim" id="L08" data-featured="0">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L08">學生和家長，是一條持續的聯絡</a></h3>
+       <p>她說同事、家長和學生都叫她“小粒”，也提到畢業學生想來找她玩。語音還敘述過繼續帶學生讀高中的經歷；師生聯絡是可見的，完整任教年表仍需核聽。</p><p class="limit"><b>保留的空白</b>　“帶高中”的經歷來自自動轉寫，授課科目、具體年份未確認。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-22 14:28:02 · 小莉</div>
+      <blockquote>同事和家長學生都叫我小粒</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1812" target="_blank" rel="noopener">C1812 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1812 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:08:29 · 小莉</div>
+      <blockquote>是我學生畢業說要想去找我玩，問我啥時候回家，我說可能年底叭</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1894" target="_blank" rel="noopener">C1894 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1894 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:27:31 · 小莉 · 音內 00:01:58—00:02:04</div>
+      <blockquote>所以我就又戴了三年高中</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V299" target="_blank" rel="noopener">V299 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_172731_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 48 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_172731_%E5%B0%8F%E8%8E%89.m4a#t=118,124"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L08</div></article><article class="claim" id="L09" data-featured="0">
+       <div class="claim-top"><span class="category">工作與職業</span><span class="certainty amber">自述／轉折細節待核聽</span></div>
+       <h3><a class="permalink" href="#L09">工作與康復之間，有過很難的取捨</a></h3>
+       <p>她在文字中把過去只顧工作的狀態形容為“硬撐”；錄音進一步敘述過因疼痛退費、暫停授課，後來再接回部分學生的過程。可以記錄這個轉折，具體年份仍需核聽。</p><p class="limit"><b>保留的空白</b>　暫停後又授課，不能簡單寫成“一直沒有工作”或“已經完全退休”。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-20 10:19:05 · 小莉</div>
+      <blockquote>在上班的時候會拉伸，會做棒式，很會調節自己。以前我在辦公室的時候怎麼就只知道工作，工作，工作</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1415" target="_blank" rel="noopener">C1415 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1415 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 10:19:57 · 小莉</div>
+      <blockquote>我也只是在硬撐</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1419" target="_blank" rel="noopener">C1419 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1419 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:29:02 · 小莉 · 音內 00:00:01—00:00:21</div>
+      <blockquote>然後我就把我還沒有上完課的錢全退了
+然後跟家長說真的是就是很痛了
+我覺得我沒有辦法再繼續上課
+然後就請了大概3、4個月吧
+後來遇見那個幫我做醫診的那個醫生</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V300" target="_blank" rel="noopener">V300 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_172902_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_172902_%E5%B0%8F%E8%8E%89.m4a#t=1,21"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L09</div></article><article class="claim" id="L21" data-featured="0">
+       <div class="claim-top"><span class="category">日常生活與興趣</span><span class="certainty ">生活片段</span></div>
+       <h3><a class="permalink" href="#L21">可愛的細節，也能陪她過一天</a></h3>
+       <p>她喜歡給飯桌加可愛的小東西，自己做過茶葉枕頭，也會散步、記下想再拍的夕陽位置。這些小事構成了人物生活感，不能據此判斷她每天都如此。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 20:01:46 · 小莉</div>
+      <blockquote>對哈哈，我喜歡加小可愛的東西陪我吃飯(◍＞◡＜◍)</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1166" target="_blank" rel="noopener">C1166 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1166 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 12:04:53 · 小莉</div>
+      <blockquote>我自己弄了一個茶葉枕頭</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1455" target="_blank" rel="noopener">C1455 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1455 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 12:25:10 · 小莉</div>
+      <blockquote>嘻嘻嘻也是好玩~~因為上半年我過得很無聊，就把一個師父喝的茶葉拿來曬，最後積累了一包。昨天弄了個小套子</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1460" target="_blank" rel="noopener">C1460 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1460 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-12 18:06:36 · 小莉</div>
+      <blockquote>我記住那個地方了，我想等下次天氣很好的時候，要來再把那個景色抓到他。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0186" target="_blank" rel="noopener">C0186 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 186 行</a></div></div></details>
+       <div class="record-id">L21</div></article><article class="claim" id="L22" data-featured="0">
+       <div class="claim-top"><span class="category">日常生活與興趣</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L22">她有一個寫了十幾年的地方</a></h3>
+       <p>她說 QQ 空間寫了十幾年，即使使用的人變少，仍繼續寫；臺灣朋友用 LINE，大陸朋友用微信或 QQ 聯絡。記錄能看到她保留書寫和聯絡的習慣。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 23:31:03 · 小莉</div>
+      <blockquote>一般臺灣朋友就是line聯絡，</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0517" target="_blank" rel="noopener">C0517 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 517 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 23:31:20 · 小莉</div>
+      <blockquote>大陸朋友都有WeChat發朋友圈，和QQ</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0518" target="_blank" rel="noopener">C0518 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 518 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 23:33:24 · 小莉</div>
+      <blockquote>QQ空間幾乎寫了十幾年叭，現在雖然沒什麼人在用了，但還是會在上面寫</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0523" target="_blank" rel="noopener">C0523 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 523 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 23:36:19 · 小莉</div>
+      <blockquote>有的時候會有人在下面給我留言互動，還挺溫暖的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0533" target="_blank" rel="noopener">C0533 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 533 行</a></div></div></details>
+       <div class="record-id">L22</div></article><article class="claim" id="L23" data-featured="0">
+       <div class="claim-top"><span class="category">求學與學習</span><span class="certainty amber">自述／部分語音待核聽</span></div>
+       <h3><a class="permalink" href="#L23">想學 AI，是想把自己重新放回變化中的生活</a></h3>
+       <p>文字裡她想把工作與學習用上 AI；錄音還解釋，長期生病後會擔心與社會脫節，想提升工具使用能力。這比“不會用科技”更貼近她實際表達的處境。</p><p class="limit"><b>保留的空白</b>　她已在使用聊天型 AI，但 Codex 的具體熟練程度未確認。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 17:16:50 · 小莉</div>
+      <blockquote>Ai使用，我也很感興趣耶，我好想把我的工作和學習ai起來，想學codex</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0061" target="_blank" rel="noopener">C0061 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 61 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:13:44 · 小莉</div>
+      <blockquote>喜歡科技喜歡ai</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1293" target="_blank" rel="noopener">C1293 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1293 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 00:22:49 · 小莉 · 音內 00:00:01—00:00:30</div>
+      <blockquote>所以我就很想升級我的AI使用的能力
+還有一直有一個心理吧
+就是我覺得我已經跟這個社會將近脫鉤五年了
+比如說我生病有五年的時候
+當我在回到生活的時候
+我就會發現好多東西
+好多很日常的東西
+其實對我來說都好遙遠了
+我就會覺得那我的想法會不會有一點
+我跟時代脫鉤呢</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V269" target="_blank" rel="noopener">V269 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_002249_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 6 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_002249_%E5%B0%8F%E8%8E%89.m4a#t=1,30"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L23</div></article></section><section class="chapter"><h2>從哪裡來</h2><article class="claim" id="L02" data-featured="0">
+       <div class="claim-top"><span class="category">重要閱歷與轉折</span><span class="certainty amber">自述／語音年份待核聽</span></div>
+       <h3><a class="permalink" href="#L02">來臺灣，不只發生在今年</a></h3>
+       <p>當張小華以為她今年才來臺灣時，她在錄音中糾正：大學時、2017 年曾來交換。文字中也提到交換時認識、已有約九年友誼的朋友。</p><p class="limit"><b>保留的空白</b>　交換學校、專案、停留時長未說明；不據臺大校園活動推定臺大畢業。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 00:13:56 · 小莉 · 音內 00:00:00—00:00:08</div>
+      <blockquote>我不是今年才來臺灣的呀
+我17年的時候大學的時候就來交換過</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V116" target="_blank" rel="noopener">V116 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_001356_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_001356_%E5%B0%8F%E8%8E%89.m4a#t=0,8"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-17 15:16:20 · 小莉</div>
+      <blockquote>兩個很要好的一個是我之前交換認識的，也算有9年的友誼了，一個是他的幼稚園同學~(¯▽¯~)<br><br>次要好的是一個大陸女生和一個臺灣女生（室友）</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0852" target="_blank" rel="noopener">C0852 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 852 行</a></div></div></details>
+       <div class="record-id">L02</div></article><article class="claim" id="L14" data-featured="0">
+       <div class="claim-top"><span class="category">家庭與成長</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#L14">母親的關係，曾有緩和的過程</a></h3>
+       <p>錄音裡，她說在朋友幫助、閱讀心理書之後，和母親的關係緩和許多；也講到鼓勵母親堅持練習。這是一段她自己的關係敘述，具體改善過程未獨立核實。</p><p class="limit"><b>保留的空白</b>　不據此給她的父母貼人格標籤，健康原因也不由轉寫確認。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-22 00:00:56 · 小莉 · 音內 00:00:00—00:00:12</div>
+      <blockquote>但是在我生病之後
+一直在我某一個朋友的幫助下
+後來還有看一些心理學的書吧
+跟我媽媽的關係緩和了非常多</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V346" target="_blank" rel="noopener">V346 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-22_000056_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-22_000056_%E5%B0%8F%E8%8E%89.m4a#t=0,12"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-22 00:01:39 · 小莉 · 音內 00:00:12—00:00:16</div>
+      <blockquote>然後我就一直在鼓勵她
+我就很開心</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V347" target="_blank" rel="noopener">V347 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-22_000139_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 8 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-22_000139_%E5%B0%8F%E8%8E%89.m4a#t=12,16"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L14</div></article><article class="claim" id="L15" data-featured="0">
+       <div class="claim-top"><span class="category">家庭與成長</span><span class="certainty ">親屬指代澄清</span></div>
+       <h3><a class="permalink" href="#L15">“哥哥姐姐弟弟妹妹”在這裡談的是擴大家庭</a></h3>
+       <p>她說這句話之前，對方正在問堂表親；後文還說明小表弟是舅舅舅媽的二胎。因此只能記錄她提到多位親屬，不能把這一句當成她有多少親生兄弟姐妹的證據。</p>
+       <details class="proof"><summary>看原話與時間 <span>5 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-22 17:05:59 · 張小華</div>
+      <blockquote>沒聽你說過堂哥堂姐堂弟堂妹呢</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1889" target="_blank" rel="noopener">C1889 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1889 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:07:06 · 小莉</div>
+      <blockquote>噢我有哥哥姐姐弟弟妹妹</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1892" target="_blank" rel="noopener">C1892 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1892 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:07:14 · 小莉</div>
+      <blockquote>我姥姥有四個孩子</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1893" target="_blank" rel="noopener">C1893 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1893 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:14:54 · 小莉</div>
+      <blockquote>這個弟弟是舅舅舅媽的二胎</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1912" target="_blank" rel="noopener">C1912 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1912 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:15:09 · 小莉</div>
+      <blockquote>老二</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1913" target="_blank" rel="noopener">C1913 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1913 行</a></div></div></details>
+       <div class="record-id">L15</div></article></section><section class="chapter"><h2>怎樣靠近別人</h2><article class="claim" id="L12" data-featured="0">
+       <div class="claim-top"><span class="category">友情與社交</span><span class="certainty ">自述＋有限歸納</span></div>
+       <h3><a class="permalink" href="#L12">朋友不總在同一座城市，卻可以在需要時出現</a></h3>
+       <p>她提到約九年的友誼、臺灣的室友與好友，也說一位高中同學會在她生病後定期問候，因此被她認作以後的好朋友。對她而言，持續關心是重要的友情依據。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 15:16:20 · 小莉</div>
+      <blockquote>兩個很要好的一個是我之前交換認識的，也算有9年的友誼了，一個是他的幼稚園同學~(¯▽¯~)<br><br>次要好的是一個大陸女生和一個臺灣女生（室友）</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0852" target="_blank" rel="noopener">C0852 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 852 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:25:40 · 小莉</div>
+      <blockquote>就每年都會講幾次話吧，</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0871" target="_blank" rel="noopener">C0871 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 871 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:25:56 · 小莉</div>
+      <blockquote>比如我生病後，我有個高中同學，她隔一段時間一定會問我</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0872" target="_blank" rel="noopener">C0872 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 872 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:26:09 · 小莉</div>
+      <blockquote>我就認定她是我以後的好朋友了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0873" target="_blank" rel="noopener">C0873 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 873 行</a></div></div></details>
+       <div class="record-id">L12</div></article><article class="claim" id="L13" data-featured="0">
+       <div class="claim-top"><span class="category">友情與社交</span><span class="certainty ">自述＋場景觀察</span></div>
+       <h3><a class="permalink" href="#L13">會緊張，也能為了重要的事變勇敢</a></h3>
+       <p>她說與陌生人寒暄不太行，也用“有點社恐”形容自己；但她同樣說，有強烈動機時就不怕，旁聽交涉正是一個例子。不能用一個社交標籤概括她。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 20:52:07 · 小莉</div>
+      <blockquote>但是如果是寒暄呢，聊天呢，陌生人呢，就不太行了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0231" target="_blank" rel="noopener">C0231 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 231 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 14:36:01 · 小莉</div>
+      <blockquote>有點社恐</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0654" target="_blank" rel="noopener">C0654 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 654 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-12 20:48:57 · 小莉</div>
+      <blockquote>有強烈動機的時候，我就會一點不怕了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0219" target="_blank" rel="noopener">C0219 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 219 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 16:37:20 · 小莉</div>
+      <blockquote>那時候有點難過，但是我後來沒有走（厚臉皮）跑去和老師聊了下</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0658" target="_blank" rel="noopener">C0658 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 658 行</a></div></div></details>
+       <div class="record-id">L13</div></article><article class="claim" id="L17" data-featured="1">
+       <div class="claim-top"><span class="category">親密關係</span><span class="certainty ">明確表達的情感需要</span></div>
+       <h3><a class="permalink" href="#L17">生病沒有讓她放棄連結，反而更想靠近</a></h3>
+       <p>她明確說，自己因生病久了，更想和人建立真正親密的連結。她也說害怕再次被突然丟下；這描述了她在此時表達的需要，不推成終身不變的依戀類型。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-20 18:40:53 · 小莉</div>
+      <blockquote>我好懂哦，但是我卻慢慢走向了另一個方向，因為生病久了而更想和人建立真正親密的連結</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1469" target="_blank" rel="noopener">C1469 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1469 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 11:56:44 · 小莉</div>
+      <blockquote>可能心裡還是會非常害怕會再被突然丟下叭</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0640" target="_blank" rel="noopener">C0640 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 640 行</a></div></div></details>
+       <div class="record-id">L17</div></article><article class="claim" id="L18" data-featured="0">
+       <div class="claim-top"><span class="category">親密關係</span><span class="certainty ">明確表達的需要與標準</span></div>
+       <h3><a class="permalink" href="#L18">她想要的是穩定回應和認真的交流</a></h3>
+       <p>她直接說害怕忽冷忽熱，希望對方多發訊息；同時把“認真交流的心”看得比口條重要。聯絡頻率與交流誠意，是這段記錄裡可見的關係需要。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 17:03:29 · 小莉</div>
+      <blockquote>那你也可以多給我發訊息</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0058" target="_blank" rel="noopener">C0058 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 58 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 17:03:48 · 小莉</div>
+      <blockquote>因為我其實…很怕別人忽冷忽熱</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0059" target="_blank" rel="noopener">C0059 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 59 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:10:55 · 小莉</div>
+      <blockquote>不會…其實我康復後變得很黏人…多發才好呢</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0068" target="_blank" rel="noopener">C0068 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 68 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:02:52 · 小莉</div>
+      <blockquote>重要的其實不是口條吧，我覺得是認真交流的心。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1275" target="_blank" rel="noopener">C1275 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1275 行</a></div></div></details>
+       <div class="record-id">L18</div></article><article class="claim" id="L19" data-featured="0">
+       <div class="claim-top"><span class="category">親密關係</span><span class="certainty ">本人敘述／第三方事實未核實</span></div>
+       <h3><a class="permalink" href="#L19">感謝被幫助，也會保留對關係的界限</a></h3>
+       <p>語音裡，她既承認一位過去的伴侶曾幫助自己，也說對方另有女友的事情不對，並說最後分開。文字也明確提到“兩個人女朋友”。這是她對過去的敘述，不能獨立認定第三方的事實或動機。</p><p class="limit"><b>保留的空白</b>　過往關係數量、起止時間和每段關係指代沒有完整釐清。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 00:30:26 · 小莉</div>
+      <blockquote>但是他兩個女朋友啊</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0615" target="_blank" rel="noopener">C0615 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 615 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 00:24:12 · 小莉 · 音內 00:00:23—00:00:32</div>
+      <blockquote>雖然他有女朋友那件事情是他真的做得不對</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V122" target="_blank" rel="noopener">V122 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_002412_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 11 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_002412_%E5%B0%8F%E8%8E%89.m4a#t=23,32"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-16 00:24:12 · 小莉 · 音內 00:01:41—00:01:43</div>
+      <blockquote>所以最後還是分開了</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V122" target="_blank" rel="noopener">V122 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_002412_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 36 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_002412_%E5%B0%8F%E8%8E%89.m4a#t=101,103"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L19</div></article></section><section class="chapter"><h2>怎樣理解和照顧自己</h2><article class="claim" id="L10" data-featured="0">
+       <div class="claim-top"><span class="category">金錢與生活責任</span><span class="certainty amber">語音自述／待核聽</span></div>
+       <h3><a class="permalink" href="#L10">錢曾同時意味著生活、房租和看病</a></h3>
+       <p>錄音中她說工作所得大部分用於就醫，另有房租和生活費，也談到花到存款的時期。這裡支持她描述過經濟壓力，不能估算收入、資產或認定已經破產。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 00:57:05 · 小莉 · 音內 00:00:14—00:00:22</div>
+      <blockquote>然後掙了錢
+大部分都花給了看醫生
+少部分發給了生活費
+或是房租什麼的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V163" target="_blank" rel="noopener">V163 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_005705_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 8 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_005705_%E5%B0%8F%E8%8E%89.m4a#t=14,22"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-19 17:15:30 · 小莉 · 音內 00:00:33—00:00:35</div>
+      <blockquote>所以就有花到我之前的存款</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V297" target="_blank" rel="noopener">V297 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_171530_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 17 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_171530_%E5%B0%8F%E8%8E%89.m4a#t=33,35"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L10</div></article><article class="claim" id="L11" data-featured="1">
+       <div class="claim-top"><span class="category">自我認識與行為</span><span class="certainty ">自我描述＋互動觀察</span></div>
+       <h3><a class="permalink" href="#L11">她說自己感性，分析問題時卻會追問原因</a></h3>
+       <p>她自稱“超感性加戀愛腦”；討論借錢時，又提出要先弄清原因、對方的重複行為和解決方案。小華的文字回應也明確肯定她的分析。兩面都應保留。</p><p class="limit"><b>保留的空白</b>　“戀愛腦”是她的口語標籤，不是分析者給她的心理診斷。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 13:25:48 · 小莉</div>
+      <blockquote>嗯……可是我自我認知說超感性加戀愛腦</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0431" target="_blank" rel="noopener">C0431 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 431 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:23:31 · 張小華</div>
+      <blockquote>我同事的情境妳分析的很好耶<br>哪有什麼感性的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0430" target="_blank" rel="noopener">C0430 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 430 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:26:17 · 張小華</div>
+      <blockquote>先想到發生原因 再想到累犯 <br>進一步推理到家人伴侶</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0433" target="_blank" rel="noopener">C0433 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 433 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 12:59:28 · 小莉 · 音內 00:00:15—00:00:28</div>
+      <blockquote>我會先跟他講個詞或是兩個小時
+我要弄清楚他的錢到底是怎麼變到這個底部的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V083" target="_blank" rel="noopener">V083 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_125928_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 8 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_125928_%E5%B0%8F%E8%8E%89.m4a#t=15,28"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L11</div></article><article class="claim" id="L16" data-featured="0">
+       <div class="claim-top"><span class="category">身心狀態與照顧</span><span class="certainty ">本人自述</span></div>
+       <h3><a class="permalink" href="#L16">身體的不確定，影響著她怎樣安排生活</a></h3>
+       <p>她說過肩膀痠痛、出門和步行需要考慮身體狀況，也對纖維肌痛症是否吻合自己提出疑問。能確認的是她報告了症狀和就醫經歷，不能據聊天確認病名、病因或康復程度。</p><p class="limit"><b>保留的空白</b>　記錄健康自述的邊界；沒有“已確診纖維肌痛症”的結論。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 22:36:16 · 小莉</div>
+      <blockquote>那等我再好一些</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0937" target="_blank" rel="noopener">C0937 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 937 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 19:53:23 · 小莉</div>
+      <blockquote>我剛剛到家～痠痛的左肩</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1636" target="_blank" rel="noopener">C1636 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1636 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 12:38:37 · 小莉</div>
+      <blockquote>之前各種查不出病因，我朋友懷疑我有這個病</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1790" target="_blank" rel="noopener">C1790 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1790 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 12:39:14 · 小莉</div>
+      <blockquote>今天我應該回診纖維肌痛症的，但是我總覺得我不太像，可能也有，但不是很對症</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1791" target="_blank" rel="noopener">C1791 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1791 行</a></div></div></details>
+       <div class="record-id">L16</div></article><article class="claim" id="L20" data-featured="0">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty amber">語音表達的價值觀／待核聽</span></div>
+       <h3><a class="permalink" href="#L20">越親近，越希望能說實話</a></h3>
+       <p>在討論別人隱瞞債務的故事時，她說伴侶應一起承擔人生，在親密的人面前不真誠會很累。這支持她表達的關係價值，不意味著故事中的債務屬於她。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 13:30:57 · 小莉 · 音內 00:00:53—00:01:24</div>
+      <blockquote>就是你的伴侶本來是跟你一起承擔這個
+人生的各種事情的
+然後你在他面前裝啊
+然後不管是裝的理性灑脫
+還是裝的沒事情啊
+就是都很辛苦
+哎
+就是幹嘛要這樣子呢
+在最親密的人面前還不還不真誠的話
+那樣就活得很累呀</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V088" target="_blank" rel="noopener">V088 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_133057_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 32 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_133057_%E5%B0%8F%E8%8E%89.m4a#t=53,84"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L20</div></article><article class="claim" id="L29" data-featured="0">
+       <div class="claim-top"><span class="category">價值觀與判斷</span><span class="certainty amber">語音觀點／待核聽</span></div>
+       <h3><a class="permalink" href="#L29">成績與一個人怎樣待人，在她看來是兩件事</a></h3>
+       <p>錄音中她自述小時候在尖子班，接著強調成績好的人個性各不相同、合作方式也不同。這裡只記錄她表達過這種區分；童年班級細節尚未核聽。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 10:32:22 · 小莉 · 音內 00:00:23—00:00:43</div>
+      <blockquote>但是我從來都不會覺得
+一個人成績好的代表這個人怎麼樣
+可能是因為我小的時候也在尖子班
+然後周圍都是呈現很好的人
+反正對眾人就沒有那種濾鏡吧
+因為大家的個性都很不同
+然後有的人就很知道合作啊</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V241" target="_blank" rel="noopener">V241 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_103222_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 13 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_103222_%E5%B0%8F%E8%8E%89.m4a#t=23,43"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L29</div></article></section><section class="chapter"><h2>還在展開的未來</h2><article class="claim" id="L24" data-featured="1">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty ">未來願望</span></div>
+       <h3><a class="permalink" href="#L24">她想給康復後的自己，列一張清單</a></h3>
+       <p>她在文字裡說想去日本，並開始考慮“康復後想做的事情清單”；錄音裡具體提到京都、植物與大自然。屬於願望，不寫成已完成旅行。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 22:20:10 · 小莉</div>
+      <blockquote>我好想去日本的其實～那天跟你約會回家路上就想，要不然我開始寫起來小莉康復後想做的事情清單叭</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0745" target="_blank" rel="noopener">C0745 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 745 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 22:21:13 · 小莉 · 音內 00:00:05—00:00:19</div>
+      <blockquote>我想去京都
+我聽說京都就像被遺忘在某個時代裡
+而且我也很喜歡植物和大自然
+不過現在聽你說了之後</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V135" target="_blank" rel="noopener">V135 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-16_222113_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 7 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-16_222113_%E5%B0%8F%E8%8E%89.m4a#t=5,19"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L24</div></article><article class="claim" id="L25" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty amber">語音願望／待核聽</span></div>
+       <h3><a class="permalink" href="#L25">還有一個靠海住、再回城市的想象</a></h3>
+       <p>錄音裡她描述想存錢買海景房，在想度假時住過去，想參與城市文化活動時再回來。它呈現她對自然與城市生活的雙重嚮往，沒有擁有房產或已制定購房計劃的證據。</p><p class="limit"><b>保留的空白</b>　城市名稱、資金和具體時間不明確。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 18:07:43 · 小莉 · 音內 00:00:01—00:00:07</div>
+      <blockquote>我其實理想的房子就是在一個海濱城市的某個小區</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V040" target="_blank" rel="noopener">V040 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-12_180743_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-12_180743_%E5%B0%8F%E8%8E%89.m4a#t=1,7"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-12 18:08:39 · 小莉 · 音內 00:00:01—00:00:32</div>
+      <blockquote>我就想等我傳到我能夠買一棟房子的錢的時候
+我就去把那個房子買下來
+然後這樣子呢
+我夏天、冬天想去度假的時候
+我就去那裡住
+或者是
+我覺得在城市裡生活有點厭倦的時候
+就去那裡待著
+等到什麼時候我就想參加城市文化活動
+我就再回來前去</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V041" target="_blank" rel="noopener">V041 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-12_180839_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-12_180839_%E5%B0%8F%E8%8E%89.m4a#t=1,32"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L25</div></article><article class="claim" id="L26" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty amber">明確動機／部分語音待核聽</span></div>
+       <h3><a class="permalink" href="#L26">學習，也是她拓寬視角的一條路</a></h3>
+       <p>她說自己希望補上大的、客觀的視角，才來聽社會學等課程；對貧窮議題的興趣也與自己的就醫和生存壓力經歷相連。這是她主動說明的學習動機。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 16:53:49 · 小莉</div>
+      <blockquote>嗯嗯，覺得自己缺少大的客觀的視角，才來聽這種課。挺有意思的。(◍＞◡＜◍)你有興趣麼</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1332" target="_blank" rel="noopener">C1332 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1332 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:07:57 · 小莉</div>
+      <blockquote>社會學，今天是社會階層，階級流動</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1343" target="_blank" rel="noopener">C1343 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1343 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:15:30 · 小莉 · 音內 00:00:00—00:00:08</div>
+      <blockquote>我之所以有興趣
+還是因為我過了這五六年
+自己看病的生活</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V297" target="_blank" rel="noopener">V297 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_171530_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_171530_%E5%B0%8F%E8%8E%89.m4a#t=0,8"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L26</div></article><article class="claim" id="L27" data-featured="0">
+       <div class="claim-top"><span class="category">未解問題與變化</span><span class="certainty ">本人對交流影響的描述</span></div>
+       <h3><a class="permalink" href="#L27">重新肯定自己，是談話裡發生的變化</a></h3>
+       <p>她說與張小華重提往事時，看見以前自己的無助，也開始重新肯定自己。這裡只能記錄這段交流對她的主觀幫助，不能寫成心理治療或已經解決舊傷。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 11:05:15 · 小莉</div>
+      <blockquote>很多很多年沒有跟別人聊以前的事情了，自己沒有記起來過這些事情，有點都像陳芝麻爛穀子的事情。但是你卻這麼有興趣聽，給我肯定和鼓勵而且在跟你講的過程中，我有看到那個時候自己幼小的自己很多無助，緊張沒有被處理的情緒。也會重新給自己一個肯定。我覺得這就讓我非常喜歡</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1279" target="_blank" rel="noopener">C1279 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1279 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:11:50 · 小莉</div>
+      <blockquote>感覺小的時候一直都在很慌亂的處理事情，缺乏自我肯定，被這樣講覺得好窩心</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1287" target="_blank" rel="noopener">C1287 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1287 行</a></div></div></details>
+       <div class="record-id">L27</div></article><article class="claim" id="L28" data-featured="0">
+       <div class="claim-top"><span class="category">未解問題與變化</span><span class="certainty amber">對象澄清／語音待核聽</span></div>
+       <h3><a class="permalink" href="#L28">老師的學位，不能放進她的學歷欄</a></h3>
+       <p>一段錄音依次提到物理本科、社會學研究生和中文系博士；開頭說的是“之前一個大學老師”。這段屬於她談第三人的履歷，不能作為她自己的學歷證據。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 17:18:36 · 小莉 · 音內 00:00:00—00:00:12</div>
+      <blockquote>之前一個大學老師他是本科物理學
+然後研究生社會學
+博士生在唸導中文系
+反而現在在張中文系的教授</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V298" target="_blank" rel="noopener">V298 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_171836_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_171836_%E5%B0%8F%E8%8E%89.m4a#t=0,12"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L28</div></article><article class="claim" id="L30" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty amber">語音願望／待核聽</span></div>
+       <h3><a class="permalink" href="#L30">寫作和未來幾年的學習，還在構想裡</a></h3>
+       <p>她在語音中說會與 AI 討論在臺北未來三五年的規劃，以及先前想寫作的一些想法。這是探索中的方向，沒有足夠資訊寫成確定的升學、移居或出版計劃。</p>
+       <details class="proof"><summary>看原話與時間 <span>1 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 00:18:31 · 小莉 · 音內 00:01:06—00:01:18</div>
+      <blockquote>就是我大概這三五年在太北的話
+我大概想怎麼樣規劃
+或者是我之前想要寫作的一些想法
+我都會跟他聊</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V265" target="_blank" rel="noopener">V265 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_001831_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 26 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_001831_%E5%B0%8F%E8%8E%89.m4a#t=66,78"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">L30</div></article></section><p class="endnote">讀到這裡就可以停一下。沒有看完，也不會漏掉必需的步驟；原話和空白會一直留在這裡。</p></section><section id="panel-relationship" class="panel docpanel" data-key="relationship" hidden><div class="doc-intro"><span class="eyebrow">共同關係記錄</span><h1>共同關係</h1><p class="doc-subtitle">從猜測對方，到把需要說出來</p><p>一段正在接近的關係：發生了什麼、雙方怎樣回應，還有哪些事沒有說定。</p><a class="filelink" href="%E5%85%B1%E5%90%8C%E5%85%B3%E7%B3%BB%E8%AE%B0%E5%BD%95.md" download>儲存完整文字版 ↓</a></div><section class="chapter"><h2>從誤會到見面</h2><article class="claim" id="R01" data-featured="0">
+       <div class="claim-top"><span class="category">關係起點</span><span class="certainty ">文字事實＋指代澄清</span></div>
+       <h3><a class="permalink" href="#R01">他們在談約會，暱稱並不等於親屬身份</a></h3>
+       <p>兩人談過交友軟體配對、加 LINE 和約會；“張小弟”“小朋友”出現在暱稱與玩笑情境。此處以匯出姓名記錄雙方，不把他們認作姐弟，也沒有足夠證據把某人自動標成使用者本人。</p>
+       <details class="proof"><summary>看原話與時間 <span>5 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 08:55:43 · 張小華</div>
+      <blockquote>你的soga帳號後來有再異常嗎<br>100個！ 真的是100的配對要滑嗎！！<br>我們好像都還沒什麼聊旅行的是情</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0118" target="_blank" rel="noopener">C0118 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 118 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-12 08:56:22 · 張小華</div>
+      <blockquote>我的soga感覺每天滑15個就叫我付費了，滑100個也太累了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0119" target="_blank" rel="noopener">C0119 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 119 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 20:50:09 · 張小華</div>
+      <blockquote>當然要約會呀  我們怎麼約</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0089" target="_blank" rel="noopener">C0089 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 89 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-18 01:49:05 · 張小華</div>
+      <blockquote>你怎麼知道張小弟</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1080" target="_blank" rel="noopener">C1080 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1080 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-18 01:47:39 · 小莉 · 音內 00:00:00—00:00:04</div>
+      <blockquote>二級我還發現張小華還有一個名字叫張小弟</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V218" target="_blank" rel="noopener">V218 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_014739_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_014739_%E5%B0%8F%E8%8E%89.m4a#t=0,4"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">R01</div></article><article class="claim" id="R02" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-10—11｜誤會與修復</span><span class="certainty ">雙方面向的情境觀察</span></div>
+       <h3><a class="permalink" href="#R02">同一次安靜，被兩個人讀成不同的意思</a></h3>
+       <p>小莉以為他不想理自己；張小華說自己沒有這個想法，只是不想打擾生病的她。可以確認雙方解釋不同，不能據訊息變少認定任何一方故意冷落或操控。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 04:09:37 · 小莉</div>
+      <blockquote>其實…我以為是你不想理我了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0040" target="_blank" rel="noopener">C0040 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 40 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 12:46:04 · 張小華</div>
+      <blockquote>我完全沒有這想法<br>也不知道發生什麼了 只知道週五放假第一天 晃悠悠的過了<br>感覺就變冷淡了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0041" target="_blank" rel="noopener">C0041 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 41 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:05:51 · 張小華</div>
+      <blockquote>我就想說 你不是感冒 是不是不要打擾你 讓你覺得煩心</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0065" target="_blank" rel="noopener">C0065 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 65 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:24:38 · 張小華</div>
+      <blockquote>我自己會這樣的  安心的休養<br>沒想到妳完全不一樣</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0072" target="_blank" rel="noopener">C0072 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 72 行</a></div></div></details>
+       <div class="record-id">R02</div></article><article class="claim" id="R03" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-11｜把需要說出來</span><span class="certainty ">表達、提議與部分後續</span></div>
+       <h3><a class="permalink" href="#R03">“多發才好”之後，電話成了一個辦法</a></h3>
+       <p>小莉說怕忽冷忽熱、希望多聯絡；張小華提議每天講電話，她答應想要。後來有邀約通話及聊很久的文字回應，但不能據此聲稱之後每天都通話。</p>
+       <details class="proof"><summary>看原話與時間 <span>6 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 17:03:48 · 小莉</div>
+      <blockquote>因為我其實…很怕別人忽冷忽熱</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0059" target="_blank" rel="noopener">C0059 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 59 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:07:13 · 張小華</div>
+      <blockquote>要不我們來每天講電話</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0066" target="_blank" rel="noopener">C0066 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 66 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:10:55 · 小莉</div>
+      <blockquote>不會…其實我康復後變得很黏人…多發才好呢</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0068" target="_blank" rel="noopener">C0068 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 68 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 18:12:42 · 小莉</div>
+      <blockquote>嗯…想要耶</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0069" target="_blank" rel="noopener">C0069 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 69 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 22:25:33 · 張小華</div>
+      <blockquote>要講電話嗎</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0095" target="_blank" rel="noopener">C0095 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 95 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-11 23:52:13 · 小莉</div>
+      <blockquote>居然講了這麼久……</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0100" target="_blank" rel="noopener">C0100 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 100 行</a></div></div></details>
+       <div class="record-id">R03</div></article><article class="claim" id="R04" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-12｜為什麼願意認識彼此</span><span class="certainty amber">自述／語音待核聽</span></div>
+       <h3><a class="permalink" href="#R04">她注意到的，是他在認真講自己的生活</a></h3>
+       <p>小莉的錄音把吸引力放在他的畫畫、日本旅行分享和認真交流上；張小華也反覆追問為什麼選擇了自己。這裡有彼此探索，不能把配對數量當成關係價值的比較。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-12 08:40:59 · 小莉 · 音內 00:00:20—00:00:26</div>
+      <blockquote>然後你還分享你去
+你的畫畫啊
+你去日本的事情</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V031" target="_blank" rel="noopener">V031 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-12_084059_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 10 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-12_084059_%E5%B0%8F%E8%8E%89.m4a#t=20,26"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-12 08:40:59 · 小莉 · 音內 00:00:49—00:00:52</div>
+      <blockquote>而且我覺得你
+是在認真的跟我講話</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V031" target="_blank" rel="noopener">V031 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-12_084059_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 21 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-12_084059_%E5%B0%8F%E8%8E%89.m4a#t=49,52"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-12 00:07:06 · 張小華</div>
+      <blockquote>下個話題是總是選一個人的你<br>為什麼會萬裡挑一的選到我</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0106" target="_blank" rel="noopener">C0106 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 106 行</a></div></div></details>
+       <div class="record-id">R04</div></article><article class="claim" id="R05" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-14｜一次有記錄的約會</span><span class="certainty ">雙方對已發生見面的回應</span></div>
+       <h3><a class="permalink" href="#R05">見面後，兩個人都說超出了預想</a></h3>
+       <p>當晚的文字裡，他說超過原本預設時間、忍不住繼續問；她說見面更好、環境讓人放鬆。這支持這次見面得到正面回應，是否兩人第一次線下見面則不額外認定。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-14 23:40:03 · 張小華</div>
+      <blockquote>其實也超出我預設的時間好多</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0378" target="_blank" rel="noopener">C0378 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 378 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-14 23:40:19 · 張小華</div>
+      <blockquote>實在太感興趣就 忍不住問下去</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0379" target="_blank" rel="noopener">C0379 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 379 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-14 23:45:38 · 小莉</div>
+      <blockquote>我也到了。<br>有，覺得見面更好耶</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0381" target="_blank" rel="noopener">C0381 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 381 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-14 23:48:08 · 小莉</div>
+      <blockquote>恩～特別放鬆～我也喜歡</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0388" target="_blank" rel="noopener">C0388 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 388 行</a></div></div></details>
+       <div class="record-id">R05</div></article></section><section class="chapter"><h2>當話題走得更深</h2><article class="claim" id="R06" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-15｜共同想一件難事</span><span class="certainty ">互動觀察</span></div>
+       <h3><a class="permalink" href="#R06">他們不只聊感受，也一起分析現實難題</a></h3>
+       <p>圍繞張小華同事借款，兩人討論原因、風險、責任和是否該向伴侶坦白；他肯定她的分析，她說喜歡他帶來的視角。這個故事屬於第三方，不是他們共同負債的證據。</p>
+       <details class="proof"><summary>看原話與時間 <span>6 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-15 13:23:31 · 張小華</div>
+      <blockquote>我同事的情境妳分析的很好耶<br>哪有什麼感性的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0430" target="_blank" rel="noopener">C0430 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 430 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:26:17 · 張小華</div>
+      <blockquote>先想到發生原因 再想到累犯 <br>進一步推理到家人伴侶</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0433" target="_blank" rel="noopener">C0433 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 433 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:36:11 · 張小華</div>
+      <blockquote>做重大決定不經討論</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0449" target="_blank" rel="noopener">C0449 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 449 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:36:46 · 張小華</div>
+      <blockquote>真的是會碰到底線</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0450" target="_blank" rel="noopener">C0450 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 450 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 13:39:12 · 小莉</div>
+      <blockquote>哈哈哈好，我喜歡你的很多視角</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0458" target="_blank" rel="noopener">C0458 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 458 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-15 23:53:50 · 張小華 · 音內 00:00:00—00:00:03</div>
+      <blockquote>我後來拒絕了那位朋友的借款</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V107" target="_blank" rel="noopener">V107 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-15_235350_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-15_235350_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=0,3"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">R06</div></article><article class="claim" id="R07" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-16｜關於害怕失去</span><span class="certainty ">親密話題與回應</span></div>
+       <h3><a class="permalink" href="#R07">她把最擔心的事說出來，他給出自己的理解</a></h3>
+       <p>他複述她問過“腳不能走了，會不會離開”；她解釋自己害怕再次被突然丟下。他回應時強調看一個人如何面對困境。這是雙方在當時的表達，尚不是經過現實考驗的長期承諾。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-16 11:04:45 · 張小華</div>
+      <blockquote>你昨天問萬一你腳不能走了 我會不會離開這題</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0634" target="_blank" rel="noopener">C0634 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 634 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 11:08:32 · 張小華</div>
+      <blockquote>想了想 這問題有點片面<br>比較像是如果xxx 那麼會xxx的問題<br><br>我會在意的是這個人發生了這件事，他會怎麼處理，他能否走出來畢竟沒有人永遠在高峰，沒有低谷</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0635" target="_blank" rel="noopener">C0635 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 635 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 11:11:08 · 張小華</div>
+      <blockquote>只要盡力了 有什麼好苛責別人不努力了<br>所以這題不存在～</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0637" target="_blank" rel="noopener">C0637 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 637 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-16 11:56:44 · 小莉</div>
+      <blockquote>可能心裡還是會非常害怕會再被突然丟下叭</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0640" target="_blank" rel="noopener">C0640 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 640 行</a></div></div></details>
+       <div class="record-id">R07</div></article><article class="claim" id="R08" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-17｜一起出門的尺度</span><span class="certainty ">協商中的出遊計劃</span></div>
+       <h3><a class="permalink" href="#R08">想看芒草，也願意等身體更合適</a></h3>
+       <p>他提出陽明山，隨後具體提醒等車、久站和走路的負擔；她說等好一些，他回應不急。這一段呈現共同調整計劃，不能把未出發的行程記為已完成。</p>
+       <details class="proof"><summary>看原話與時間 <span>6 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 16:16:13 · 張小華</div>
+      <blockquote>要不我們去看芒草</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0916" target="_blank" rel="noopener">C0916 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 916 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:35:56 · 張小華</div>
+      <blockquote>在同一個山的兩個不同地方<br>但是除了要等公車 還要站很久 + 走</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0936" target="_blank" rel="noopener">C0936 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 936 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:36:16 · 小莉</div>
+      <blockquote>那等我再好一些</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0937" target="_blank" rel="noopener">C0937 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 937 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:36:22 · 張小華</div>
+      <blockquote>恩 我擔心你呀</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0938" target="_blank" rel="noopener">C0938 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 938 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:36:45 · 張小華</div>
+      <blockquote>等哪天你輕輕鬆鬆跑跑跳跳再說</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0940" target="_blank" rel="noopener">C0940 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 940 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:36:53 · 張小華</div>
+      <blockquote>也不急啦</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0941" target="_blank" rel="noopener">C0941 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 941 行</a></div></div></details>
+       <div class="record-id">R08</div></article><article class="claim" id="R09" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-18｜理想伴侶</span><span class="certainty ">比喻與價值交流</span></div>
+       <h3><a class="permalink" href="#R09">“交出後背”的比喻，讓他們繼續談信任</a></h3>
+       <p>他澄清“搶銀行”只是信賴的比喻；她後來用“長期奮鬥夥伴、戰友”回應。這是雙方在討論理想伴侶的含義，不是現實違法計劃，也沒有因此確認正式交往。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-18 10:22:47 · 張小華 · 音內 00:00:02—00:00:14</div>
+      <blockquote>只是個比喻
+比喻說就是
+還在做很多事情的時候
+可以放心把後背交給
+交給對方的那一種人</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V232" target="_blank" rel="noopener">V232 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-18_102247_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 6 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-18_102247_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=2,14"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-18 10:26:23 · 小莉</div>
+      <blockquote>長期奮鬥夥伴，戰友</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1102" target="_blank" rel="noopener">C1102 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1102 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:07:57 · 張小華</div>
+      <blockquote>好笑的是你還繼續問我細節</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1344" target="_blank" rel="noopener">C1344 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1344 行</a></div></div></details>
+       <div class="record-id">R09</div></article><article class="claim" id="R10" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-19｜互相看見</span><span class="certainty ">雙向回應的情境觀察</span></div>
+       <h3><a class="permalink" href="#R10">他怕回饋不夠，她說重要的是交流的心</a></h3>
+       <p>他喜歡她的故事，又擔心給不出同等回饋；她反過來肯定他的故事，強調認真交流的心。此處既有他接住她的部分，也有她接住他的部分。</p>
+       <details class="proof"><summary>看原話與時間 <span>6 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 11:01:03 · 張小華</div>
+      <blockquote>喜歡妳的故事 在我眼中可是寶藏</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1267" target="_blank" rel="noopener">C1267 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1267 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:01:39 · 張小華</div>
+      <blockquote>會擔心我卻沒能給你同等的回饋</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1269" target="_blank" rel="noopener">C1269 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1269 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:02:00 · 小莉</div>
+      <blockquote>沒有耶，你也很會講故事的！</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1271" target="_blank" rel="noopener">C1271 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1271 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:02:40 · 小莉</div>
+      <blockquote>不要這麼想~~我覺得你很會講故事，羽球，公司，當兵，都很有意思</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1274" target="_blank" rel="noopener">C1274 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1274 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:02:52 · 小莉</div>
+      <blockquote>重要的其實不是口條吧，我覺得是認真交流的心。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1275" target="_blank" rel="noopener">C1275 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1275 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:04:16 · 張小華</div>
+      <blockquote>我也很喜歡這樣跟你交流</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1277" target="_blank" rel="noopener">C1277 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1277 行</a></div></div></details>
+       <div class="record-id">R10</div></article><article class="claim" id="R11" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-19｜交流的影響</span><span class="certainty ">雙方對交流影響的描述</span></div>
+       <h3><a class="permalink" href="#R11">她重新理解舊事，他也開始回想自己</a></h3>
+       <p>她說講述往事使自己重新肯定當年的自己；他則說聽她講故事，會想起自己在那個年紀做什麼。雙方都描述了交流帶來的回看，不由此推斷對方承擔治療者角色。</p>
+       <details class="proof"><summary>看原話與時間 <span>2 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 11:05:15 · 小莉</div>
+      <blockquote>很多很多年沒有跟別人聊以前的事情了，自己沒有記起來過這些事情，有點都像陳芝麻爛穀子的事情。但是你卻這麼有興趣聽，給我肯定和鼓勵而且在跟你講的過程中，我有看到那個時候自己幼小的自己很多無助，緊張沒有被處理的情緒。也會重新給自己一個肯定。我覺得這就讓我非常喜歡</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1279" target="_blank" rel="noopener">C1279 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1279 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:00:11 · 張小華</div>
+      <blockquote>妳想那畫面時 就像vr一樣浮出畫面 笑出聲來 <br>覺得挺有趣 也讓我一點一滴的回想那年紀我在作什麼呀</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1265" target="_blank" rel="noopener">C1265 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1265 行</a></div></div></details>
+       <div class="record-id">R11</div></article><article class="claim" id="R12" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-19—20｜不同的經驗</span><span class="certainty ">有依據的比較／範圍有限</span></div>
+       <h3><a class="permalink" href="#R12">同樣談貧窮，出發點並不完全相同</a></h3>
+       <p>她從看病、存款和收入不確定談起，也想了解社會結構；他較強調內心是否充足、如何管理慾望。雙方仍繼續討論；不能把一次議題交流概括成價值觀完全一致或完全衝突。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 16:53:49 · 小莉</div>
+      <blockquote>嗯嗯，覺得自己缺少大的客觀的視角，才來聽這種課。挺有意思的。(◍＞◡＜◍)你有興趣麼</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1332" target="_blank" rel="noopener">C1332 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1332 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:15:30 · 小莉 · 音內 00:00:50—00:01:09</div>
+      <blockquote>物質財富
+並不是像我小時候想像的
+工作了之後
+就肯定會越來越多錢
+越存越多錢
+那沒準發生什麼事情
+人就會變貧窮</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V297" target="_blank" rel="noopener">V297 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-19_171530_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 24 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-19_171530_%E5%B0%8F%E8%8E%89.m4a#t=50,69"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-20 00:02:32 · 張小華</div>
+      <blockquote>如果要我來辦理這個展覽的話，我應該不會以貧窮為主題吧<br><br>在我現在的眼中臺灣並沒有真的貧窮，真正的貧窮是指基本生存都受到限制 沒辦法得到溫飽，然而呢現況有基本工資大家都還是過活的下去～<br><br>所以如今的社會大眾真正需要的應該是永續的概念，如何管理好自己無盡擴張的慾望，讓內心得到平靜。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1372" target="_blank" rel="noopener">C1372 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1372 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 00:03:05 · 張小華</div>
+      <blockquote>會有這樣的起因 是因為雖然我知道我家不有錢 但是我的內心卻從來都是豐滿的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1373" target="_blank" rel="noopener">C1373 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1373 行</a></div></div></details>
+       <div class="record-id">R12</div></article><article class="claim" id="R13" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-19—22｜共同的興趣</span><span class="certainty ">跨多次對話的觀察</span></div>
+       <h3><a class="permalink" href="#R13">有些共同話題，是邊聊邊長出來的</a></h3>
+       <p>AI、看展、故事、食物和出遊反覆成為雙方話題；她主動提出展覽，他也提出問題與計劃。共同興趣有文字依據，不能直接推算長期相容程度。</p>
+       <details class="proof"><summary>看原話與時間 <span>6 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 17:16:50 · 小莉</div>
+      <blockquote>Ai使用，我也很感興趣耶，我好想把我的工作和學習ai起來，想學codex</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0061" target="_blank" rel="noopener">C0061 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 61 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 00:18:22 · 張小華</div>
+      <blockquote>那你可要多收集一些素材給我<br>幫你弄個心理學導師</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1198" target="_blank" rel="noopener">C1198 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1198 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 16:33:21 · 小莉</div>
+      <blockquote>我想到10.24週六下雨可以去做啥了，有個展覽</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1322" target="_blank" rel="noopener">C1322 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1322 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:06:45 · 張小華</div>
+      <blockquote>想象你是一個策展人 你想要跟大眾說明這樣的主題</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1338" target="_blank" rel="noopener">C1338 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1338 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:06:53 · 張小華</div>
+      <blockquote>你會想怎麼呈現呢</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1339" target="_blank" rel="noopener">C1339 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1339 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 17:20:52 · 小莉</div>
+      <blockquote>真是個好問題，其實每次看展覽之後都會在想哦，這個策展人是怎麼想的，怎麼透過這個展覽在跟現場的人對話</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1358" target="_blank" rel="noopener">C1358 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1358 行</a></div></div></details>
+       <div class="record-id">R13</div></article><article class="claim" id="R14" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-20｜透過作品理解對方</span><span class="certainty ">作品討論與本人回應</span></div>
+       <h3><a class="permalink" href="#R14">一部遊戲，成了理解病中感受的入口</a></h3>
+       <p>他說明想到她的無力感才推薦作品；她說作品帶來共鳴和新視角，同時表達自己更想走向親密連結。這裡記錄的是作品引出的對話，不把遊戲人物的命運寫成兩人的現實經歷。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-20 19:23:38 · 張小華</div>
+      <blockquote>其實我就是想到你的無力感，加上講到遊戲的話題，才想到這一部narcissu的</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1474" target="_blank" rel="noopener">C1474 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1474 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 22:03:12 · 小莉</div>
+      <blockquote>我很喜歡。除了共鳴之外，這部小說或者說這個遊戲也帶給我一些新的視角看待生病</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1477" target="_blank" rel="noopener">C1477 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1477 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-20 18:40:53 · 小莉</div>
+      <blockquote>我好懂哦，但是我卻慢慢走向了另一個方向，因為生病久了而更想和人建立真正親密的連結</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1469" target="_blank" rel="noopener">C1469 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1469 行</a></div></div></details>
+       <div class="record-id">R14</div></article></section><section class="chapter"><h2>靠近之中的邊界</h2><article class="claim" id="R15" data-featured="1">
+       <div class="claim-top"><span class="category">2026-10-21｜給彼此留空間</span><span class="certainty ">雙方表達與有限歸納</span></div>
+       <h3><a class="permalink" href="#R15">“你也多講一點”，讓資訊不對稱被看見</a></h3>
+       <p>小莉明確說以後要換他多講，因為他了解她、她還不夠了解他；他稍後的語音說自己也想多講，只是很久沒回憶往事。能看見雙方意識到分享量不同，不能直接認定有人刻意隱瞞。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-21 20:47:27 · 小莉</div>
+      <blockquote>以後要換成你多講你的事</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1651" target="_blank" rel="noopener">C1651 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1651 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 20:47:51 · 小莉</div>
+      <blockquote>不然你都很瞭解我，我還不知道你</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1652" target="_blank" rel="noopener">C1652 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1652 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-21 23:00:44 · 張小華 · 音內 00:00:32—00:00:44</div>
+      <blockquote>其實我也想多講講點我的事情
+但是我的回憶就好像一層一層的迷霧
+好久都沒有回想了</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V327" target="_blank" rel="noopener">V327 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-21_230044_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 14 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-21_230044_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=32,44"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div></details>
+       <div class="record-id">R15</div></article><article class="claim" id="R16" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-21—22｜認真與玩笑</span><span class="certainty ">互動誤讀與澄清</span></div>
+       <h3><a class="permalink" href="#R16">玩笑的口氣，有時需要再翻譯一次</a></h3>
+       <p>一次語音中他擔心她語氣嚴厲，她解釋沒有生氣、只是在認真思考；另一次她說明“吼”是好的意思。可以記錄文字和語氣理解上的錯位，不據此把她描述成愛發火、把他描述成膽小。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-21 00:48:16 · 張小華 · 音內 00:00:02—00:00:05</div>
+      <blockquote>你的那個口氣好嚴厲喔</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V322" target="_blank" rel="noopener">V322 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-21_004816_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 6 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-21_004816_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=2,5"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-21 00:49:07 · 小莉 · 音內 00:00:00—00:00:05</div>
+      <blockquote>我沒有生氣 一點都沒有
+我只是在認真的思考</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V323" target="_blank" rel="noopener">V323 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-21_004907_%E5%B0%8F%E8%8E%89.txt" target="_blank" rel="noopener">原始檔第 5 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-21_004907_%E5%B0%8F%E8%8E%89.m4a#t=0,5"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-22 10:13:16 · 小莉</div>
+      <blockquote>吼（是好的意思）</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1740" target="_blank" rel="noopener">C1740 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1740 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 10:13:22 · 張小華</div>
+      <blockquote>你緊張我了 讓我馬上戴起耳機</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1741" target="_blank" rel="noopener">C1741 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1741 行</a></div></div></details>
+       <div class="record-id">R16</div></article><article class="claim" id="R17" data-featured="0">
+       <div class="claim-top"><span class="category">2026-10-22｜更輕鬆地靠近</span><span class="certainty amber">親近表達／關係名稱待確認</span></div>
+       <h3><a class="permalink" href="#R17">他們也開始給輕鬆和調情留位置</a></h3>
+       <p>當天出現互相撩撥、害羞和“之前都太認真講話”的回應。他說“只能給你”是明顯的親近表達，但記錄中沒有雙方明確確認排他交往的對話，關係狀態仍留待確認。</p>
+       <details class="proof"><summary>看原話與時間 <span>5 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-22 10:30:36 · 小莉</div>
+      <blockquote>還朗朗乾坤呢！之前都太認真講話了 ⏎ 影響了我的發揮</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1769" target="_blank" rel="noopener">C1769 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1769 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:34:10 · 張小華</div>
+      <blockquote>哎呦 我都不敢講這麼露骨</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1825" target="_blank" rel="noopener">C1825 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1825 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:37:45 · 張小華</div>
+      <blockquote>可是我比較想讓你看到</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1831" target="_blank" rel="noopener">C1831 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1831 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:38:38 · 小莉</div>
+      <blockquote>……我好像……被反撩了</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1832" target="_blank" rel="noopener">C1832 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1832 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:40:23 · 張小華</div>
+      <blockquote>所以能給的不多 只能給你</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1835" target="_blank" rel="noopener">C1835 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1835 行</a></div></div></details>
+       <div class="record-id">R17</div></article><article class="claim" id="R18" data-featured="0">
+       <div class="claim-top"><span class="category">日常相處</span><span class="certainty ">互動觀察</span></div>
+       <h3><a class="permalink" href="#R18">照顧既有玩笑，也有實際的小安排</a></h3>
+       <p>他為送餅費心、提醒保質期、找輕鬆路線；她接話、分享想吃的食物，也會主動提議安排。這些是生活層面的接近線索，不把送餅或吃飯推成經濟依賴。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據 · 含待核聽語音</span></summary><div class="evidence-item"><div class="stamp">2026-10-17 14:59:42 · 張小華 · 音內 00:00:16—00:00:20</div>
+      <blockquote>因為我單純就是想送你
+想要用來吃的</blockquote>
+      <div class="source-meta">錄音自動轉寫 · 未核聽 · <a href="原文对照.html#V152" target="_blank" rel="noopener">V152 · 看完整上下文</a> · <a href="../%E8%BD%89%E5%AF%AB%E7%B5%90%E6%9E%9C/2026-10-17_145942_%E5%BC%B5%E5%B0%8F%E8%8F%AF.txt" target="_blank" rel="noopener">原始檔第 10 行</a></div><details class="audio"><summary>核聽這段錄音</summary><audio controls preload="none" src="../voice/2026-10-17_145942_%E5%BC%B5%E5%B0%8F%E8%8F%AF.m4a#t=16,20"></audio><small>顯示的是訊息時間和音內偏移；保留轉寫原字，錄音供核對。</small></details></div><div class="evidence-item"><div class="stamp">2026-10-21 19:49:53 · 張小華</div>
+      <blockquote>對了 那個餅的有效期限好像是到24號</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1633" target="_blank" rel="noopener">C1633 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1633 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 15:11:03 · 小莉</div>
+      <blockquote>走！下次帶你去吃我的口袋名單的各種臺北的北方餐館</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0839" target="_blank" rel="noopener">C0839 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 839 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 16:33:21 · 小莉</div>
+      <blockquote>我想到10.24週六下雨可以去做啥了，有個展覽</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1322" target="_blank" rel="noopener">C1322 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1322 行</a></div></div></details>
+       <div class="record-id">R18</div></article><article class="claim" id="R19" data-featured="0">
+       <div class="claim-top"><span class="category">邊界與節奏</span><span class="certainty ">已表達的時間邊界</span></div>
+       <h3><a class="permalink" href="#R19">他們有說“我去忙了”和“休息也沒關係”</a></h3>
+       <p>工作、疲倦和作息會中斷聊天；他明確說講累了可以休息，也說想放空；她回應好。記錄支持雙方曾表達時間邊界，至於長期能否維持仍未知。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-13 22:35:24 · 張小華</div>
+      <blockquote>累了要先睡也沒關係</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0297" target="_blank" rel="noopener">C0297 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 297 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:06:04 · 張小華</div>
+      <blockquote>不過呢 講累了 休息一下也沒關係<br>其實我也跟妳在想一樣的事<br>怕講久了影響到你的精神</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1280" target="_blank" rel="noopener">C1280 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1280 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 17:16:47 · 張小華</div>
+      <blockquote>我們晚上聊 我現在想放空一下</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1914" target="_blank" rel="noopener">C1914 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1914 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 18:03:34 · 小莉</div>
+      <blockquote>好~</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1920" target="_blank" rel="noopener">C1920 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1920 行</a></div></div></details>
+       <div class="record-id">R19</div></article><article class="claim" id="R20" data-featured="0">
+       <div class="claim-top"><span class="category">未來目標與夢想</span><span class="certainty ">未來提議／履行未知</span></div>
+       <h3><a class="permalink" href="#R20">共同清單裡，有近處也有遠處</a></h3>
+       <p>他們談過 10 月 24 日雨天備選展覽、約看展，以及“明年五月”看海和螢火蟲。截點在 10 月 23 日，這些未來行程均按提議／計劃保存，不能算成已完成或長期承諾。</p>
+       <details class="proof"><summary>看原話與時間 <span>4 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-19 16:33:21 · 小莉</div>
+      <blockquote>我想到10.24週六下雨可以去做啥了，有個展覽</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1322" target="_blank" rel="noopener">C1322 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1322 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-17 22:56:08 · 張小華</div>
+      <blockquote>11/19</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0993" target="_blank" rel="noopener">C0993 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 993 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 14:30:17 · 張小華</div>
+      <blockquote>明年5月我帶你去海 ⏎ 大看海看螢火蟲</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1303" target="_blank" rel="noopener">C1303 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1303 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 14:30:58 · 小莉</div>
+      <blockquote>好，想看</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1305" target="_blank" rel="noopener">C1305 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1305 行</a></div></div></details>
+       <div class="record-id">R20</div></article><article class="claim" id="R21" data-featured="0">
+       <div class="claim-top"><span class="category">邊界與不確定</span><span class="certainty ">互動事實／醫學判斷未核實</span></div>
+       <h3><a class="permalink" href="#R21">關心身體，不代表具備判斷病情的資格</a></h3>
+       <p>他會討論身體狀況、給出自己的解釋，她有時表示認同；但她自己也說診斷未完全對上。檔案只記錄這種照顧互動，不把聊天裡的醫療解釋認證為正確，也沒有他具備專業醫療資格的證據。</p><p class="limit"><b>保留的空白</b>　本報告不提供治療建議。原文中的醫療主張僅供辨識對話語境。</p>
+       <details class="proof"><summary>看原話與時間 <span>3 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-21 23:01:15 · 張小華</div>
+      <blockquote>相信我 你沒有粘連 要到粘連的程度困難的事情</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1658" target="_blank" rel="noopener">C1658 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1658 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 12:39:14 · 小莉</div>
+      <blockquote>今天我應該回診纖維肌痛症的，但是我總覺得我不太像，可能也有，但不是很對症</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1791" target="_blank" rel="noopener">C1791 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1791 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-23 09:49:07 · 張小華</div>
+      <blockquote>我的認知是神經傳遞引起的痛覺，所以呢也會跟經痛有關係，很多女孩子補鈣、鋅、鎂就能解決。所以你的經痛是否很長痛到不行也是一個很重要的參考值</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1947" target="_blank" rel="noopener">C1947 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1947 行</a></div></div></details>
+       <div class="record-id">R21</div></article><article class="claim" id="R22" data-featured="0">
+       <div class="claim-top"><span class="category">關係邊界</span><span class="certainty ">有依據的歸納／邊界明確</span></div>
+       <h3><a class="permalink" href="#R22">可以確認他們在接近，暫不能替他們命名未來</a></h3>
+       <p>有約會、互相欣賞、透露脆弱、協商需求和共同計劃的證據；本段可讀取材料裡仍缺少雙方明確確認關係名稱、排他性及長期安排的對話。適合保留為“有約會與親近表達的關係”。</p>
+       <details class="proof"><summary>看原話與時間 <span>5 處依據</span></summary><div class="evidence-item"><div class="stamp">2026-10-11 20:50:09 · 張小華</div>
+      <blockquote>當然要約會呀  我們怎麼約</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0089" target="_blank" rel="noopener">C0089 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 89 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-14 23:45:38 · 小莉</div>
+      <blockquote>我也到了。<br>有，覺得見面更好耶</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C0381" target="_blank" rel="noopener">C0381 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 381 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:01:03 · 張小華</div>
+      <blockquote>喜歡妳的故事 在我眼中可是寶藏</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1267" target="_blank" rel="noopener">C1267 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1267 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-19 11:02:52 · 小莉</div>
+      <blockquote>重要的其實不是口條吧，我覺得是認真交流的心。</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1275" target="_blank" rel="noopener">C1275 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1275 行</a></div></div><div class="evidence-item"><div class="stamp">2026-10-22 14:40:23 · 張小華</div>
+      <blockquote>所以能給的不多 只能給你</blockquote>
+      <div class="source-meta">聊天原文 · 經歷未獨立核實 · <a href="原文对照.html#C1835" target="_blank" rel="noopener">C1835 · 看完整上下文</a> · <a href="../chat.txt" target="_blank" rel="noopener">原始檔第 1835 行</a></div></div></details>
+       <div class="record-id">R22</div></article></section><p class="endnote">讀到這裡就可以停一下。沒有看完，也不會漏掉必需的步驟；原話和空白會一直留在這裡。</p></section><section id="panel-method" class="panel method-panel" hidden><h2>這份記錄，怎樣讀</h2>
+<p>你覺得分類表疲倦，可能是因為先看到框架，卻還沒遇到具體的人。這裡把順序換過來：先讀幾句話，再看場景，最後需要時展開證據。分類仍保留在每條記錄的小標籤上。</p>
+<div class="method-grid"><div><h3>先認識人</h3><p>速讀只顯示少量重點，儘量一條講清一件事。完整檔案保留 14 類觀察的入口，不要求一次讀完。</p></div><div><h3>再看依據</h3><p>每條都有原話、說話者、訊息時間和原始檔位置。錄音另列音內偏移，可直接核聽。原文保留繁簡、筆誤與轉寫錯字。</p></div><div><h3>把解釋留在邊界內</h3><p>“本人自述”表示他說過，不等於獨立核實。“互動觀察”限於這段對話；“待確認”保留空白，不用想象補齊。</p></div></div>
+<h3>材料範圍與時間</h3>
+<p>本地文字聊天的時間範圍為 2026-10-09 17:06:41 至 2026-10-23 09:52:31。讀取了 chat.txt 的 1,949 條時間標記記錄（包含語音、圖片等佔位記錄），並對讀 376 份逐檔語音轉寫。語音佔位和對應轉寫不當成兩個獨立證據。</p>
+<p>376 份轉寫中，375 份含文字片段，1 份沒有辨識出文字：V362，2026-10-22 10:13:03，小莉。本次分析使用已有文字，沒有逐段重新核聽，也沒有讀取未匯出的圖片、影片、通話內容或連結頁面。</p>
+<p>錄音訊息時間來自原聊天記錄並與檔名交叉核對；音內偏移來自自動轉寫。舊《完整對話逐字稿》把二者相加顯示的逐句鐘點是計算值，不是已驗證的真實說話時刻。本報告不沿用該鐘點作為原始證據。</p>
+<h3>這次明確更正的地方</h3>
+<p><a href="#Z05" data-jump="Z05">“無限期延畢”不再歸入張小華本人學經歷。</a>這句話緊接小莉關於康復進度的語音；更像情境中的比喻，不能證明任何人的正式延畢。</p>
+<p>同樣保留了幾處容易誤認的對象：<a href="#L28" data-jump="L28">物理本科、社會學研究生、中文博士談的是老師</a>；<a href="#Z25" data-jump="Z25">“三個員工”是 AI 的比喻</a>；<a href="#L15" data-jump="L15">“哥哥姐姐弟弟妹妹”出現在堂表親語境</a>。不會把朋友的職業、債務或履歷寫到本人名下。</p>
+<h3>仍然需要保留的空白</h3>
+<p>姓名以匯出名為準，不自動對應“我／小弟”。最高學歷、完整工作年表、醫療診斷、確切資產、正式排他關係和長期承諾，都只寫到證據能支持的位置。</p>
+<p>轉寫成功只說明生成了檔案，不代表識別準確。聊天中雙方也提過錄音聽不清、重新錄音。所有語音引文均明確標為自動轉寫；語義不清的細節只存待核聽記錄，不作確定人格判斷。文字中轉述的醫療、法律、財務說法也沒有在本報告中被認證為事實。</p>
+<p class="closing">這是一份對話視窗中的人物側寫。它可以隨著新材料修訂，不替任何人決定他是誰，也不預測兩人的結局。</p></section></main><footer><span>僅依據本地現有材料 · 原文繁簡與錯字照錄</span><a href="原文对照.html" target="_blank" rel="noopener">開啟完整原文索引</a><a href="阅读说明.md" download>儲存閱讀說明</a><a href="证据与结论索引.json" download>儲存結構化檔案</a><button id="print" type="button">列印當前頁</button></footer></div>
+<script>
+let tab='home',mode='quick';const panels=[...document.querySelectorAll('.panel')],toolbar=document.querySelector('.toolbar'),search=document.querySelector('#search');
+function filter(){const p=document.querySelector('#panel-'+tab);if(!p||!p.classList.contains('docpanel'))return;const q=search.value.trim().toLowerCase();let count=0;const cards=[...p.querySelectorAll('.claim')];cards.forEach(c=>{const show=(q?c.textContent.toLowerCase().includes(q):(mode==='full'||c.dataset.featured==='1'));c.hidden=!show;if(show)count++});p.querySelectorAll('.chapter').forEach(ch=>ch.hidden=![...ch.querySelectorAll('.claim')].some(c=>!c.hidden));document.querySelector('.counter').textContent=count+' / '+cards.length+' 條';document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode))}
+function go(next,id){tab=next;panels.forEach(p=>p.hidden=p.id!=='panel-'+tab);document.querySelectorAll('.nav [data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab?'true':'false'));toolbar.hidden=!['zhang','li','relationship'].includes(tab);if(id){mode='full';search.value=''}filter();if(id){let el=document.getElementById(id);if(el){el.querySelector('.proof').open=true;requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:'start'}))}}else{window.scrollTo({top:0,behavior:'smooth'})}}
+function jump(id){go(id.startsWith('Z')?'zhang':id.startsWith('L')?'li':'relationship',id)}
+document.addEventListener('click',e=>{const j=e.target.closest('[data-jump]');if(j){e.preventDefault();history.replaceState(null,'','#'+j.dataset.jump);jump(j.dataset.jump);return}const t=e.target.closest('[data-tab]');if(t){history.replaceState(null,'','#'+t.dataset.tab);search.value='';go(t.dataset.tab);return}const m=e.target.closest('[data-mode]');if(m){mode=m.dataset.mode;filter()}});search.addEventListener('input',filter);document.querySelector('#print').addEventListener('click',()=>window.print());function route(){const h=decodeURIComponent(location.hash.slice(1));if(/^[ZLR]\d+$/.test(h)&&document.getElementById(h))jump(h);else if(['home','zhang','li','relationship','method'].includes(h))go(h)}window.addEventListener('hashchange',route);route();
+</script></body></html>
