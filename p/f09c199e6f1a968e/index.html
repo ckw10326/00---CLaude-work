@@ -1,0 +1,224 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>我與淳的 LINE 對話分析</title>
+<style>
+:root{--u:#2f6fde;--j:#e0567a;--x:#2aa876}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:17px;line-height:1.75;color:#222;background:#f6f5f2}
+main{max-width:760px;margin:0 auto;padding:14px 14px 60px}
+header{background:linear-gradient(135deg,#3a4a7a,#8a4a6a);color:#fff;padding:22px 16px 18px;border-radius:0 0 18px 18px}
+header h1{font-size:24px;margin:0 0 6px;line-height:1.35} header p{margin:2px 0;font-size:14px;opacity:.9}
+h2{font-size:20px;margin:0} h3{font-size:17.5px;margin:18px 0 6px}
+details{background:#fff;border-radius:14px;margin:14px 0;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden}
+summary{padding:15px 16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+summary::-webkit-details-marker{display:none} summary::after{content:"＋";color:#999;font-size:20px} details[open] summary::after{content:"－"}
+.c{padding:0 16px 16px}
+.card{background:#fff;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.kpi{background:#f3f4f8;border-radius:10px;padding:10px;text-align:center} .kpi b{display:block;font-size:22px;color:#333} .kpi span{font-size:13px;color:#666}
+.find{margin:0;padding-left:0;list-style:none} .find li{padding:10px 0 10px 34px;border-bottom:1px solid #eee;position:relative}
+.find li::before{content:attr(data-n);position:absolute;left:0;top:11px;width:24px;height:24px;border-radius:50%;background:#3a4a7a;color:#fff;font-size:13px;text-align:center;line-height:24px}
+blockquote{margin:8px 0;padding:8px 12px;background:#faf7f0;border-left:4px solid #d8c59a;border-radius:6px;font-size:15.5px;white-space:pre-line}
+.qd{display:block;font-size:12.5px;color:#998;margin-bottom:2px}
+.chart{width:100%;height:auto;display:block;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0} th,td{border-bottom:1px solid #eee;padding:7px 4px;text-align:left;vertical-align:top} th{background:#f3f4f8}
+.tw{overflow-x:auto}
+.u{color:var(--u);font-weight:700} .j{color:var(--j);font-weight:700} .x{color:var(--x);font-weight:700}
+.note{font-size:14px;color:#666;background:#f3f4f8;padding:8px 10px;border-radius:8px}
+.hbars{margin:8px 0} .hb{display:flex;align-items:center;gap:6px;font-size:14px;margin:4px 0} .hl{width:96px;flex:none} .ht{flex:1;background:#eee;border-radius:4px;height:14px;overflow:hidden} .ht span{display:block;height:100%} .hv{width:54px;text-align:right;flex:none}
+.stk{margin:12px 0} .stt{font-size:14.5px;font-weight:600} .sb{display:flex;height:18px;border-radius:5px;overflow:hidden;margin:4px 0} .sb span{display:block;height:100%}
+.sl{font-size:12.5px;color:#555;line-height:1.6} .lg{display:inline-block;margin-right:8px} .lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:3px;vertical-align:middle}
+.tl{border-left:3px solid #c9c2d9;margin-left:6px;padding-left:14px} .ev{position:relative;margin:0 0 16px} .ev::before{content:"";position:absolute;left:-21px;top:8px;width:11px;height:11px;border-radius:50%;background:#8a4a6a}
+.ev .d{font-weight:700;font-size:15px;color:#8a4a6a}
+.tag{display:inline-block;font-size:12px;padding:1px 7px;border-radius:10px;background:#eee;margin-right:4px}
+nav{font-size:14px;margin:12px 0;display:flex;flex-wrap:wrap;gap:6px} nav a{background:#fff;border-radius:16px;padding:4px 11px;text-decoration:none;color:#3a4a7a;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+</style></head><body>
+<header><h1>我與淳的 LINE 對話分析</h1>
+<p>資料：2023/03/07 07:49 – 2025/02/21 03:04（台北時間）</p>
+<p>共 24,007 則訊息 ·張小華 10,988 則 ·淳 13,019 則</p>
+<p>對照組：與小莉 2026/10/09 – 10/29，2,784 則</p></header>
+<main>
+<nav><a href="#sum">核心結論</a><a href="#d1">節奏</a><a href="#d2">情緒接球</a><a href="#d3">權力與配合</a><a href="#d4">衝突</a><a href="#cross">跨對象比對</a><a href="#tl">關鍵事件</a><a href="#adv">盲點與建議</a><a href="#method">方法與限制</a></nav>
+
+<div class="card" id="sum"><h2>🎯 核心結論</h2>
+<p class="note">這份分析只看得到文字。你們通話將近 90 小時，見面的互動也看不到，所以下面的結論是讓你反思用的線索，不是判決。</p>
+<div class="kpis">
+<div class="kpi"><b>24,007</b><span>則訊息（約 2 年）</span></div>
+<div class="kpi"><b>90.5 小時</b><span>451 通接通的電話</span></div>
+<div class="kpi"><b>201 : 198</b><span>開啟對話次數（淳：你）</span></div>
+<div class="kpi"><b>165 : 61</b><span>收回訊息（淳：你）</span></div>
+</div>
+<ol class="find">
+<li data-n="1"><b>投入其實很對等，落差在「節奏」。</b>誰先開話題（201 比 198）、文字總字數（你 6.8 萬字，淳 6.2 萬字）、誰提出行程都差不多。真正拉開的是回覆速度：剛開始那個月你回訊息的中位數是 1 分鐘，2023 年 7 月以後變成 7 到 10 分鐘，淳一直維持在 2 到 4 分鐘。</li>
+<li data-n="2"><b>「忽冷忽熱」的感覺在兩個人身上都出現過。</b>淳說「你給我一種沒有我也沒關係的感覺」（2025/02/21）。小莉說「其實…我以為是你不想理我了」「很怕別人忽冷忽熱」（2026/10/11）。你自己也說過「要維持聊天的頻率始終對我是一件很難的事情」。這是跨對象比對裡最清楚的<b>自身模式</b>。</li>
+<li data-n="3"><b>收回訊息是淳沒說出口的情緒。</b>淳收回了 165 則，其中 10 次是連續收回 3 則以上，多半在深夜或吵架前後。淳親口說過「留言留了幾句收回 / 你也沒問可能覺得沒事」（2023/06/02）。這 12 次連續收回之後的 24 小時內，幾乎都沒有人問起。</li>
+<li data-n="4"><b>兩個人都很少直接說出「接住對方」的話。</b>淳說身體不舒服、累或想放棄的 81 次裡，你明確共情（例如「心疼」「拍拍」）的只有約 5 次。其他多半是轉話題、追問原因或給方法。反過來，你示弱時淳也多半是叮嚀和給方法。淳想要的很明確：「我要的只是幾句關心問候嗎」「有時候你只要假裝哄騙就過去的事 / 但你不願意」。</li>
+<li data-n="5"><b>衝突幾乎都在深夜。</b>帶有衝突字眼的訊息有 31% 在 23 點到 4 點之間，平常這個時段只占全部訊息的 10%，等於高出 3 倍。吵架常常照同一個順序走：淳深夜發長訊息，有時把話說到最重（「如果你想分手」「去找28歲以下的妹妹」）；你用邏輯反駁，有時還貼上標籤（「雙標?」「控制狂膩」「你的情緒管理是個大問題」）；隔天早上淳道歉；你回「不用什麼委曲求全的道歉」；然後兩個人回到日常瑣事，問題沒有真正談完。</li>
+<li data-n="6"><b>電話是另一條主戰場。</b>淳撥了 391 次，你撥了 313 次。「掛電話」「睡前要不要講」是反覆出現的爭點：「早上起床不說電話的是你 / 晚上睡前講電話的也是你」「你想掛電話你就掛電話」。結束對話的時機多半由你決定。</li>
+<li data-n="7"><b>分開之後，兩個人都有成熟的回顧。</b>2025/02/21 那晚的深談裡，淳說「你的理智讓我恐懼很多」，你回「給0.5是我的舒適帶」「遠距離的問題 / 也可能是我的問題」，最後雙方都同意是「不合」。淳也會跟朋友說你的優點。</li>
+<li data-n="8"><b>好消息是你做得到。</b>小莉表達不安時，你第一句就是「我真的很抱歉讓你有這樣的感覺」，也主動問她為什麼收回訊息。這兩件事你和淳那段時間幾乎沒有出現。</li>
+</ol></div>
+
+<details id="d1" open><summary><h2>⏱️ 一、節奏與非文字訊號</h2></summary><div class="c">
+<h3>每月訊息量與通話時數</h3><svg viewBox="0 0 360 220" class="chart" role="img" aria-label="每月訊息量"><line x1="34" x2="360" y1="166.0" y2="166.0" stroke="#ddd"/><text x="31" y="169.0" font-size="9" text-anchor="end" fill="#888">0</text><line x1="34" x2="360" y1="104.5" y2="104.5" stroke="#ddd"/><text x="31" y="107.5" font-size="9" text-anchor="end" fill="#888">1000</text><line x1="34" x2="360" y1="42.9" y2="42.9" stroke="#ddd"/><text x="31" y="45.9" font-size="9" text-anchor="end" fill="#888">2000</text><rect x="35.0" y="94.5" width="11.3" height="71.5" fill="#2f6fde"/><rect x="35.0" y="23.7" width="11.3" height="70.8" fill="#e0567a"/><text x="40.7" y="178" font-size="8.5" text-anchor="middle" fill="#555">23/03</text><rect x="48.3" y="88.6" width="11.3" height="77.4" fill="#2f6fde"/><rect x="48.3" y="10.0" width="11.3" height="78.6" fill="#e0567a"/><rect x="61.7" y="101.7" width="11.3" height="64.3" fill="#2f6fde"/><rect x="61.7" y="27.4" width="11.3" height="74.3" fill="#e0567a"/><rect x="75.0" y="102.9" width="11.3" height="63.1" fill="#2f6fde"/><rect x="75.0" y="23.5" width="11.3" height="79.4" fill="#e0567a"/><rect x="88.3" y="108.6" width="11.3" height="57.4" fill="#2f6fde"/><rect x="88.3" y="39.6" width="11.3" height="69.0" fill="#e0567a"/><rect x="101.7" y="111.5" width="11.3" height="54.5" fill="#2f6fde"/><rect x="101.7" y="52.3" width="11.3" height="59.1" fill="#e0567a"/><rect x="115.0" y="109.3" width="11.3" height="56.7" fill="#2f6fde"/><rect x="115.0" y="38.9" width="11.3" height="70.4" fill="#e0567a"/><text x="120.7" y="178" font-size="8.5" text-anchor="middle" fill="#555">23/09</text><rect x="128.3" y="127.2" width="11.3" height="38.8" fill="#2f6fde"/><rect x="128.3" y="80.6" width="11.3" height="46.6" fill="#e0567a"/><rect x="141.7" y="111.0" width="11.3" height="55.0" fill="#2f6fde"/><rect x="141.7" y="37.3" width="11.3" height="73.8" fill="#e0567a"/><rect x="155.0" y="129.8" width="11.3" height="36.2" fill="#2f6fde"/><rect x="155.0" y="83.4" width="11.3" height="46.5" fill="#e0567a"/><rect x="168.3" y="121.1" width="11.3" height="44.9" fill="#2f6fde"/><rect x="168.3" y="63.6" width="11.3" height="57.5" fill="#e0567a"/><rect x="181.7" y="134.2" width="11.3" height="31.8" fill="#2f6fde"/><rect x="181.7" y="89.0" width="11.3" height="45.2" fill="#e0567a"/><rect x="195.0" y="163.1" width="11.3" height="2.9" fill="#2f6fde"/><rect x="195.0" y="158.0" width="11.3" height="5.1" fill="#e0567a"/><text x="200.7" y="178" font-size="8.5" text-anchor="middle" fill="#555">24/03</text><rect x="208.3" y="165.3" width="11.3" height="0.7" fill="#2f6fde"/><rect x="208.3" y="164.5" width="11.3" height="0.8" fill="#e0567a"/><rect x="221.7" y="165.9" width="11.3" height="0.1" fill="#2f6fde"/><rect x="221.7" y="165.9" width="11.3" height="0.1" fill="#e0567a"/><rect x="235.0" y="165.4" width="11.3" height="0.6" fill="#2f6fde"/><rect x="235.0" y="163.5" width="11.3" height="1.9" fill="#e0567a"/><rect x="248.3" y="165.3" width="11.3" height="0.7" fill="#2f6fde"/><rect x="248.3" y="164.8" width="11.3" height="0.5" fill="#e0567a"/><rect x="261.7" y="165.4" width="11.3" height="0.6" fill="#2f6fde"/><rect x="261.7" y="164.6" width="11.3" height="0.8" fill="#e0567a"/><rect x="275.0" y="166.0" width="11.3" height="0.0" fill="#2f6fde"/><rect x="275.0" y="166.0" width="11.3" height="0.0" fill="#e0567a"/><text x="280.7" y="178" font-size="8.5" text-anchor="middle" fill="#555">24/09</text><rect x="288.3" y="166.0" width="11.3" height="0.0" fill="#2f6fde"/><rect x="288.3" y="166.0" width="11.3" height="0.0" fill="#e0567a"/><rect x="301.7" y="166.0" width="11.3" height="0.0" fill="#2f6fde"/><rect x="301.7" y="166.0" width="11.3" height="0.0" fill="#e0567a"/><rect x="315.0" y="166.0" width="11.3" height="0.0" fill="#2f6fde"/><rect x="315.0" y="166.0" width="11.3" height="0.0" fill="#e0567a"/><rect x="328.3" y="165.4" width="11.3" height="0.6" fill="#2f6fde"/><rect x="328.3" y="164.9" width="11.3" height="0.6" fill="#e0567a"/><rect x="341.7" y="147.4" width="11.3" height="18.6" fill="#2f6fde"/><rect x="341.7" y="127.4" width="11.3" height="20.1" fill="#e0567a"/><text x="347.3" y="178" font-size="8.5" text-anchor="middle" fill="#555">25/02</text><polyline points="40.7,156.2 54.0,152.5 67.3,102.1 80.7,141.4 94.0,82.9 107.3,74.6 120.7,10.0 134.0,106.6 147.3,124.7 160.7,71.2 174.0,108.6 187.3,13.4 200.7,166.0 214.0,166.0 227.3,166.0 240.7,166.0 254.0,166.0 267.3,166.0 280.7,166.0 294.0,166.0 307.3,166.0 320.7,166.0 334.0,166.0 347.3,166.0" fill="none" stroke="#f0a020" stroke-width="2"/><text x="34" y="208" font-size="10" fill="#2f6fde">■ 張小華</text><text x="104" y="208" font-size="10" fill="#e0567a">■ 淳</text><text x="149" y="208" font-size="10" fill="#f0a020">— 通話時數（最高 16.6 小時/月）</text></svg>
+<p>2023 年 3 月到 2024 年 2 月，每個月都有 1,250 到 2,500 則訊息。2024 年 3 月幾乎歸零，2024 年 9 月到 12 月完全沒有訊息，2025 年 2 月又短暫回升到 628 則。訊息量往下走的同時，通話時數往上衝：2023 年 9 月約 16.7 小時，2024 年 2 月約 16.3 小時。<b>關係越緊的時候，重要的對話越常改在電話裡講，文字看到的只是一部分。</b></p>
+<h3>先定基準：回覆時間中位數（分鐘）</h3>
+<div class="tw"><table><tr><th>時段</th><th class="u">張小華</th><th class="j">淳</th><th class="x">小莉（對照）</th><th>你回小莉</th></tr>
+<tr><td>平日上班 9–18 點</td><td>5</td><td>3</td><td>1</td><td>1</td></tr>
+<tr><td>深夜 0–6 點</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>其他時段</td><td>6</td><td>3</td><td>1</td><td>1</td></tr>
+<tr><td>疑似「冷處理」比例*</td><td>11.8%</td><td>6.0%</td><td>4.6%</td><td>4.8%</td></tr></table></div>
+<p class="note">*只看同一段對話裡（間隔不到 6 小時）換人回覆的時間，超過「本人同時段中位數 × 3」而且超過 60 分鐘才算。中位數只有幾分鐘，所以只用「× 3」會把正常在忙也算進去。資料只精確到分鐘。</p>
+<h3>回覆時間的變化</h3><svg viewBox="0 0 360 210" class="chart" role="img" aria-label="每月回覆時間中位數"><line x1="30" x2="360" y1="160.0" y2="160.0" stroke="#eee"/><text x="27" y="163.0" font-size="9" text-anchor="end" fill="#888">0</text><line x1="30" x2="360" y1="130.0" y2="130.0" stroke="#eee"/><text x="27" y="133.0" font-size="9" text-anchor="end" fill="#888">2</text><line x1="30" x2="360" y1="100.0" y2="100.0" stroke="#eee"/><text x="27" y="103.0" font-size="9" text-anchor="end" fill="#888">4</text><line x1="30" x2="360" y1="70.0" y2="70.0" stroke="#eee"/><text x="27" y="73.0" font-size="9" text-anchor="end" fill="#888">6</text><line x1="30" x2="360" y1="40.0" y2="40.0" stroke="#eee"/><text x="27" y="43.0" font-size="9" text-anchor="end" fill="#888">8</text><line x1="30" x2="360" y1="10.0" y2="10.0" stroke="#eee"/><text x="27" y="13.0" font-size="9" text-anchor="end" fill="#888">10</text><circle cx="30.0" cy="145.0" r="2.6" fill="#2f6fde"/><circle cx="59.1" cy="130.0" r="2.6" fill="#2f6fde"/><circle cx="88.2" cy="85.0" r="2.6" fill="#2f6fde"/><circle cx="117.3" cy="70.0" r="2.6" fill="#2f6fde"/><circle cx="146.4" cy="10.0" r="2.6" fill="#2f6fde"/><circle cx="175.5" cy="55.0" r="2.6" fill="#2f6fde"/><circle cx="204.5" cy="55.0" r="2.6" fill="#2f6fde"/><circle cx="233.6" cy="25.0" r="2.6" fill="#2f6fde"/><circle cx="262.7" cy="55.0" r="2.6" fill="#2f6fde"/><circle cx="291.8" cy="55.0" r="2.6" fill="#2f6fde"/><circle cx="320.9" cy="55.0" r="2.6" fill="#2f6fde"/><circle cx="350.0" cy="25.0" r="2.6" fill="#2f6fde"/><polyline points="30.0,145.0 59.1,130.0 88.2,85.0 117.3,70.0 146.4,10.0 175.5,55.0 204.5,55.0 233.6,25.0 262.7,55.0 291.8,55.0 320.9,55.0 350.0,25.0" fill="none" stroke="#2f6fde" stroke-width="2"/><circle cx="30.0" cy="115.0" r="2.6" fill="#e0567a"/><circle cx="59.1" cy="115.0" r="2.6" fill="#e0567a"/><circle cx="88.2" cy="100.0" r="2.6" fill="#e0567a"/><circle cx="117.3" cy="115.0" r="2.6" fill="#e0567a"/><circle cx="146.4" cy="70.0" r="2.6" fill="#e0567a"/><circle cx="175.5" cy="115.0" r="2.6" fill="#e0567a"/><circle cx="204.5" cy="130.0" r="2.6" fill="#e0567a"/><circle cx="233.6" cy="70.0" r="2.6" fill="#e0567a"/><circle cx="262.7" cy="130.0" r="2.6" fill="#e0567a"/><circle cx="291.8" cy="115.0" r="2.6" fill="#e0567a"/><circle cx="320.9" cy="130.0" r="2.6" fill="#e0567a"/><circle cx="350.0" cy="100.0" r="2.6" fill="#e0567a"/><polyline points="30.0,115.0 59.1,115.0 88.2,100.0 117.3,115.0 146.4,70.0 175.5,115.0 204.5,130.0 233.6,70.0 262.7,130.0 291.8,115.0 320.9,130.0 350.0,100.0" fill="none" stroke="#e0567a" stroke-width="2"/><text x="30.0" y="172" font-size="8.5" text-anchor="middle" fill="#555">23/03</text><text x="88.2" y="172" font-size="8.5" text-anchor="middle" fill="#555">23/05</text><text x="146.4" y="172" font-size="8.5" text-anchor="middle" fill="#555">23/07</text><text x="204.5" y="172" font-size="8.5" text-anchor="middle" fill="#555">23/09</text><text x="262.7" y="172" font-size="8.5" text-anchor="middle" fill="#555">23/11</text><text x="320.9" y="172" font-size="8.5" text-anchor="middle" fill="#555">24/01</text><text x="30" y="196" font-size="10" fill="#2f6fde">● 張小華回覆中位數（分鐘）</text><text x="190" y="196" font-size="10" fill="#e0567a">● 淳</text></svg>
+<p>剛開始的 3 週，你回淳的中位數是 1 分鐘，跟現在回小莉一樣。所以<b>「回得慢」不是你固定的個性，而是在這段關係某個階段才出現的</b>。可能跟改用電話、工作節奏，或心理上的距離有關，文字資料分不出是哪一個。</p>
+<h3>其他非文字訊號</h3>
+<div class="tw"><table><tr><th></th><th class="u">張小華</th><th class="j">淳</th></tr>
+<tr><td>貼圖占比</td><td>13.6%</td><td>23.7%</td></tr>
+<tr><td>文字平均長度（字）</td><td>8.5</td><td>7.7</td></tr>
+<tr><td>單字句（好／嗯／喔…）比例</td><td>5.6%</td><td>4.5%</td></tr>
+<tr><td>收回訊息</td><td>61</td><td>165</td></tr>
+<tr><td>「愛你、想你、親愛的、北鼻」等</td><td>25</td><td>87</td></tr>
+<tr><td>說「晚安」的訊息</td><td>18</td><td>57</td></tr></table></div>
+<h3>每小時的訊息分布</h3><svg viewBox="0 0 360 166" class="chart"><rect x="26.0" y="103.5" width="6.3" height="24.5" fill="#2f6fde"/><rect x="32.9" y="90.5" width="6.3" height="37.5" fill="#e0567a"/><text x="32.9" y="139" font-size="9" text-anchor="middle" fill="#555">0時</text><rect x="39.8" y="100.1" width="6.3" height="27.9" fill="#2f6fde"/><rect x="46.6" y="100.1" width="6.3" height="27.9" fill="#e0567a"/><rect x="53.5" y="110.4" width="6.3" height="17.6" fill="#2f6fde"/><rect x="60.4" y="108.9" width="6.3" height="19.1" fill="#e0567a"/><rect x="67.2" y="123.9" width="6.3" height="4.1" fill="#2f6fde"/><rect x="74.1" y="125.2" width="6.3" height="2.8" fill="#e0567a"/><text x="74.1" y="139" font-size="9" text-anchor="middle" fill="#555">3時</text><rect x="81.0" y="128.0" width="6.3" height="0.0" fill="#2f6fde"/><rect x="87.9" y="128.0" width="6.3" height="0.0" fill="#e0567a"/><rect x="94.8" y="127.9" width="6.3" height="0.1" fill="#2f6fde"/><rect x="101.6" y="127.4" width="6.3" height="0.6" fill="#e0567a"/><rect x="108.5" y="126.6" width="6.3" height="1.4" fill="#2f6fde"/><rect x="115.4" y="123.9" width="6.3" height="4.1" fill="#e0567a"/><text x="115.4" y="139" font-size="9" text-anchor="middle" fill="#555">6時</text><rect x="122.2" y="118.8" width="6.3" height="9.2" fill="#2f6fde"/><rect x="129.1" y="115.6" width="6.3" height="12.4" fill="#e0567a"/><rect x="136.0" y="76.9" width="6.3" height="51.1" fill="#2f6fde"/><rect x="142.9" y="78.0" width="6.3" height="50.0" fill="#e0567a"/><rect x="149.8" y="75.1" width="6.3" height="52.9" fill="#2f6fde"/><rect x="156.6" y="67.1" width="6.3" height="60.9" fill="#e0567a"/><text x="156.6" y="139" font-size="9" text-anchor="middle" fill="#555">9時</text><rect x="163.5" y="60.6" width="6.3" height="67.4" fill="#2f6fde"/><rect x="170.4" y="62.5" width="6.3" height="65.5" fill="#e0567a"/><rect x="177.2" y="56.1" width="6.3" height="71.9" fill="#2f6fde"/><rect x="184.1" y="52.7" width="6.3" height="75.3" fill="#e0567a"/><rect x="191.0" y="43.2" width="6.3" height="84.8" fill="#2f6fde"/><rect x="197.9" y="38.0" width="6.3" height="90.0" fill="#e0567a"/><text x="197.9" y="139" font-size="9" text-anchor="middle" fill="#555">12時</text><rect x="204.8" y="53.1" width="6.3" height="74.9" fill="#2f6fde"/><rect x="211.6" y="58.8" width="6.3" height="69.2" fill="#e0567a"/><rect x="218.5" y="58.1" width="6.3" height="69.9" fill="#2f6fde"/><rect x="225.4" y="58.3" width="6.3" height="69.7" fill="#e0567a"/><rect x="232.2" y="38.2" width="6.3" height="89.8" fill="#2f6fde"/><rect x="239.1" y="44.8" width="6.3" height="83.2" fill="#e0567a"/><text x="239.1" y="139" font-size="9" text-anchor="middle" fill="#555">15時</text><rect x="246.0" y="8.0" width="6.3" height="120.0" fill="#2f6fde"/><rect x="252.9" y="21.1" width="6.3" height="106.9" fill="#e0567a"/><rect x="259.8" y="16.8" width="6.3" height="111.2" fill="#2f6fde"/><rect x="266.6" y="26.4" width="6.3" height="101.6" fill="#e0567a"/><rect x="273.5" y="37.7" width="6.3" height="90.3" fill="#2f6fde"/><rect x="280.4" y="34.9" width="6.3" height="93.1" fill="#e0567a"/><text x="280.4" y="139" font-size="9" text-anchor="middle" fill="#555">18時</text><rect x="287.2" y="60.9" width="6.3" height="67.1" fill="#2f6fde"/><rect x="294.1" y="54.6" width="6.3" height="73.4" fill="#e0567a"/><rect x="301.0" y="50.7" width="6.3" height="77.3" fill="#2f6fde"/><rect x="307.9" y="60.0" width="6.3" height="68.0" fill="#e0567a"/><rect x="314.8" y="36.9" width="6.3" height="91.1" fill="#2f6fde"/><rect x="321.6" y="42.4" width="6.3" height="85.6" fill="#e0567a"/><text x="321.6" y="139" font-size="9" text-anchor="middle" fill="#555">21時</text><rect x="328.5" y="61.3" width="6.3" height="66.7" fill="#2f6fde"/><rect x="335.4" y="60.1" width="6.3" height="67.9" fill="#e0567a"/><rect x="342.2" y="82.0" width="6.3" height="46.0" fill="#2f6fde"/><rect x="349.1" y="75.6" width="6.3" height="52.4" fill="#e0567a"/><text x="26" y="160" font-size="10" fill="#2f6fde">■ 張小華</text><text x="106" y="160" font-size="10" fill="#e0567a">■ 淳</text></svg>
+<p>你們兩個人的作息很同步，高峰都在下班前後（16 到 18 點）和晚上。你在 21 點左右還有一個高峰。</p>
+</div></details>
+
+<details id="d2"><summary><h2>🎾 二、情緒接球率</h2></summary><div class="c">
+<p>我先找出一方說「累、不舒服、過敏、壓力、難過、想放棄」這類話的訊息，再看對方 90 分鐘內怎麼回，用關鍵字粗略分類。</p>
+<div class="stk"><div class="stt">淳示弱時，你的回應（共 81 次）</div><div class="sb"><span style="width:6.2%;background:#2aa876" title="共情為主 5"></span><span style="width:6.2%;background:#7fb3d5" title="追問狀況 5"></span><span style="width:6.2%;background:#f0a020" title="直接給解方 5"></span><span style="width:6.2%;background:#b39ddb" title="只回貼圖/通話 5"></span><span style="width:61.7%;background:#bbb" title="轉話題或簡短回應 50"></span><span style="width:13.6%;background:#555" title="90分鐘內沒回應 11"></span></div><div class="sl"><span class="lg"><i style="background:#2aa876"></i>共情為主 5</span> <span class="lg"><i style="background:#7fb3d5"></i>追問狀況 5</span> <span class="lg"><i style="background:#f0a020"></i>直接給解方 5</span> <span class="lg"><i style="background:#b39ddb"></i>只回貼圖/通話 5</span> <span class="lg"><i style="background:#bbb"></i>轉話題或簡短回應 50</span> <span class="lg"><i style="background:#555"></i>90分鐘內沒回應 11</span></div></div>
+<div class="stk"><div class="stt">你示弱時，淳的回應（共 75 次）</div><div class="sb"><span style="width:13.3%;background:#7fb3d5" title="追問狀況 10"></span><span style="width:13.3%;background:#f0a020" title="直接給解方 10"></span><span style="width:4.0%;background:#b39ddb" title="只回貼圖/通話 3"></span><span style="width:56.0%;background:#bbb" title="轉話題或簡短回應 42"></span><span style="width:13.3%;background:#555" title="90分鐘內沒回應 10"></span></div><div class="sl"><span class="lg"><i style="background:#2aa876"></i>共情為主 0</span> <span class="lg"><i style="background:#7fb3d5"></i>追問狀況 10</span> <span class="lg"><i style="background:#f0a020"></i>直接給解方 10</span> <span class="lg"><i style="background:#b39ddb"></i>只回貼圖/通話 3</span> <span class="lg"><i style="background:#bbb"></i>轉話題或簡短回應 42</span> <span class="lg"><i style="background:#555"></i>90分鐘內沒回應 10</span></div></div>
+<p class="note">關鍵字分類會漏判，例如「qq」後面接著追問原因，就算成追問。請把它當成趨勢參考，不是精確的數字。</p>
+<h3>實際的接球片段</h3>
+<blockquote><span class="qd">2023/12/28 21:28</span>淳：北鼻 / 我的臉又過敏了
+你：qq / 你覺得可能什麼原因 / 沒睡好可能嗎</blockquote>
+<blockquote><span class="qd">2023/04/24 14:48</span>淳：我今天到現在還是很想放棄這個鳥位子
+你：你是對自己有要求的人 /（貼圖）/ 海風好涼喔</blockquote>
+<blockquote><span class="qd">2023/05/16</span>淳：只是還是覺得很累
+你：我昨天也覺得很累 / 就想到你睡不好更累 / 心疼你一下　← 少數很到位的共情</blockquote>
+<blockquote><span class="qd">2023/09/21 00:01</span>淳：你想掛電話你就掛電話 / 你想斷話你就斷話 / 你有想過 我要的只是幾句關心問候嗎</blockquote>
+<p><b>觀察：</b>你習慣的接法是「找原因、給方法」，淳習慣的是「叮嚀」（吃藥、早點睡、注意安全）。兩種都是關心，但淳想要的是被「看見」的那句話。2025 年淳回頭總結時說：「有時候你只要假裝哄騙就過去的事 / 但你不願意」「有時候一個擁抱甚過僵持」。</p>
+<p><b>比例：</b>每 100 則文字裡，你用共情詞約 1.3 次、方法詞 2.9 次。對小莉時共情詞 1.2 次、方法詞 5.4 次。<b>兩個對象都一樣，「解方優先」是你的預設模式。</b></p>
+</div></details>
+
+<details id="d3"><summary><h2>⚖️ 三、隱性權力與配合度</h2></summary><div class="c">
+<h3>誰先開口、誰提行程</h3>
+<div class="hbars"><div class="hb"><span class="hl">你開啟對話</span><span class="ht"><span style="width:98.5%;background:#2f6fde"></span></span><span class="hv">198</span></div><div class="hb"><span class="hl">淳開啟對話</span><span class="ht"><span style="width:100.0%;background:#e0567a"></span></span><span class="hv">201</span></div><div class="hb"><span class="hl">你每天第一句</span><span class="ht"><span style="width:91.5%;background:#2f6fde"></span></span><span class="hv">184</span></div><div class="hb"><span class="hl">淳每天第一句</span><span class="ht"><span style="width:99.5%;background:#e0567a"></span></span><span class="hv">200</span></div><div class="hb"><span class="hl">你提行程</span><span class="ht"><span style="width:65.7%;background:#2f6fde"></span></span><span class="hv">132</span></div><div class="hb"><span class="hl">淳提行程</span><span class="ht"><span style="width:58.2%;background:#e0567a"></span></span><span class="hv">117</span></div></div>
+<p>主動和安排都很平均，<b>不是單方面追著跑的關係</b>。</p>
+<h3>電話：誰打、誰掛、誰取消</h3>
+<div class="tw"><table><tr><th></th><th class="u">你撥出</th><th class="j">淳撥出</th></tr>
+<tr><td>接通</td><td>145 通（41.0 小時）</td><td>306 通（49.5 小時）</td></tr>
+<tr><td>對方沒接</td><td>59</td><td>67</td></tr>
+<tr><td>自己取消</td><td>109</td><td>18</td></tr>
+<tr><td>合計</td><td>313</td><td>391</td></tr></table></div>
+<p>淳比較常撥電話。你「撥了又自己取消」有 109 次，這也是一種節奏訊號，可以想想當下是不是猶豫了。</p>
+<blockquote><span class="qd">2023/08/02 10:51</span>淳：早上起床不說電話的是你 / 晚上睡前講電話的也是你 / 看得出來難搞的人是誰了嗎</blockquote>
+<blockquote><span class="qd">2024/02/24 21:06</span>淳：我今天身體不舒服 / 如果太累會先睡 / 你有說你不睡前講電話 / 也說星期六 / 那你慢慢玩我就不打擾你了</blockquote>
+<h3>退讓和配合</h3>
+<p>「你先忙、忙完再打、沒關係、不打擾」這類配合用語，淳說了 71 次，你說了 50 次。淳常常是先說「沒關係」的那一方，但這些退讓後來會在深夜一次爆發出來。你則比較常在行程上做決定，例如跨年和家人出國那件事（2023/10/20）。淳的感受是「你說你沒買票也不買了 / 我好像成了罪人的概念」。</p>
+</div></details>
+
+<details id="d4"><summary><h2>🛡️ 四、衝突與防禦機制</h2></summary><div class="c">
+<h3>收回訊息：先從這裡切入</h3><svg viewBox="0 0 360 154" class="chart"><rect x="25.0" y="113.1" width="25.7" height="2.9" fill="#2f6fde"/><rect x="25.0" y="72.2" width="25.7" height="40.9" fill="#e0567a"/><text x="37.8" y="127" font-size="8.5" text-anchor="middle" fill="#555">23/03</text><rect x="52.7" y="89.7" width="25.7" height="26.3" fill="#2f6fde"/><rect x="52.7" y="19.7" width="25.7" height="70.1" fill="#e0567a"/><rect x="80.3" y="101.4" width="25.7" height="14.6" fill="#2f6fde"/><rect x="80.3" y="86.8" width="25.7" height="14.6" fill="#e0567a"/><text x="93.2" y="127" font-size="8.5" text-anchor="middle" fill="#555">23/05</text><rect x="108.0" y="110.2" width="25.7" height="5.8" fill="#2f6fde"/><rect x="108.0" y="69.3" width="25.7" height="40.9" fill="#e0567a"/><rect x="135.7" y="113.1" width="25.7" height="2.9" fill="#2f6fde"/><rect x="135.7" y="98.5" width="25.7" height="14.6" fill="#e0567a"/><text x="148.5" y="127" font-size="8.5" text-anchor="middle" fill="#555">23/07</text><rect x="163.3" y="89.7" width="25.7" height="26.3" fill="#2f6fde"/><rect x="163.3" y="69.3" width="25.7" height="20.4" fill="#e0567a"/><rect x="191.0" y="72.2" width="25.7" height="43.8" fill="#2f6fde"/><rect x="191.0" y="8.0" width="25.7" height="64.2" fill="#e0567a"/><text x="203.8" y="127" font-size="8.5" text-anchor="middle" fill="#555">23/09</text><rect x="218.7" y="107.2" width="25.7" height="8.8" fill="#2f6fde"/><rect x="218.7" y="75.1" width="25.7" height="32.1" fill="#e0567a"/><rect x="246.3" y="98.5" width="25.7" height="17.5" fill="#2f6fde"/><rect x="246.3" y="37.2" width="25.7" height="61.3" fill="#e0567a"/><text x="259.2" y="127" font-size="8.5" text-anchor="middle" fill="#555">23/11</text><rect x="274.0" y="110.2" width="25.7" height="5.8" fill="#2f6fde"/><rect x="274.0" y="66.4" width="25.7" height="43.8" fill="#e0567a"/><rect x="301.7" y="104.3" width="25.7" height="11.7" fill="#2f6fde"/><rect x="301.7" y="66.4" width="25.7" height="37.9" fill="#e0567a"/><text x="314.5" y="127" font-size="8.5" text-anchor="middle" fill="#555">24/01</text><rect x="329.3" y="107.2" width="25.7" height="8.8" fill="#2f6fde"/><rect x="329.3" y="89.7" width="25.7" height="17.5" fill="#e0567a"/><text x="24" y="148" font-size="10" fill="#e0567a">■ 淳收回</text><text x="84" y="148" font-size="10" fill="#2f6fde">■ 張小華收回</text></svg>
+<div class="tw"><table><tr><th>連續收回 3 則以上</th><th>誰</th><th>則數</th><th>對方下一則訊息</th></tr>
+<tr><td>2023/04/25 18:49</td><td>淳</td><td>6</td><td>18 分鐘後</td></tr>
+<tr><td>2023/06/01 00:21</td><td>淳</td><td>9</td><td>約 8 小時後</td></tr>
+<tr><td>2023/08/20 20:48</td><td>你</td><td>4</td><td>37 分鐘後</td></tr>
+<tr><td>2023/09/03 21:21</td><td>淳</td><td>4</td><td>13 分鐘後</td></tr>
+<tr><td>2023/09/07 15:57</td><td>你</td><td>7</td><td>71 分鐘後（淳回「好」）</td></tr>
+<tr><td>2023/09/18 23:22</td><td>淳</td><td>3</td><td>約 2 小時後</td></tr>
+<tr><td>2023/10/11 17:08</td><td>淳</td><td>3</td><td>約 7 小時後</td></tr>
+<tr><td>2023/11/29 01:55</td><td>淳</td><td>9</td><td>約 6 小時後</td></tr>
+<tr><td>2023/12/17 21:56</td><td>淳</td><td>3</td><td>47 分鐘後</td></tr>
+<tr><td>2023/12/29 01:15</td><td>淳</td><td>5</td><td>約 11 小時後</td></tr>
+<tr><td>2024/01/24 21:11</td><td>淳</td><td>7</td><td>約 2 小時後</td></tr>
+<tr><td>2024/03/07 22:44</td><td>淳</td><td>7</td><td>58 分鐘後</td></tr></table></div>
+<p>淳收回的訊息有 26% 發生在深夜 23 點到 6 點，你只有 8%。收回的內容已經看不到，但時間點很一致：<b>深夜、吵架前後、或你沒接電話之後</b>。比較可能的解讀是淳打了想說的話，又自己吞回去。</p>
+<blockquote><span class="qd">2023/06/02 23:58</span>淳：星期三很晚了 / 本來想說跟你講一下下 / 撒嬌一下說晚安要睡了 / 結果你直接說 / 怎麼這麼晚 我要睡了 / 然後你就掛電話了 …
+留言留了幾句收回 / 你也沒問可能覺得沒事</blockquote>
+<h3>衝突的固定劇本</h3>
+<ol>
+<li><b>引爆點</b>：電話的時間（睡前講不講、誰掛電話）、你提到某位淳不喜歡的共同朋友、行程裡沒有把淳放在優先（跨年）。</li>
+<li><b>淳的升高</b>：深夜發長訊息，有時說到最壞的情況。<blockquote><span class="qd">2023/10/11 01:21</span>淳：如果你想分手 / 沒必要用那樣的方式 / 我沒有對你怎麼樣</blockquote><blockquote><span class="qd">2023/08/02 23:23</span>淳：如果真的真的沒辦法 / 那你可以去找28歲以下的妹妹 / 也許比較適合你</blockquote></li>
+<li><b>你的防禦</b>：講道理、劃分責任，有時下定義。<blockquote><span class="qd">2023/10/11 01:26–01:33</span>你：一樣的話你對我講超過四次以上，我講一次你就要爆氣? / 雙標? … 控制狂膩 … Ending</blockquote><blockquote><span class="qd">2023/12/29 00:19–00:47</span>你：我不為你的想法負責 … 另外還想知道「你覺得我有義務解決你情緒上的問題嗎?」</blockquote></li>
+<li><b>修復被擋下</b>：<blockquote><span class="qd">2023/10/11 07:59 → 08:47</span>淳：我跟你道歉 你不要生氣了 / 昨天晚上是我的問題
+你：還沒講完 / 你的情緒管理是個大問題 / 不用什麼委曲求全的道歉 / 把問題解決才是我想要的</blockquote></li>
+<li><b>回到日常</b>：隔天照常約吃飯、討論行程，問題沒有談完就被擱著，下次換個題目又吵起來。</li>
+</ol>
+<p><b>自我合理化的字眼</b>（「我只是」「我又沒」「我沒說過」）：淳 38 則，你 7 則。<b>貼標籤的字眼</b>（「你都」「你根本」「控制」「情緒管理」）：淳 22 則，你 15 則。你的合理化說得比較少，但在衝突裡你「講道理」的方式，常讓淳覺得自己被評分：「你的理智讓我恐懼很多」。</p>
+<p class="note">你們也各自道歉過 16 次左右，你也有很直接的道歉，例如「對不起 罵你三字經」（2023/12/29）和「讓你不舒服 我很抱歉」（2023/08/02）。</p>
+</div></details>
+
+<details id="cross"><summary><h2>🔄 跨對象比對（淳 vs 小莉）</h2></summary><div class="c">
+<p class="note">先說明限制：小莉只有 3 週的資料（2026 年 10 月），而且是剛認識的階段，大量用語音。淳的對話在 2025/02 就結束了，兩段沒有重疊的時間。所以我另外拿淳<b>最初 3 週</b>（2023/03/07–03/28）當作同樣是「初期」的比較基準。</p>
+<div class="tw"><table><tr><th>指標</th><th class="u">你→淳（全期）</th><th class="u">你→淳（前 3 週）</th><th class="u">你→小莉</th><th class="j">淳</th><th class="x">小莉</th></tr>
+<tr><td>回覆中位數</td><td>5 分</td><td>1 分</td><td>1 分</td><td>3 分</td><td>1 分</td></tr>
+<tr><td>疑似冷處理</td><td>11.8%</td><td>—</td><td>4.8%</td><td>6.0%</td><td>4.6%</td></tr>
+<tr><td>貼圖占比</td><td>13.6%</td><td>20.8%</td><td>7.7%</td><td>23.7%</td><td>3.7%</td></tr>
+<tr><td>單字句比例</td><td>5.6%</td><td>6.5%</td><td>1.6%</td><td>4.5%</td><td>3.8%</td></tr>
+<tr><td>共情詞／100 則</td><td>1.3</td><td>1.3</td><td>1.2</td><td>1.0</td><td>2.8</td></tr>
+<tr><td>方法詞／100 則</td><td>2.9</td><td>3.0</td><td>5.4</td><td>4.8</td><td>5.1</td></tr>
+<tr><td>提問／100 則</td><td>9.0</td><td>12.8</td><td>17.2</td><td>12.8</td><td>14.4</td></tr>
+<tr><td>提行程（你：對方）</td><td colspan="2">132 : 117</td><td>51 : 26</td><td></td><td></td></tr></table></div>
+<h3>🪞 你自己的模式（兩個對象都有）</h3>
+<ul>
+<li><b>聯絡頻率起伏，會被讀成冷淡。</b>淳說：「你給我一種沒有我也沒關係的感覺」。小莉說：「其實…我以為是你不想理我了」「因為我其實…很怕別人忽冷忽熱」。你自己說：「要維持聊天的頻率始終對我是一件很難的事情」。</li>
+<li><b>解方優先，共情的字眼少。</b>兩邊的共情詞都是每 100 則約 1.2 到 1.3 次。對小莉時方法詞更多，但提問也更多，好奇心是加分的。</li>
+<li><b>習慣主導行程。</b>對小莉時你提行程的次數是她的 2 倍。</li>
+<li><b>你會先自我解嘲。</b>例如「遲鈍大直男需要愛與包容」（對小莉）、「The way I am.」（對淳）。這有幽默感，但也可能讓對方覺得「你不打算改」。</li>
+</ul>
+<h3>👥 淳比較獨有的反應（扣掉你的共同模式之後）</h3>
+<ul>
+<li>大量收回訊息（165 則，是你的 2.7 倍），而且集中在深夜。</li>
+<li>深夜情緒升高時，常先說到最壞的結果（分手、叫你去找別人）。</li>
+<li>需要被明確說出口的愛和確認：愛稱是你的 3.5 倍，晚安是你的 3 倍。</li>
+<li>隔天早上道歉、寫長文反省，之後又重複同樣的循環。</li>
+</ul>
+<p class="note">在小莉的對話裡，目前還沒看到同等級的衝突。小莉表達不安時，你的回應方式（先道歉、先肯定她的感受、說會改進）和你回淳的方式很不一樣。這可能是初期關係的蜜月效應，也可能是你已經在調整，值得繼續觀察。</p>
+</div></details>
+
+<details id="tl"><summary><h2>🗓️ 關鍵事件時間軸</h2></summary><div class="c"><div class="tl">
+<div class="ev"><div class="d">2023/03/07</div>匯出的紀錄從這天開始，每天互道早安、問打球、通電話。</div>
+<div class="ev"><div class="d">2023/04/25</div><span class="tag">收回 6 則</span>你一早傳了一段「我昨天不高興的點是…」。淳回「不要生氣了」，下午說「我想了想 我應該弄好再跟你說的 讓你不開心 我有錯」，傍晚連續收回 6 則訊息。</div>
+<div class="ev"><div class="d">2023/06/01–06/03</div><span class="tag">收回 9 則</span>淳在深夜收回 9 則訊息，隔天說「我不要求每天講電話這樣了」。你回「有時候你有情緒時的對應方式是冷漠…這種感覺比較像陌生人」，淳回「留言留了幾句收回 / 你也沒問」。</div>
+<div class="ev"><div class="d">2023/08/02</div>電話之爭：「早上起床不說電話的是你 / 晚上睡前講電話的也是你」。深夜淳說「那你可以去找28歲以下的妹妹」，你回「你又誤會我了…讓你不舒服 我很抱歉」。</div>
+<div class="ev"><div class="d">2023/09/21</div>「你想掛電話你就掛電話…我要的只是幾句關心問候嗎」。這個月的通話時數最高，約 16.7 小時。</div>
+<div class="ev"><div class="d">2023/10/11–10/12</div><span class="tag">最激烈</span>起因是提到一位淳不喜歡的共同朋友，凌晨開吵：「如果你想分手」「雙標?」「控制狂膩」「Ending」。早上淳道歉，你回「不用什麼委曲求全的道歉」，當天中午兩個人照常見面吃飯。</div>
+<div class="ev"><div class="d">2023/10/20</div>你和姊姊安排跨年出國，淳說「表現不開心是不是就是成了沒有氣度的人？」，你回「做個言行一致的人別人會更容易了解你的底線」。</div>
+<div class="ev"><div class="d">2023/12/29</div><span class="tag">收回 5 則</span>淳說了「會死嗎」，你罵了三字經，雙方互相道歉。你說「洗完澡後不想打給你，是因為我不想面對你」。當天中午又照常討論泡溫泉的行程。</div>
+<div class="ev"><div class="d">2024/02/24–02/28</div><span class="tag">分手</span>淳說「你有說你不睡前講電話…那你慢慢玩我就不打擾你了」。02/25 你們講了 2 小時 12 分的電話，接著沉默 3 天。02/28 淳寫長文道歉「我不應該這樣對你情緒性的說了不該說的話」。你回「首先妳沒錯…繼續文字的對談是我的底線」。淳問能不能當朋友，你先回「NO」，後來改成「可，也僅此而已」。</div>
+<div class="ev"><div class="d">2024/03</div><span class="tag">收回 7 則</span>你們安排拿回彼此的東西。03/14 你回覆淳的白色情人節驚喜：「希望你能找到一個真正珍視這一切的人」。03/27 淳問「不會再見面的意思了是嗎」。</div>
+<div class="ev"><div class="d">2024/04–2024/08</div>只剩零星聯絡：生日祝福、淳分享工作困境和被跟拍的事，你給了很實際的支持（「現在保存證據、保護自己是最重要的」）。</div>
+<div class="ev"><div class="d">2025/01–02/21</div>重新聊起來。02/21 凌晨 1 點到 3 點深談：「你給我一種沒有我也沒關係的感覺」「你的理智讓我恐懼很多」「給0.5是我的舒適帶」「也可能是我的問題」，最後以「兩個愛計較的 是沒法走一塊的」「yes agree 掰」收尾，紀錄到這裡結束。</div>
+</div></div></details>
+
+<details id="adv" open><summary><h2>💡 盲點與建議</h2></summary><div class="c">
+<h3>給自己的 5 個練習</h3>
+<ol>
+<li><b>先報狀態，再消失。</b>回得慢沒關係，先丟一句「在忙，X 點後回你」，就能大幅降低「忽冷忽熱」的感覺。這一點在淳和小莉身上都被提過。</li>
+<li><b>先接情緒，再給方法。</b>先回一句「聽起來真的很煩／很不舒服」，再問原因、給方法。你對小莉已經做過：「我真的很抱歉讓你有這樣的感覺」。</li>
+<li><b>收下道歉，再約時間解決。</b>對方道歉的時候，先回「謝謝你願意說」，再約時間談問題本身，不要回「不用委曲求全」，免得把修復的門關上。</li>
+<li><b>對方收回訊息時溫柔問一句。</b>例如「剛剛想說什麼？我想聽」。連續收回往往代表對方有話想講。</li>
+<li><b>深夜不用文字處理大事。</b>23 點以後吵架的機率高出 3 倍。可以約定重要的事隔天打電話或見面講。</li>
+</ol>
+<h3>可以再問自己的問題</h3>
+<ul>
+<li>2023 年 7 月以後回覆變慢，當時心裡是累了、在猶豫，還是改用電話了？</li>
+<li>「給 0.5 是我的舒適帶」：在什麼情況下，你願意給到 0.8？</li>
+<li>那 109 次「撥了又取消」的電話，當下在想什麼？</li>
+<li>小莉說「很怕別人忽冷忽熱」，你打算怎麼避免同樣的循環？</li>
+</ul>
+</div></details>
+
+<details id="method"><summary><h2>🛠️ 方法與限制</h2></summary><div class="c">
+<ul>
+<li><b>資料</b>：LINE 手機匯出的文字檔，2023/03/07–2025/02/21，24,007 則（不含 2 則系統訊息）。對照組是小莉 2026/10/09–10/29 的 2,784 則，語音已經轉成文字。</li>
+<li><b>對話段落</b>：間隔超過 6 小時算一段新對話，淳的部分共 399 段。回覆時間只計算同一段對話裡換人回的間隔。</li>
+<li><b>冷處理門檻</b>：超過本人同時段中位數的 3 倍，而且超過 60 分鐘。時段分成平日上班、深夜和其他時段。</li>
+<li><b>情緒、衝突、道歉、合理化</b>：都用中文關鍵字比對，會有誤判，請當作趨勢參考。我也實際讀過衝突、收回訊息、訊息量驟降和分手前後的原文，才寫成上面的結論。</li>
+<li><b>看不到的部分</b>：90 小時的通話內容、見面的互動、照片和語音的內容、收回前的原文。匯出的紀錄可能也不是你們認識的起點。</li>
+<li><b>隱私</b>：報告裡刻意沒有放地址、帳號、證件號碼等個人資料，第三方的名字也盡量不寫。</li>
+<li>這份分析是讓你反思用的，不是在判斷誰對誰錯。兩個人都在用自己知道的方式努力，也都對彼此留有善意。</li>
+</ul></div></details>
+<p style="text-align:center;font-size:13px;color:#999">由 Grok Bot 產生 · 2026/10/31</p>
+</main></body></html>
