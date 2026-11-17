@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>接地原理 v1.0｜來源與查證紀錄</title>
+<style>
+  :root {
+    --ink: #1c2733; --ink-soft: #44515f; --paper: #f4f1ea; --card: #ffffff;
+    --rule: #d9d3c7; --accent: #2f5d7c; --accent-soft: #e7eef3;
+    --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.75; }
+  a { color: var(--accent); }
+  header.top { background: var(--card); border-bottom: 1px solid var(--rule); padding: 28px 20px 22px; }
+  header.top h1 { font-family: var(--serif); font-size: 1.7rem; color: var(--accent); margin: 8px 0; line-height: 1.35; }
+  header.top p { margin: 0; color: var(--ink-soft); }
+  .back { font-size: 0.88rem; text-decoration: none; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+  .nav a { text-decoration: none; background: var(--card); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font-size: 0.86rem; color: var(--ink); }
+  .nav a:hover, .nav a[aria-current="page"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .cards { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 28px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: var(--ink-soft); font-size: 0.88rem; }
+  h2 { font-family: var(--serif); font-size: 1.15rem; margin: 28px 0 10px; }
+  .prose { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 22px 22px; }
+  .prose h1 { font-family: var(--serif); font-size: 1.55rem; line-height: 1.4; }
+  .prose h2 { font-size: 1.2rem; }
+  .prose h3 { font-size: 1.05rem; }
+  .prose img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); background: #fff; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 12px 0 18px; }
+  .prose th, .prose td { border: 1px solid var(--rule); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .prose th { background: var(--accent-soft); }
+  .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .prose blockquote { margin: 12px 0; padding: 8px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); }
+  .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3efe6; padding: 0 4px; border-radius: 4px; }
+  .prose pre { overflow-x: auto; background: #1c2733; color: #f4f1ea; padding: 12px 14px; border-radius: 8px; }
+  .prose pre code { background: transparent; color: inherit; padding: 0; }
+  .gallery { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; }
+  figure img { width: 100%; height: auto; border-radius: 6px; }
+  figcaption { font-size: 0.86rem; color: var(--ink-soft); margin-top: 6px; }
+  ul.files { padding-left: 1.1rem; }
+  ul.files li { margin: 6px 0; }
+  footer.note { margin-top: 28px; color: var(--ink-soft); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="index.html">← 火力發電廠接地系統說明</a>
+  <h1>接地原理 v1.0｜來源與查證紀錄</h1>
+</header>
+<div class="wrap">
+  <nav class="nav" aria-label="文件"><a href="index.html">本專題目錄</a><a href="../../index.html">回知識庫</a><a href="PROJECT_REQUIREMENTS.html">專案需求</a><a href="GROUNDING_PRINCIPLES.html">接地原理</a><a href="GROUNDING_EVIDENCE.html" aria-current="page">原理查證紀錄</a><a href="GROUNDING_SOURCES.html">公開來源紀錄</a><a href="INSTALLATION_DEMONSTRATIONS.html">施工示範</a><a href="INSTALLATION_EVIDENCE.html">施工來源紀錄</a><a href="GROUNDING_PRINCIPLES_DRAFT.html">初稿</a></nav>
+  <article class="prose"><h1 id="v10">接地原理 v1.0｜來源與查證紀錄</h1>
+<p>日期：2026-10-31。對應正文：<a href="GROUNDING_PRINCIPLES.html">接地原理 v1.0</a>。</p>
+<h2 id="1">1. 查證範圍</h2>
+<p>本次完成原理、人體觸電風險、接地網對現場安全的三部分寫作。查證是針對引用段落，不宣稱逐頁審查全部來源。已取得完整 PDF 與「已確認整份文件所有內容」是不同狀態。</p>
+<ul>
+<li>S01–S03：前次已閱讀官方網頁正文，本次沿用相同條款定位。</li>
+<li>S04–S08：已從機構官方網址下載完整 PDF，閱讀相關段落；並對關鍵頁進行圖像檢視。</li>
+<li>S09：已閱讀發布者網站的完整頁面，記錄頁面修訂日期。</li>
+<li>S10：已讀取 IEEE PCIC 網站提供的公開 PDF，僅採用分流的定性說明。</li>
+<li>IEEE／IEC 正式標準：仍只有官方目錄與摘要，沒有將其當成已讀原文引用。</li>
+</ul>
+<h2 id="2">2. 已使用來源</h2>
+<h3 id="s01osha-1910269-appendix-c">S01｜OSHA 1910.269 Appendix C</h3>
+<ul>
+<li>機構：美國勞工部 Occupational Safety and Health Administration。</li>
+<li>題名：Protection From Hazardous Differences in Electric Potential。</li>
+<li><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">官方原文</a>。HTML 無固定頁碼。</li>
+<li>核對位置：I；II.A–B；III.A、III.B、III.C.1。</li>
+<li>正文位置：1.4、2.3、3.2；圖 2、圖 3 的概念基礎。</li>
+<li>限制：電力作業保護的美國法規附錄；不直接取代臺灣永久接地網設計規範。人體限值與工作程序不在本版轉用範圍。</li>
+</ul>
+<h3 id="s02osha-1910304">S02｜OSHA 1910.304</h3>
+<ul>
+<li>題名：Wiring design and protection。</li>
+<li><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.304">官方原文</a>。HTML 無固定頁碼。</li>
+<li>核對位置：(g)(4)(i)、(g)(5)、(g)(8)(i)；前版另閱讀 (g)(1)(v)(E)。</li>
+<li>用途：圖 1 的已接地系統連接關係，與 S05 交叉比較。</li>
+<li>限制：不將本條文直接宣稱為臺灣火力電廠法定要求。網頁頁尾列修訂資訊至 2008 年；查閱年份不是版本年份。</li>
+</ul>
+<h3 id="s03osha-construction-etool">S03｜OSHA Construction eTool</h3>
+<ul>
+<li>題名：Electrical Incidents — Grounding。</li>
+<li><a href="https://www.osha.gov/etools/construction/electrical-incidents/grounding">官方原文</a>。頁面未見明確版次。</li>
+<li>核對位置：System or Service Ground、Equipment Ground。</li>
+<li>用途：1.1 的入門區分。</li>
+<li>限制：營造安全教材；不採用其中接地位置、接地極尺寸或阻值作為本案要求。</li>
+</ul>
+<h3 id="s04niosh-2009-113">S04｜NIOSH 2009-113</h3>
+<ul>
+<li>機構：美國 CDC／National Institute for Occupational Safety and Health。</li>
+<li>題名：Electrical Safety: Safety and Health for Electrical Trades Student Manual，Revised Edition。</li>
+<li>作者：Thaddeus W. Fowler、Karen K. Miles；更新工作與其他人員見原文件致謝頁。</li>
+<li>年份：2009。<a href="https://www.cdc.gov/niosh/publications/numbered/2009-113.html">官方目錄</a>標示 March 2009，下載 PDF 版權／出版資訊頁標示 April 2009；本稿以「2009」記載，不混同網站更新日期。</li>
+<li><a href="https://www.cdc.gov/niosh/docs/2009-113/pdfs/2009-113.pdf">官方 PDF</a>｜<a href="research/NIOSH_2009_113.pdf">本地副本</a>。</li>
+<li>核對位置：§1 pp.2–5（PDF 第 10–13 頁）；§2 pp.6–11（PDF 第 14–19 頁）。</li>
+<li>用途：2.1–2.2、圖 2。</li>
+<li>限制：一般電氣職業安全教材；本稿不轉載其人體電流數值表，也不把表中數值視為人人適用的安全界線。PDF 註明 public domain；本稿仍以摘要與自製圖呈現。</li>
+</ul>
+<h3 id="s05doe-hdbk-1092-2013">S05｜DOE-HDBK-1092-2013</h3>
+<ul>
+<li>機構：美國 Department of Energy。</li>
+<li>題名：Electrical Safety；2013。</li>
+<li><a href="https://www.energy.gov/ehss/articles/doe-hdbk-1092-2013">官方目錄</a>｜<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1092-2013.pdf">官方 PDF</a>｜<a href="research/DOE_HDBK_1092_2013.pdf">本地副本</a>。</li>
+<li>核對位置：§§5.2–5.5.3，pp.30–35（PDF 第 41–46 頁），特別是 §5.5.1 的回流路徑。</li>
+<li>用途：1.2、2.4、圖 1。</li>
+<li>限制：DOE 手冊及其當時引用的規範，不是臺灣法規；未將其「零電位」的簡化目的敘述解讀為故障時必然零伏。正文使用具體回路說明，並與 S01 的電位差解釋配合。</li>
+</ul>
+<h3 id="s06epri-3002013162">S06｜EPRI 3002013162</h3>
+<ul>
+<li>機構：Electric Power Research Institute；Project Manager：W. Johnson。</li>
+<li>題名：Industry Practices Related to the Application and Maintenance of Grounding Systems for Nuclear Power Plant Switchyards。</li>
+<li>版本：Final Report，December 2018。年份已由 PDF 題名頁核對，沒有採用搜尋引擎顯示的收錄年份。</li>
+<li><a href="https://restservice.epri.com/publicdownload/000000003002013162/0/Product">官方公開下載</a>｜<a href="research/EPRI_3002013162.pdf">本地副本</a>。</li>
+<li>正文引用核對：p.2-36（PDF 68）；pp.2-38–2-39（PDF 70–71）；pp.2-51–2-52（PDF 83–84）；§2.2.6.3 pp.2-58–2-59（PDF 90–91）。</li>
+<li>另讀 pp.2-41、2-43–2-46、2-48、2-50、2-53、2-56–2-57，以檢查上下文與限制。</li>
+<li>用途：3.1–3.3 的網格、表層與轉移電位；不複製原圖。</li>
+<li>限制：核電廠開關場研究報告。本稿只借用共通物理原理，未將核電廠管理要求或試驗程序套用到火力電廠。報告引用 IEEE 的地方仍屬 EPRI 轉引，不代表本案已核對 IEEE 正式標準。</li>
+</ul>
+<h3 id="s07doe-hdbk-10113-92">S07｜DOE-HDBK-1011/3-92</h3>
+<ul>
+<li>機構：美國 Department of Energy。</li>
+<li>題名：DOE Fundamentals Handbook, Electrical Science, Volume 3 of 4。</li>
+<li>版本：June 1992，Rev.0。</li>
+<li><a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1011-92_VOL3.pdf">官方 PDF</a>｜<a href="research/DOE_Electrical_Science_Vol3.pdf">本地副本</a>。</li>
+<li>核對位置：Module 8，pp.9–11（PDF 47–49）、pp.15–16（PDF 53–54）。</li>
+<li>用途：1.2–1.3 的電路基礎。</li>
+<li>限制：較早期基礎教材，只用於電路原理，不當作現行接地設計標準。正文另以 |Z| 表示阻抗大小，避免把大小與複數阻抗混用。</li>
+</ul>
+<h3 id="s08usbr-fist-volume-4-7">S08｜USBR FIST Volume 4-7</h3>
+<ul>
+<li>機構：美國 Bureau of Reclamation。</li>
+<li>題名：Commissioning Guide for Hydroelectric Facilities。</li>
+<li>版本：2023-08-30，NEW RELEASE，FIST 024。</li>
+<li><a href="https://www.usbr.gov/power/data/fist/FIST_4-7_%288-2023%29.pdf">官方 PDF</a>｜<a href="research/USBR_FIST_4_7_2023.pdf">本地副本</a>。</li>
+<li>核對位置：§6.1.48.1，p.138（PDF 158）。</li>
+<li>用途：3.4 的評估目的。</li>
+<li>限制：水力設施指南；不採用其中測試電流、測試時間或方法作為本案施工／驗收程序。首句的概括性描述也未延伸成「土壤條件不影響接地電阻」之結論。</li>
+</ul>
+<h3 id="s09schneider-electric">S09｜Schneider Electric 技術指南</h3>
+<ul>
+<li>題名：General principle of protection against electrical shocks in electrical installations，Electrical Installation Guide，Chapter B。</li>
+<li><a href="https://www.electrical-installation.org/enwiki/General_principle_of_protection_against_electrical_shocks_in_electrical_installations">發布者網站原文</a>。</li>
+<li>頁面顯示最後編輯：2026-08-05；oldid=29599。</li>
+<li>核對位置：Direct contact／Indirect contact；圖 B12–B13 周邊文字；Direct-contact protection。</li>
+<li>用途：1.4、2.1、3.1、圖 3 的電位差概念。</li>
+<li>限制：製造商維護的開放技術指南，層級不同於正式 IEC／EN 標準；其圖號只是定位，不表示原圖已在本稿重製。</li>
+</ul>
+<h3 id="s10ieee-pcic">S10｜IEEE PCIC 公開論文</h3>
+<ul>
+<li>作者：Amnit Dhindsa。</li>
+<li>題名：Optimization of AC Substation Ground Grid Design and Calculations。</li>
+<li>年份：2022；頁尾識別 2022-PCIC-0559。<a href="https://ieeepcic.com/2022conference/wp-content/uploads/sites/7/2022/09/2022-PCIC-0559.pdf">公開 PDF</a>。</li>
+<li>核對位置：摘要；§IV、§V.A，p.3 的相關脈絡。</li>
+<li>用途：1.4 中「故障電流可經其他路徑分流」的定性補充。</li>
+<li>限制：作者論文，不是 IEEE 標準；摘要明示面向工業用戶、非公用電力業。題名頁仍有 Paper No. 的樣板文字，故僅標示為網站公開稿，不宣稱已核實其正式出版識別或 DOI。</li>
+</ul>
+<h2 id="3">3. 對重要敘述的交叉核對</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>敘述</th>
+<th>對照資料</th>
+<th>結果與界線</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>故障回路需追查至電源</td>
+<td>S02 與 S05 §5.5.1</td>
+<td>支持圖 1 的限定模型；不外推所有系統</td>
+</tr>
+<tr>
+<td>人體傷害與電流及時間有關</td>
+<td>S04 §2 與 S01 I</td>
+<td>定性一致；未比較或合併容許值</td>
+</tr>
+<tr>
+<td>接地物體仍可能有電位升高</td>
+<td>S01 I–II 與 S09 圖 B12</td>
+<td>支持基本原理；沒有以「接地即零伏」代替分析</td>
+</tr>
+<tr>
+<td>地網配置會影響地表電位差</td>
+<td>S06 p.2-51 與 S09 圖 B13</td>
+<td>支持定性說明；未選定網格尺寸</td>
+</tr>
+<tr>
+<td>需要評估區域內電位差</td>
+<td>S01 III.B 與 S08 §6.1.48.1</td>
+<td>支持「單一電阻值不足」的綜合推論；非條文原句</td>
+</tr>
+</tbody>
+</table></div>
+<p>交叉核對不等於獨立實驗驗證：部分文件共同引用 IEEE，不能把相同源頭的轉引當成數次獨立驗證。</p>
+<h2 id="4">4. 本次刻意不採用的敘述</h2>
+<p>權威機構文件仍需逐項判斷。本表保留具體取捨，避免日後擴寫時重新引入問題。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>來源位置</th>
+<th>問題</th>
+<th>處理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S06 p.2-44</td>
+<td>110 lb 的公斤換算在同頁不一致</td>
+<td>不轉載相關人體限值、公式或體重換算；正式數值待查標準原文</td>
+</tr>
+<tr>
+<td>S06 p.2-48</td>
+<td>包含以身體感覺試探危險範圍的文字</td>
+<td>不採用，也不整理成現場建議；人體不能作為安全測試工具</td>
+</tr>
+<tr>
+<td>S09 Indirect-contact protection</td>
+<td>將特定電流／電壓概括為不危險，條件交代不足</td>
+<td>不採用其通用安全界線；本稿僅使用接觸類型與電位差解說</td>
+</tr>
+<tr>
+<td>S10 §IV</td>
+<td>對 GPR 與人身安全的關係有過度絕對的敘述</td>
+<td>不採用；正文區分 GPR 與人體兩點電位差，但不說 GPR 與人身安全無關</td>
+</tr>
+<tr>
+<td>S03、S04、S05 部分入門敘述</td>
+<td>接地／零電位／電流流向大地的表述較簡化</td>
+<td>使用有明確假設的完整回路圖，並交叉參照 S01</td>
+</tr>
+</tbody>
+</table></div>
+<p>以上是本報告的內容審查結果，不代表對整份來源作全面否定。</p>
+<h2 id="5">5. 圖表與公式核對</h2>
+<ul>
+<li>圖 1：自行繪製；僅表示中性點直接接地且有金屬回路的模型。正常負載與其他路徑已註明省略。</li>
+<li>圖 2：自行繪製；不同接觸點、人體通路與風險因素的概念圖。</li>
+<li>圖 3：自行設定數值；1,000 − 900 = 100，1,000 − 100 = 900。均為同一瞬間的假設電位，不是量測或電場模擬。</li>
+<li>阻抗大小：限正弦穩態等效串聯模型；R、X、|Z| 均以 Ω 表示。</li>
+<li>地電位升高：U_G ≈ I_G × R_G 為電阻近似，並明確區分入地電流與總故障電流；未給設計用數值。</li>
+<li>沒有使用 IEEE／IEC 人體容許值、地網設計係數或施工尺寸。</li>
+</ul>
+<h2 id="6">6. 尚未取得的資料與本版完成狀態</h2>
+<p><strong>三個原理解說部分已完成。</strong> 下列是升級為設計或驗收文件的前提，並非本次原理章節仍需等待的工作：</p>
+<ol>
+<li>IEEE 3003.1、3003.2、80 及相關 IEC 標準正式全文、版本與修訂查核。</li>
+<li>臺灣或其他所在地法規、業主規範的適用性判定。</li>
+<li>電廠單線圖、實際接地網、土壤資料、故障電流、保護時間及作業位置。</li>
+<li>具相應工程責任的人員對具體設計或驗收結論進行審查。</li>
+</ol>
+<h2 id="7">7. 檔案留存</h2>
+<p>完整 PDF 保存在 <code>research/</code>，來源網址與 SHA-256 在 <a href="research/source_manifest.json">下載紀錄</a>。圖表程式位於 <a href="research/build_figures.py">build_figures.py</a>，輸出圖片位於 <code>figures/</code>。來源 PDF 的關鍵頁視覺核對圖保存在 <code>research/qa/</code>，只供本次研究檢查。</p>
+<p>來源檔案供查證使用；公開可下載不代表可以任意重製其中受保護圖表。本稿未重製 EPRI 或 IEEE 原圖。</p></article>
+</div>
+</body>
+</html>

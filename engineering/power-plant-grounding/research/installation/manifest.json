@@ -1,0 +1,14 @@
+[
+  {
+    "file": "NASA_UFGS_260526_2019.pdf",
+    "url": "https://www.wbdg.org/FFC/NASA/UFGS/UFGS%2026%2005%2026.00%2040.pdf",
+    "sha256": "ec5eb7e168b25d950540738a1b3e42d05c4e9bac1b601766a61e3f4273e3e532",
+    "retrieved": "2026-11-01"
+  },
+  {
+    "file": "Harger_Inspectors_Guide_2018.pdf",
+    "url": "https://www.harger.com/sites/default/files/resources/Inspectors%20Guide%202017_11-26-18_0.pdf",
+    "sha256": "8adcf423e4d0aa075094ea328dcaef1eedca69d2c1d027ec646c1945e1ebcaf4",
+    "retrieved": "2026-11-01"
+  }
+]

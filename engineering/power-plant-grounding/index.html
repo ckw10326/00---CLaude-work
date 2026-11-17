@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火力發電廠接地系統說明</title>
+<style>
+  :root {
+    --ink: #1c2733; --ink-soft: #44515f; --paper: #f4f1ea; --card: #ffffff;
+    --rule: #d9d3c7; --accent: #2f5d7c; --accent-soft: #e7eef3;
+    --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.75; }
+  a { color: var(--accent); }
+  header.top { background: var(--card); border-bottom: 1px solid var(--rule); padding: 28px 20px 22px; }
+  header.top h1 { font-family: var(--serif); font-size: 1.7rem; color: var(--accent); margin: 8px 0; line-height: 1.35; }
+  header.top p { margin: 0; color: var(--ink-soft); }
+  .back { font-size: 0.88rem; text-decoration: none; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+  .nav a { text-decoration: none; background: var(--card); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font-size: 0.86rem; color: var(--ink); }
+  .nav a:hover, .nav a[aria-current="page"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .cards { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 28px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: var(--ink-soft); font-size: 0.88rem; }
+  h2 { font-family: var(--serif); font-size: 1.15rem; margin: 28px 0 10px; }
+  .prose { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 22px 22px; }
+  .prose h1 { font-family: var(--serif); font-size: 1.55rem; line-height: 1.4; }
+  .prose h2 { font-size: 1.2rem; }
+  .prose h3 { font-size: 1.05rem; }
+  .prose img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); background: #fff; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 12px 0 18px; }
+  .prose th, .prose td { border: 1px solid var(--rule); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .prose th { background: var(--accent-soft); }
+  .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .prose blockquote { margin: 12px 0; padding: 8px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); }
+  .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3efe6; padding: 0 4px; border-radius: 4px; }
+  .prose pre { overflow-x: auto; background: #1c2733; color: #f4f1ea; padding: 12px 14px; border-radius: 8px; }
+  .prose pre code { background: transparent; color: inherit; padding: 0; }
+  .gallery { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; }
+  figure img { width: 100%; height: auto; border-radius: 6px; }
+  figcaption { font-size: 0.86rem; color: var(--ink-soft); margin-top: 6px; }
+  ul.files { padding-left: 1.1rem; }
+  ul.files li { margin: 6px 0; }
+  footer.note { margin-top: 28px; color: var(--ink-soft); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="../../index.html">← 回我的知識庫</a>
+  <h1>火力發電廠接地系統說明</h1>
+  <p>接地原理、施工示範，以及對公開文獻的查證。這是說明文件，不是設計、施工或驗收規範。</p>
+</header>
+<div class="wrap">
+  <h2>主要文件</h2>
+  <div class="cards"><a class="card" href="PROJECT_REQUIREMENTS.html"><b>專案需求</b><span>報告要做什麼、目前做到哪裡</span></a>
+<a class="card" href="GROUNDING_PRINCIPLES.html"><b>接地原理</b><span>故障回路、觸電風險與接地網</span></a>
+<a class="card" href="GROUNDING_EVIDENCE.html"><b>原理查證紀錄</b><span>來源頁碼與適用限制</span></a>
+<a class="card" href="GROUNDING_SOURCES.html"><b>公開來源紀錄</b><span>第一輪來源，歷史參照</span></a>
+<a class="card" href="INSTALLATION_DEMONSTRATIONS.html"><b>施工示範</b><span>放熱熔接工序與成品觀察</span></a>
+<a class="card" href="INSTALLATION_EVIDENCE.html"><b>施工來源紀錄</b><span>照片出處與本地副本</span></a></div>
+  <h2>初稿</h2>
+  <div class="cards"><a class="card" href="GROUNDING_PRINCIPLES_DRAFT.html"><b>接地原理初稿</b><span>v0.1 歷史初稿</span></a></div>
+  <h2>示意圖與施工照片</h2>
+  <div class="gallery"><figure><img src="figures/01_fault_loop.png" alt="故障電流回路"><figcaption>故障電流回路</figcaption></figure>
+<figure><img src="figures/02_shock_path.png" alt="人體觸電通路"><figcaption>人體觸電通路</figcaption></figure>
+<figure><img src="figures/03_potential_difference.png" alt="相同設備電位下的電位差"><figcaption>相同設備電位下的電位差</figcaption></figure>
+<figure><img src="figures/installation/harger_good_joint.jpeg" alt="原廠標示的良好接頭"><figcaption>原廠標示的良好接頭</figcaption></figure>
+<figure><img src="figures/installation/harger_underfilled_joint.jpeg" alt="原廠標示的填充不足接頭"><figcaption>原廠標示的填充不足接頭</figcaption></figure></div>
+  <h2>研究文獻 PDF</h2>
+  <ul class="files"><li><a href="research/DOE_HDBK_1092_2013.pdf">DOE-HDBK-1092-2013 電氣安全手冊</a></li>
+<li><a href="research/DOE_Electrical_Science_Vol3.pdf">DOE 電氣科學基礎教材第 3 卷</a></li>
+<li><a href="research/EPRI_3002013162.pdf">EPRI 3002013162 開關場接地報告</a></li>
+<li><a href="research/NIOSH_2009_113.pdf">NIOSH 2009-113 電擊危害教材</a></li>
+<li><a href="research/USBR_FIST_4_7_2023.pdf">USBR FIST 4-7（2023）試運轉指南</a></li>
+<li><a href="research/installation/NASA_UFGS_260526_2019.pdf">NASA UFGS 26 05 26.00 40 接地施工規範範本</a></li>
+<li><a href="research/installation/Harger_Inspectors_Guide_2018.pdf">Harger 安裝與檢查指南</a></li></ul>
+  <h2>核對圖、清單與程式</h2>
+  <ul class="files"><li><a href="research/qa/source_pages.png">來源 PDF 關鍵頁核對圖</a></li>
+<li><a href="research/installation/harger_page_3.png">Harger 指南頁面 3</a></li>
+<li><a href="research/installation/harger_page_6.png">Harger 指南頁面 6</a></li>
+<li><a href="research/installation/harger_page_7.png">Harger 指南頁面 7</a></li>
+<li><a href="research/source_manifest.json">原理文獻下載紀錄（JSON）</a></li>
+<li><a href="research/installation/manifest.json">施工資料下載紀錄（JSON）</a></li>
+<li><a href="research/build_figures.py">圖表繪製程式</a></li>
+<li><a href="research/fetch_sources.py">文獻下載程式</a></li></ul>
+  <p class="note" style="color:#44515f;font-size:.85rem">原始 Markdown 與上列檔案都留在這個資料夾。閱讀頁把文件之間的 .md 連結改成對應的 HTML，圖與 PDF 仍用原來的相對路徑。</p>
+</div>
+</body>
+</html>
