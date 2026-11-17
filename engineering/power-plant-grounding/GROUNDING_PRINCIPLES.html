@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火力發電廠接地原理</title>
+<style>
+  :root {
+    --ink: #1c2733; --ink-soft: #44515f; --paper: #f4f1ea; --card: #ffffff;
+    --rule: #d9d3c7; --accent: #2f5d7c; --accent-soft: #e7eef3;
+    --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.75; }
+  a { color: var(--accent); }
+  header.top { background: var(--card); border-bottom: 1px solid var(--rule); padding: 28px 20px 22px; }
+  header.top h1 { font-family: var(--serif); font-size: 1.7rem; color: var(--accent); margin: 8px 0; line-height: 1.35; }
+  header.top p { margin: 0; color: var(--ink-soft); }
+  .back { font-size: 0.88rem; text-decoration: none; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+  .nav a { text-decoration: none; background: var(--card); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font-size: 0.86rem; color: var(--ink); }
+  .nav a:hover, .nav a[aria-current="page"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .cards { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 28px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: var(--ink-soft); font-size: 0.88rem; }
+  h2 { font-family: var(--serif); font-size: 1.15rem; margin: 28px 0 10px; }
+  .prose { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 22px 22px; }
+  .prose h1 { font-family: var(--serif); font-size: 1.55rem; line-height: 1.4; }
+  .prose h2 { font-size: 1.2rem; }
+  .prose h3 { font-size: 1.05rem; }
+  .prose img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); background: #fff; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 12px 0 18px; }
+  .prose th, .prose td { border: 1px solid var(--rule); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .prose th { background: var(--accent-soft); }
+  .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .prose blockquote { margin: 12px 0; padding: 8px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); }
+  .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3efe6; padding: 0 4px; border-radius: 4px; }
+  .prose pre { overflow-x: auto; background: #1c2733; color: #f4f1ea; padding: 12px 14px; border-radius: 8px; }
+  .prose pre code { background: transparent; color: inherit; padding: 0; }
+  .gallery { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; }
+  figure img { width: 100%; height: auto; border-radius: 6px; }
+  figcaption { font-size: 0.86rem; color: var(--ink-soft); margin-top: 6px; }
+  ul.files { padding-left: 1.1rem; }
+  ul.files li { margin: 6px 0; }
+  footer.note { margin-top: 28px; color: var(--ink-soft); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="index.html">← 火力發電廠接地系統說明</a>
+  <h1>火力發電廠接地原理</h1>
+</header>
+<div class="wrap">
+  <nav class="nav" aria-label="文件"><a href="index.html">本專題目錄</a><a href="../../index.html">回知識庫</a><a href="PROJECT_REQUIREMENTS.html">專案需求</a><a href="GROUNDING_PRINCIPLES.html" aria-current="page">接地原理</a><a href="GROUNDING_EVIDENCE.html">原理查證紀錄</a><a href="GROUNDING_SOURCES.html">公開來源紀錄</a><a href="INSTALLATION_DEMONSTRATIONS.html">施工示範</a><a href="INSTALLATION_EVIDENCE.html">施工來源紀錄</a><a href="GROUNDING_PRINCIPLES_DRAFT.html">初稿</a></nav>
+  <article class="prose"><h1 id="_1">火力發電廠接地原理</h1>
+<h2 id="_2">接地如何作用、人體為何觸電、接地網如何影響現場安全</h2>
+<p><strong>版本 1.0｜2026-10-31｜公開資料技術解說版</strong></p>
+<p>本版完成三項主題的基礎解說。讀者先追查電流回路，再辨識人體接觸兩點的電位差，最後理解接地網與故障切除如何共同影響風險。</p>
+<p>本報告引用已讀取的政府教材、研究報告與技術文件。IEEE／IEC 標準全文仍未取得，因此不宣稱已符合其全部要求。文中的火力電廠情境與算術例題均為教學設定，並非現場紀錄；本文不提供施工尺寸或驗收門檻。</p>
+<p>來源編號、原文頁碼與適用限制見 <a href="GROUNDING_EVIDENCE.html">查證紀錄</a>。以下 PDF 頁碼如未特別註明，均指文件印刷頁碼。</p>
+<hr />
+<h2 id="_3">第一部分｜接地原理怎麼理解？</h2>
+<h3 id="11">1.1 先分清楚接的是什麼</h3>
+<p>「電源系統的某一點接地」與「設備金屬外殼接地」回答不同問題。前者處理系統對地關係；後者處理外殼意外帶電時的保護。OSHA 的入門教材也分別介紹系統接地與設備接地。<a href="https://www.osha.gov/etools/construction/electrical-incidents/grounding">S03</a></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>本報告使用的概念</th>
+<th>閱讀圖說時要問的問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>系統接地</td>
+<td>電源哪個點接地？連接中是否有阻抗？</td>
+</tr>
+<tr>
+<td>設備接地</td>
+<td>正常不應帶電的外殼，故障時如何形成保護通路？</td>
+</tr>
+<tr>
+<td>等電位連結</td>
+<td>人可能同時接觸的導電物體，如何減小彼此電位差？</td>
+</tr>
+<tr>
+<td>接地極與接地網</td>
+<td>與土壤接觸的導體如何分布？如何影響周圍電位？</td>
+</tr>
+</tbody>
+</table></div>
+<p>這是閱讀框架，不是全廠接地系統分類表。對火力電廠而言，先用「變壓器中性點」與「廠用馬達外殼」兩個問題建立觀念即可，暫不展開設備選型。</p>
+<h3 id="12">1.2 電流必須沿回路流動</h3>
+<p>以中性點直接接地、外殼有金屬保護回路的系統為例，相線碰觸外殼後，電流可經設備接地導體與電源側連結點返回電源。DOE 手冊 §5.5.1 直接描述這條回路。<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1092-2013.pdf">S05，p.33</a></p>
+<p><img alt="故障電流回路示意" src="figures/01_fault_loop.png" /></p>
+<p><strong>圖 1 的限制：</strong>箭頭只供追蹤回路，不表示交流電流固定單向流動。它省略正常負載與並聯回路；不能套用到所有中性點接地方式。大地也不是圖中的「電流終點」。</p>
+<p>保護通路還需要連續、有足夠載流能力及適當阻抗，才能配合保護裝置。接上導線本身，並不能證明故障時一定按預期跳脫。<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1092-2013.pdf">S05，§§5.3–5.4，pp.30–31</a></p>
+<p>「電流只走電阻最小的一條路」也不正確。以兩個有限電阻並聯的基本電路為例，兩支路承受相同電壓，各有電流；較低電阻支路的電流較大，不代表另一支路沒有電流。這是本報告依基本並聯電路關係所作的解說。<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1011-92_VOL3.pdf">S07，Module 8，pp.15–16</a></p>
+<h3 id="13">1.3 電阻與阻抗有什麼不同？</h3>
+<p>電阻 R 與阻抗 Z 都以歐姆表示。交流阻抗還包含電抗及相位關係；在正弦穩態的等效串聯模型中，阻抗大小可寫為：</p>
+<p><strong>|Z| = √(R² + X²)</strong></p>
+<p>其中 X 是淨電抗，單位同為 Ω。這不是把兩個數值直接相加。DOE 基礎教材同時說明交流電壓、電流與阻抗的關係。<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1011-92_VOL3.pdf">S07，Module 8，pp.9–11</a></p>
+<p>本報告據此提醒：看到「接地電阻」測值時，要先確認量測對象與條件；不能直接把它當作所有頻率、暫態及回流路徑的完整特性。本章聚焦電力頻率的故障原理，不進行雷擊計算。</p>
+<h3 id="14">1.4 接地不等於永遠是零伏</h3>
+<p>故障電流通過具有阻抗的接地通路時，接地物體仍可能相對遠方大地升高電位。周圍地面也可能有不同電位；這就是理解地電位升高與地表電位梯度的起點。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，I、II.A</a></p>
+<p>在僅考慮電阻的簡化模型中，可用以下關係理解地電位升高：</p>
+<p><strong>U_G ≈ I_G × R_G</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>符號</th>
+<th>此簡化模型的意思</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U_G</td>
+<td>接地網相對遠方大地的電位升高，V</td>
+</tr>
+<tr>
+<td>I_G</td>
+<td>由所考慮接地網流入土壤的電流，A</td>
+</tr>
+<tr>
+<td>R_G</td>
+<td>該接地網對遠方大地的等效電阻，Ω</td>
+</tr>
+</tbody>
+</table></div>
+<p>這是電流乘電阻的教學近似，不是完整地網分析。有其他回流路徑時，總故障電流不必等於流入土壤的電流；公開 IEEE PCIC 論文也討論架空屏蔽線等路徑造成的分流。本稿只採用這個定性觀念，不採用該文的設計限值或分流計算法。<a href="https://www.electrical-installation.org/enwiki/General_principle_of_protection_against_electrical_shocks_in_electrical_installations">S09，圖 B12 的簡化關係</a>；<a href="https://ieeepcic.com/2022conference/wp-content/uploads/sites/7/2022/09/2022-PCIC-0559.pdf">S10，§V.A，p.3</a></p>
+<hr />
+<h2 id="_4">第二部分｜人為什麼會有觸電風險？</h2>
+<h3 id="21">2.1 人體可能成為電路的一部分</h3>
+<p>觸電的核心是人體連接了不同電位的接觸點，並形成可流通電流的通路。這可能是手接觸帶電導體、另一部位接地，也可能是同時接觸兩個不同電位的導體。<a href="https://www.cdc.gov/niosh/docs/2009-113/pdfs/2009-113.pdf">S04，§1，pp.2–5</a></p>
+<p><img alt="人體觸電通路與影響因素" src="figures/02_shock_path.png" /></p>
+<p>從接觸對象來看，可以區分接觸正常帶電部分，以及接觸因絕緣故障而帶電的外殼。前者涉及基本防護，後者涉及故障防護；設備接地不能代替對正常帶電部分的隔離或絕緣。<a href="https://www.electrical-installation.org/enwiki/General_principle_of_protection_against_electrical_shocks_in_electrical_installations">S09，Direct contact、Indirect contact、Direct-contact protection</a></p>
+<h3 id="22">2.2 傷害為何不能只看電壓？</h3>
+<p>NIOSH 教材說明，傷害與人體電流大小、通過時間和路徑有關；潮濕、皮膚破損、接觸面積及壓力會影響通路阻抗。跨越胸部的電流尤其需要重視。電流還可能造成肌肉失控、無法鬆手、灼傷或跌落等後果。<a href="https://www.cdc.gov/niosh/docs/2009-113/pdfs/2009-113.pdf">S04，§2，pp.6–11</a></p>
+<p>因此，本稿不指定一個對所有人、所有環境都安全的電壓或電流，也不把人體當作固定電阻。讀者應依序追問：<strong>接觸了哪兩點、通路有何條件、電流可能持續多久。</strong></p>
+<h3 id="23">2.3 接觸電壓與步間電壓</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>關注哪兩點？</th>
+<th>概念情境</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接觸電壓</td>
+<td>所觸物體與腳下位置</td>
+<td>手碰外殼，腳站在旁邊地面</td>
+</tr>
+<tr>
+<td>步間電壓</td>
+<td>兩腳所在位置</td>
+<td>人未碰設備，但站在有地表電位梯度的區域</td>
+</tr>
+</tbody>
+</table></div>
+<p>兩者都描述電位差。未碰設備不代表沒有觸電通路。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，II.B</a></p>
+<p>以下自設例題固定設備電位為 1,000 V，只改變腳下位置的假設電位，以比較差值。所有數字都不是實測值或安全限值。</p>
+<p><img alt="相同設備電位下的電位差比較" src="figures/03_potential_difference.png" /></p>
+<p>圖 3 顯示：同樣的設備對遠方大地電位，可能對應不同接觸電壓。圖中比較的是人體尚未接入時的兩點電位差；實際人體電流仍須考慮人體、接觸與周圍系統的等效阻抗。這個例子不能用來宣告情境 A 合格。</p>
+<h3 id="24">2.4 為什麼保護動作時間重要？</h3>
+<p>接地與保護裝置必須一起理解。保護裝置能否偵測並切除故障，影響危險存在多久；不能把「有斷路器」等同於所有接地故障都會立刻消失。DOE 手冊另外討論不接地及高阻抗接地系統，說明其保護邏輯不能直接套用直接接地系統的例圖。<a href="https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1092-2013.pdf">S05，§§5.5.1–5.5.3，pp.33–35</a></p>
+<hr />
+<h2 id="_5">第三部分｜接地網如何影響現場安全？</h2>
+<h3 id="31">3.1 接地網要控制的是空間中的電位分布</h3>
+<p>接地網是分布於區域內、互相連接並埋設於土中的導體系統。其配置會影響地表電位分布；適當的網格與電極配置可減小局部電位差。EPRI 的開關場報告以電位分布圖解釋這個作用。<a href="https://restservice.epri.com/publicdownload/000000003002013162/0/Product">S06，pp.2-36、2-51，圖 2-18</a></p>
+<p>這裡的目標不是宣稱每一點完全等電位，而是辨識人可能跨接的位置，評估當時的電位差。Schneider 的技術指南也以電位控制電極說明減小接觸與步間電壓的原理。<a href="https://www.electrical-installation.org/enwiki/General_principle_of_protection_against_electrical_shocks_in_electrical_installations">S09，圖 B13</a></p>
+<h3 id="32">3.2 連結、網格與表層材料的角色不同</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>原理作用</th>
+<th>不能僅憑外觀判定的事情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設備與導電物體的連結</td>
+<td>減小物體之間的電位差、建立保護回路</td>
+<td>是否連續、有足夠容量</td>
+</tr>
+<tr>
+<td>接地網幾何配置</td>
+<td>影響區域內地表電位差</td>
+<td>操作點與邊界是否滿足安全條件</td>
+</tr>
+<tr>
+<td>地表材料</td>
+<td>影響足部接觸條件及地表電氣行為</td>
+<td>石材、厚度、潮濕或污染後的性質</td>
+</tr>
+</tbody>
+</table></div>
+<p>表層碎石的作用不能簡化成「讓地網電阻更低」。較高電阻率的表層可增加足部通路阻抗，但效果取決於材料與現場條件。EPRI 指出表層材料與厚度會影響安全分析，材料改變時需要重新評估；本稿不提供通用碎石厚度。<a href="https://restservice.epri.com/publicdownload/000000003002013162/0/Product">S06，pp.2-38–2-39、2-51–2-52</a></p>
+<p>等電位區的效果也有範圍。人若跨越其邊界，或接觸區外的不同電位物體，不能延用區內的保護假設。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，III.C.1</a></p>
+<h3 id="33">3.3 場外也可能受到影響</h3>
+<p>導電連接可能把一處的電位帶到另一處，形成轉移電位問題。分析範圍因此不能只停在地網平面圖的外框，還要追查連到區域外的導電路徑。<a href="https://restservice.epri.com/publicdownload/000000003002013162/0/Product">S06，§2.2.6.3，pp.2-58–2-59</a></p>
+<p>本稿提出的閱讀問題是：某金屬物連到哪一區？人站在哪裡？另一個接觸點是否屬於相同電位區？這些問題不等於要求一律連接或一律隔離，實際方案需依系統分析決定。</p>
+<h3 id="34">3.4 為什麼不能以一個 Ω 數字代表安全？</h3>
+<p>USBR 的水力設施試運轉指南，將地網阻抗、設計核對及故障造成的區域電位變化列為地網試驗關注事項。<a href="https://www.usbr.gov/power/data/fist/FIST_4-7_%288-2023%29.pdf">S08，§6.1.48.1，p.138</a></p>
+<p>結合本章的電位差與人體通路觀念，本報告的綜合判斷是：<strong>接地電阻是資料之一，不能單獨取代現場人身安全評估。</strong> 還需要故障情境、保護時間、電位分布與人員接觸條件。本稿引用 USBR 的分析目的，不採用其水力設施試驗程序作為火力電廠驗收要求。</p>
+<h3 id="35">3.5 用火力電廠情境練習判讀</h3>
+<p>以下是本報告自行設定的閱讀練習，沒有對任何實際電廠作合格判定。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>情境</th>
+<th>第一個應追問的問題</th>
+<th>需要補足的資料</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>廠用馬達相線碰殼</td>
+<td>外殼故障電流如何回到電源？</td>
+<td>單線圖、接地連結圖、保護設定</td>
+</tr>
+<tr>
+<td>人在開關設備旁操作</td>
+<td>手與腳所在位置是否有電位差？</td>
+<td>故障分析、操作位置、地表電位與表層條件</td>
+</tr>
+<tr>
+<td>人站在地網邊緣</td>
+<td>兩腳或手腳是否跨越不同電位區？</td>
+<td>地網範圍、邊界與區外分析</td>
+</tr>
+<tr>
+<td>金屬管線跨出場區</td>
+<td>是否存在轉移電位路徑？</td>
+<td>管線連續性、接地／隔離關係及區外接觸點</td>
+</tr>
+<tr>
+<td>新增機組或改動保護設定</td>
+<td>原接地分析的假設是否仍成立？</td>
+<td>新舊故障資料、保護時間與原分析條件</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">本章的使用方式與後續界線</h2>
+<p>現在可以用本章建立三項理解：故障電流如何形成回路、人體如何跨接電位差，以及地網如何改變現場的電位分布。閱讀施工圖或測試報告時，可以據此提出具體問題。</p>
+<p>本版不包含接地網尺寸計算、人體容許值選定、施工安裝或驗收判定，也未涵蓋防雷暫態、儀表接地與 GIS 特殊問題。這些屬後續工程章節，需確認標準全文、所在地規範及電廠資料後再進行。<strong>這不影響本次三部分原理解說的完成，但限制了其作為工程設計文件的用途。</strong></p>
+<h2 id="_7">來源導覽</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>編號</th>
+<th>文件</th>
+<th>本章用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S01</td>
+<td>OSHA 1910.269 Appendix C</td>
+<td>接地電位、步間／接觸電壓及等電位區</td>
+</tr>
+<tr>
+<td>S02</td>
+<td>OSHA 1910.304</td>
+<td>圖 1 的連接關係；與前版銜接</td>
+</tr>
+<tr>
+<td>S03</td>
+<td>OSHA Construction eTool: Grounding</td>
+<td>系統與設備接地的入門區分</td>
+</tr>
+<tr>
+<td>S04</td>
+<td>NIOSH 2009-113</td>
+<td>人體觸電條件及傷害因素</td>
+</tr>
+<tr>
+<td>S05</td>
+<td>DOE-HDBK-1092-2013</td>
+<td>故障回路與設備接地、保護邏輯</td>
+</tr>
+<tr>
+<td>S06</td>
+<td>EPRI 3002013162，2018</td>
+<td>網格、表層材料與轉移電位</td>
+</tr>
+<tr>
+<td>S07</td>
+<td>DOE-HDBK-1011/3-92，1992</td>
+<td>電阻、電抗與阻抗的電路基礎</td>
+</tr>
+<tr>
+<td>S08</td>
+<td>USBR FIST 4-7，2023</td>
+<td>地網評估不能只有單一電阻值</td>
+</tr>
+<tr>
+<td>S09</td>
+<td>Schneider Electric Electrical Installation Guide</td>
+<td>接觸類型、簡化模型與電位控制</td>
+</tr>
+<tr>
+<td>S10</td>
+<td>Amnit Dhindsa，IEEE PCIC 公開論文，2022</td>
+<td>故障電流分流的定性補充；非 IEEE 標準</td>
+</tr>
+</tbody>
+</table></div>
+<p>詳細書目、查核位置、保留與排除事項均見 <a href="GROUNDING_EVIDENCE.html">查證紀錄</a>。</p></article>
+</div>
+</body>
+</html>

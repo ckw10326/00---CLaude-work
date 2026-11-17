@@ -1,0 +1,37 @@
+[
+  {
+    "file": "NIOSH_2009_113.pdf",
+    "url": "https://www.cdc.gov/niosh/docs/2009-113/pdfs/2009-113.pdf",
+    "bytes": 1542632,
+    "sha256": "c5d468367a37d3659aa7ca42689e0559621d9f559fe5a6df5a4c4f73f13ef4de",
+    "retrieved": "2026-10-31"
+  },
+  {
+    "file": "DOE_HDBK_1092_2013.pdf",
+    "url": "https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1092-2013.pdf",
+    "bytes": 13225289,
+    "sha256": "8635fde5118d0556b203b4c6f35514ff3718ebae7497837d16cc5d5e4c44897e",
+    "retrieved": "2026-10-31"
+  },
+  {
+    "file": "DOE_Electrical_Science_Vol3.pdf",
+    "url": "https://www.energy.gov/sites/default/files/2026-04/DOE-HDBK-1011-92_VOL3.pdf",
+    "bytes": 1245164,
+    "sha256": "52986c616d1892960d013cd01694704c8c3f658d20f8074abc4c4ff10d7ea18a",
+    "retrieved": "2026-10-31"
+  },
+  {
+    "file": "USBR_FIST_4_7_2023.pdf",
+    "url": "https://www.usbr.gov/power/data/fist/FIST_4-7_%288-2023%29.pdf",
+    "bytes": 12370205,
+    "sha256": "7da9d0479b5387d0a2073e6d27fd46988aa088a480c5b34e54e0c2dcac716527",
+    "retrieved": "2026-10-31"
+  },
+  {
+    "file": "EPRI_3002013162.pdf",
+    "url": "https://restservice.epri.com/publicdownload/000000003002013162/0/Product",
+    "bytes": 4955143,
+    "sha256": "5a1a9a59a3c9f8694ef4d8f63d35bb6f5e61b7e5bddaf5f50c7eca908e2a6867",
+    "retrieved": "2026-10-31"
+  }
+]

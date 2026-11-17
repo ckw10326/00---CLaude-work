@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火力發電廠接地原理：以權威公開資料為依據的技術解說</title>
+<style>
+  :root {
+    --ink: #1c2733; --ink-soft: #44515f; --paper: #f4f1ea; --card: #ffffff;
+    --rule: #d9d3c7; --accent: #2f5d7c; --accent-soft: #e7eef3;
+    --serif: "Noto Serif TC", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.75; }
+  a { color: var(--accent); }
+  header.top { background: var(--card); border-bottom: 1px solid var(--rule); padding: 28px 20px 22px; }
+  header.top h1 { font-family: var(--serif); font-size: 1.7rem; color: var(--accent); margin: 8px 0; line-height: 1.35; }
+  header.top p { margin: 0; color: var(--ink-soft); }
+  .back { font-size: 0.88rem; text-decoration: none; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+  .nav a { text-decoration: none; background: var(--card); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font-size: 0.86rem; color: var(--ink); }
+  .nav a:hover, .nav a[aria-current="page"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .cards { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 28px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: var(--ink-soft); font-size: 0.88rem; }
+  h2 { font-family: var(--serif); font-size: 1.15rem; margin: 28px 0 10px; }
+  .prose { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 8px 22px 22px; }
+  .prose h1 { font-family: var(--serif); font-size: 1.55rem; line-height: 1.4; }
+  .prose h2 { font-size: 1.2rem; }
+  .prose h3 { font-size: 1.05rem; }
+  .prose img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); background: #fff; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 12px 0 18px; }
+  .prose th, .prose td { border: 1px solid var(--rule); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .prose th { background: var(--accent-soft); }
+  .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .prose blockquote { margin: 12px 0; padding: 8px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); }
+  .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3efe6; padding: 0 4px; border-radius: 4px; }
+  .prose pre { overflow-x: auto; background: #1c2733; color: #f4f1ea; padding: 12px 14px; border-radius: 8px; }
+  .prose pre code { background: transparent; color: inherit; padding: 0; }
+  .gallery { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; }
+  figure img { width: 100%; height: auto; border-radius: 6px; }
+  figcaption { font-size: 0.86rem; color: var(--ink-soft); margin-top: 6px; }
+  ul.files { padding-left: 1.1rem; }
+  ul.files li { margin: 6px 0; }
+  footer.note { margin-top: 28px; color: var(--ink-soft); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="index.html">← 火力發電廠接地系統說明</a>
+  <h1>火力發電廠接地原理：以權威公開資料為依據的技術解說</h1>
+</header>
+<div class="wrap">
+  <nav class="nav" aria-label="文件"><a href="index.html">本專題目錄</a><a href="../../index.html">回知識庫</a><a href="PROJECT_REQUIREMENTS.html">專案需求</a><a href="GROUNDING_PRINCIPLES.html">接地原理</a><a href="GROUNDING_EVIDENCE.html">原理查證紀錄</a><a href="GROUNDING_SOURCES.html">公開來源紀錄</a><a href="INSTALLATION_DEMONSTRATIONS.html">施工示範</a><a href="INSTALLATION_EVIDENCE.html">施工來源紀錄</a><a href="GROUNDING_PRINCIPLES_DRAFT.html" aria-current="page">初稿</a></nav>
+  <article class="prose"><h1 id="_1">火力發電廠接地原理：以權威公開資料為依據的技術解說</h1>
+<blockquote>
+<p>本檔保留為 v0.1 歷史初稿。三部分完整版本請閱讀 <a href="GROUNDING_PRINCIPLES.html">接地原理 v1.0</a>，最新來源查核請見 <a href="GROUNDING_EVIDENCE.html">查證紀錄</a>。</p>
+</blockquote>
+<p>版本：0.1｜2026-10-31｜基礎原理討論稿</p>
+<p>本稿先建立閱讀電廠接地資料需要的基本觀念。正文依已核對的 OSHA 公開資料整理，尚不是 IEEE／IEC 全文查證版，也不提供設計或驗收數值。來源定位與研究缺口見 <a href="GROUNDING_SOURCES.html">公開來源紀錄</a>。</p>
+<h2 id="1">1. 先問：是哪一部分接地？</h2>
+<p>閱讀接地圖時，先分清兩個問題：電源系統的哪個點與地建立連接？設備可觸及的金屬外殼如何受到保護？前者屬系統接地，後者涉及設備接地。OSHA 的入門教材也分開介紹這兩項功能。<a href="https://www.osha.gov/etools/construction/electrical-incidents/grounding">S03</a></p>
+<p>在電廠的閱讀情境中，可以分別追問「變壓器中性點怎麼處理」與「馬達外殼如何連回保護系統」。這是本稿設定的教學問題，並非對某座電廠接線的描述。</p>
+<h2 id="2">2. 故障電流要看完整回路</h2>
+<p>以下只假設：電源中性點直接接地，設備外殼以連續金屬導體連至電源側連結點，且相線碰觸外殼。依 OSHA 對已接地系統的連接關係，可整理出下圖。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.304">S02，(g)(4)(i)、(g)(8)(i)</a></p>
+<pre><code class="language-mermaid">flowchart LR
+    A[電源繞組相端] --&gt; B[相線]
+    B --&gt; C[外殼故障點]
+    C --&gt; D[設備接地導體]
+    D --&gt; E[電源側連結點／中性點]
+    E --&gt; A
+    E --- F[接地極與大地]
+</code></pre>
+<p>圖 1：依 S02 連接關係自行繪製的概念圖。箭頭只表示回路追蹤方向，不代表交流電流固定單向流動。未畫出負載、保護裝置及其他並聯回路；不能套用到所有中性點接地方式，也不能據此判定跳脫時間。</p>
+<p>讀圖重點是一路追查到電源，而非看到接地符號就停止。原文另要求接地路徑保持永久、連續與有效。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.304">S02，(g)(5)</a></p>
+<h2 id="3">3. 接地後，仍可能存在電位差</h2>
+<p>接地通路具有阻抗，故障電流流過時仍可能產生電壓。因此，「有接地」不等於「故障時任何位置都是零伏」。本稿以遠方大地為參考，定性說明接地位置的電位升高，不在此提供接地網計算式。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，I、II.A</a></p>
+<h2 id="4">4. 接觸電壓與步間電壓</h2>
+<p>接觸電壓關注手所接觸物體與腳下位置的電位差；步間電壓關注兩腳所在位置之間的電位差。故障時即使沒有碰到設備，仍可能暴露於地表電位差。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，II.B</a></p>
+<h2 id="5">5. 等電位連結的目的</h2>
+<p>連結是把導電部分電氣相連，目的是減小相互間的電位差。等電位區的保護有範圍限制，不能推論區域外或跨越邊界的人也同樣受到保護。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，III.A、III.C.1</a></p>
+<h2 id="6">6. 為什麼不能只看一個接地電阻值？</h2>
+<p>OSHA 的危害分析同時考慮導電物體上的電壓與持續時間；人體風險亦與流經人體的電流有關。因此，本稿的綜合判斷是：單一接地電阻讀值不足以證明整體人身安全。<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.269AppC">S01，I、III.B</a></p>
+<p>下一版應補齊的問題包括：電阻與阻抗的區別、故障電流如何分流、保護裝置如何決定故障持續時間，以及上述概念在發電機、廠用設備與開關場的不同適用條件。這些內容需增加已核對來源後再展開。</p></article>
+</div>
+</body>
+</html>
